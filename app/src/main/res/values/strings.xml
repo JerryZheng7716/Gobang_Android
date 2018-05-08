@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">五子棋博弈平台</string>
+    <string name="setting">设置:</string>
+    <string name="set_model">人机模式选择</string>
+    <string name="game_notes">对战记录</string>
+    <string name="white_player">持白棋手</string>
+    <string name="black_player">持黑棋手</string>
+    <string name="computer">电脑</string>
+    <string name="human">人类</string>
+    <string name="computer_level">电脑等级: </string>
+    <string-array name="game_level">
+        <item>入门学童</item>
+        <item>小有研究</item>
+        <item>登峰造极</item>
+    </string-array>
+</resources>
