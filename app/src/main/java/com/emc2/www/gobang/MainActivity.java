@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     ImageView imageViewWhiteChess, imageViewBlackChess;
     Window window;
     PlayAudio playBtnSound,playBackgroundMusic,playChessSound;
+    private ChessView chessView;
+    AnimationDrawable animationDrawableWhite ;
+    AnimationDrawable animationDrawableBlack ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +85,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         chessBoard.setImageBitmap(readBitMap(R.drawable.chess_borad));
         LinearLayout playerLayout = findViewById(R.id.player_layout);
         LinearLayout btnLayout = findViewById(R.id.btn_layout);
+        chessView = (ChessView) findViewById(R.id.chessView);
+
+        imageViewWhiteChess.setImageResource(R.drawable.wihte_chess_jump);
+        animationDrawableWhite = (AnimationDrawable) imageViewWhiteChess.getDrawable();
+        imageViewBlackChess.setImageResource(R.drawable.black_chess_jump);
+        animationDrawableBlack = (AnimationDrawable) imageViewBlackChess.getDrawable();
         if (!checkDeviceHasNavigationBar(this)) {//适配没有虚拟按键的设备
             playerLayout.setPadding(0, 20, 0, 10);
             chessBoard.setPadding(0, 20, 0, 0);
@@ -105,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_release));
+                        chessView.resetChessBoard();
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
                         btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_press));
@@ -145,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_release));
+                        chessView.retract();
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
                         btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_press));
@@ -326,21 +337,25 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      *
      * @param who 0=黑棋跳，1=白棋跳
      */
+
     public void doJumpAnimation(int who) {
-        imageViewBlackChess.setImageResource(R.drawable.black_chess_jump);
-        AnimationDrawable animationDrawable = (AnimationDrawable) imageViewBlackChess.getDrawable();
-        imageViewWhiteChess.setImageResource(R.drawable.wihte_chess_jump);
-        AnimationDrawable animationDrawable1 = (AnimationDrawable) imageViewWhiteChess.getDrawable();
+
+
+
         if (who == BLACK_CHESS) {
-            animationDrawable.start();
-            animationDrawable1.stop();
+            imageViewBlackChess.setImageResource(R.drawable.black_chess_jump);
+            animationDrawableBlack = (AnimationDrawable) imageViewBlackChess.getDrawable();
+            animationDrawableBlack.start();
+            animationDrawableWhite.stop();
             imageViewBlackChess.setPadding(0,0,0,0);
             imageViewWhiteChess.setPadding(0,80,0,0);
             imageViewWhiteChess.setImageBitmap(readBitMap(R.drawable.white_chess));
         }
         if (who == WHITE_CHESS) {
-            animationDrawable1.start();
-            animationDrawable.stop();
+            imageViewWhiteChess.setImageResource(R.drawable.wihte_chess_jump);
+            animationDrawableWhite = (AnimationDrawable) imageViewWhiteChess.getDrawable();
+            animationDrawableWhite.start();
+            animationDrawableBlack.stop();
             imageViewBlackChess.setPadding(0,80,0,0);
             imageViewWhiteChess.setPadding(0,0,0,0);
             imageViewBlackChess.setImageBitmap(readBitMap(R.drawable.black_chess));

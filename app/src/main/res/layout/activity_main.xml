@@ -10,8 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_height="40dp"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize">
+        android:background="@color/colorPrimary"/>
         <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
@@ -24,7 +23,7 @@
             <!--android:text="@string/setting"-->
             <!--android:textColor="@android:color/white"-->
             <!--android:layout_marginStart="160dp"/>-->
-    </android.support.v7.widget.Toolbar>
+
     <!--<ImageView-->
         <!--android:id="@+id/background"-->
         <!--android:layout_width="match_parent"-->
@@ -81,18 +80,32 @@
                     android:src="@drawable/white_chess"/>
             </LinearLayout>
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp">
+            <ImageView
+            android:id="@+id/chess_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+                android:layout_marginTop="-20dp"/>
 
+            <com.emc2.www.gobang.ChessView
+                android:id="@+id/chessView"
+                android:layout_marginStart="-2dp"
+                android:layout_width="900dp"
+                android:layout_height="900dp"
+                android:adjustViewBounds="true"
+
+                android:scaleType="fitXY" />
+        </RelativeLayout>
         <!--<ImageView-->
             <!--android:id="@+id/chess_board"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_marginTop="-70dp"-->
             <!--android:src="@drawable/chess_borad" />-->
-        <ImageView
-            android:id="@+id/chess_board"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-30dp" />
+
         <LinearLayout
             android:id="@+id/btn_layout"
             android:layout_width="match_parent"

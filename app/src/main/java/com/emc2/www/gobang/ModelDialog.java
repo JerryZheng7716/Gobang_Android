@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by 74011 on 2018/5/1.
@@ -138,8 +139,7 @@ public class ModelDialog {
                 }
                 mainActivity.levelBlackAi=spinnerBlack.getSelectedItemPosition();
                 mainActivity.levelWhiteAi=spinnerWhite.getSelectedItemPosition();
-                System.out.println("当前黑色AI级别:"+mainActivity.getAiLevel(MainActivity.BLACK_CHESS));
-                System.out.println("当前白色AI级别:"+mainActivity.getAiLevel(MainActivity.WHITE_CHESS));
+                Toast.makeText(mainActivity, "当前黑色AI级别:"+mainActivity.getAiLevel(MainActivity.BLACK_CHESS)+"，"+"当前白色AI级别:"+mainActivity.getAiLevel(MainActivity.WHITE_CHESS), Toast.LENGTH_SHORT).show();
             }
         });
         //取消
