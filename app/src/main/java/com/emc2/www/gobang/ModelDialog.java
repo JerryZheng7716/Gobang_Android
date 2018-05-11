@@ -2,6 +2,7 @@ package com.emc2.www.gobang;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Message;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -139,7 +140,13 @@ public class ModelDialog {
                 }
                 mainActivity.levelBlackAi=spinnerBlack.getSelectedItemPosition();
                 mainActivity.levelWhiteAi=spinnerWhite.getSelectedItemPosition();
-                Toast.makeText(mainActivity, "当前黑色AI级别:"+mainActivity.getAiLevel(MainActivity.BLACK_CHESS)+"，"+"当前白色AI级别:"+mainActivity.getAiLevel(MainActivity.WHITE_CHESS), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "当前黑色AI级别:"+mainActivity.getAiLevel(MainActivity.BLACK_CHESS)
+                        +"，"+"当前白色AI级别:"+mainActivity.getAiLevel(MainActivity.WHITE_CHESS), Toast.LENGTH_SHORT).show();
+                if (mainActivity.getAiLevel(MainActivity.BLACK_CHESS)!=-1&&mainActivity.getAiLevel(MainActivity.WHITE_CHESS)!=-1){
+                    AiFightThread aiFightThread = new AiFightThread(MainActivity.BLACK_CHESS);//启动黑棋AI
+                    Thread thread = new Thread(aiFightThread);//启动AI
+                    thread.start();
+                }
             }
         });
         //取消
@@ -163,5 +170,59 @@ public class ModelDialog {
         android.view.WindowManager.LayoutParams p = dlg.getWindow().getAttributes();  //获取对话框当前的参数值
         p.width = (int) (d.getWidth() * 0.7);    //宽度设置为屏幕的0.7
         dlg.getWindow().setAttributes(p);     //设置生效
+    }
+
+    public void aiFight(int who){
+        if (who==MainActivity.BLACK_CHESS){
+            AiTread aiTread = new AiTread(mainActivity.chessView,MainActivity.BLACK_CHESS);//启动黑棋AI
+            Thread thread = new Thread(aiTread);//启动AI
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //使用Ai算法内的的算法判断是否有人获胜了
+            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,mainActivity.chessView);
+            if (alphaBetaCutBranch.isWin()) {
+                Message message = mainActivity.chessView.handler.obtainMessage(300);
+                message.arg1 = 1;
+                mainActivity.chessView.handler.sendMessage(message);
+                return;
+            }
+            aiFight(MainActivity.WHITE_CHESS);
+        }
+        if (who==MainActivity.WHITE_CHESS){
+            AiTread aiTread = new AiTread(mainActivity.chessView,MainActivity.WHITE_CHESS);//启动黑棋AI
+            Thread thread = new Thread(aiTread);//启动AI
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //使用Ai算法内的的算法判断是否有人获胜了
+            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,mainActivity.chessView);
+            if (alphaBetaCutBranch.isWin()) {
+                Message message = mainActivity.chessView.handler.obtainMessage(300);
+                message.arg1 = 1;
+                mainActivity.chessView.handler.sendMessage(message);
+                return;
+            }
+            aiFight(MainActivity.BLACK_CHESS);
+        }
+    }
+
+    class AiFightThread implements Runnable
+    {
+        private int who;
+        public AiFightThread(int who){
+            this.who=who;
+        }
+        private int THREAD_NUM = 10;
+        public void run()
+        {
+            aiFight(who);
+        }
     }
 }

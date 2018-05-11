@@ -8,10 +8,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +37,7 @@ public class ChessView extends View {
     public int chessCount=0;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
     PublicFunction publicFunction = new PublicFunction();
-    MainActivity mainActivity;
+    public MainActivity mainActivity;
     int avg=0;
     public ChessView(Context context) {
         this(context, null);
@@ -46,6 +50,7 @@ public class ChessView extends View {
     public ChessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mainActivity = (MainActivity) context;
+        handler=mainActivity.handler;
         initEveryPlay();
         initChess();
         initBoardPaint();
@@ -160,18 +165,30 @@ public class ChessView extends View {
                     setChessState(point);
                     // 记录下每步操作，方便悔棋操作
                     mEveryPlay.add(point);
-
+                    //播放下棋的声音
+                    PlayAudio playChessSound;
+                    playChessSound=PlayAudio.getInstance(mainActivity);
+                    playChessSound.play("chess_sound.wav",false);
+                    //使用Ai算法内的的算法判断是否有人获胜了
                     AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,this);
                     if (alphaBetaCutBranch.isWin()) {
                         showDialog();
                     }
                     // 更改游戏玩家
                     isBlackPlay = !isBlackPlay;
-                    isAiRuning=true;
+                    if (getAiLevel(MainActivity.BLACK_CHESS)!=-1&&isBlackPlay){
+                        isAiRuning=true;
+                        AiTread aiTread = new AiTread(this,MainActivity.BLACK_CHESS);//启动黑棋AI
+                        Thread thread = new Thread(aiTread);//启动AI
+                        thread.start();
+                    }
 
-                    AiTread aiTread = new AiTread(this,MainActivity.BLACK_CHESS);//启动AI
-                    Thread thread = new Thread(aiTread);//启动AI
-                    thread.start();
+                    if (getAiLevel(MainActivity.WHITE_CHESS)!=-1&&!isBlackPlay){
+                        isAiRuning=true;
+                        AiTread aiTread = new AiTread(this,MainActivity.WHITE_CHESS);//启动白棋AI
+                        Thread thread = new Thread(aiTread);//启动AI
+                        thread.start();
+                    }
                     if (isBlackPlay)
                         mainActivity.doJumpAnimation(MainActivity.BLACK_CHESS);
                     else
@@ -190,12 +207,15 @@ public class ChessView extends View {
      * 游戏结束，显示对话框
      */
     public void showDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        Message message = handler.obtainMessage(300);
+        message.arg1 = 1;
+        handler.sendMessage(message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
         builder.setTitle("游戏结束");
         if (isBlackPlay) {
-            builder.setMessage("黑方获胜！！！");
+            builder.setMessage("恭喜！黑方获胜！！！");
         } else {
-            builder.setMessage("白方获胜！！！");
+            builder.setMessage("恭喜！白方获胜！！！");
         }
         builder.setCancelable(false);
         builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
@@ -213,130 +233,6 @@ public class ChessView extends View {
             }
         });
         builder.show();
-    }
-
-    /**
-     * 判断游戏是否结束，游戏结束标志：当前落子位置与其他同色棋子连成 5 个
-     *
-     * @param x 落子位置 x 坐标
-     * @param y 落子位置 y 坐标
-     * @return 若连成 5 个，游戏结束，返回 true，负责返回 false
-     */
-    private boolean gameIsOver(int x, int y) {
-        Chess.Color color = mChessArray[x][y].getColor();
-        return isOverA(x, y, color) || isOverB(x, y, color) || isOverC(x, y, color) || isOverD(x, y, color);
-    }
-
-    /**
-     * 判断坐标竖直方向是否连成五子
-     *
-     * @param x     坐标 x
-     * @param y     坐标 y
-     * @param color 棋子颜色
-     * @return 连成五子返回 true，反之返回 false
-     */
-    private boolean isOverA(int x, int y, Chess.Color color) {
-        int amount = 0;
-        for (int i = y; i >= 0; i--) {
-            if (mChessArray[x][i].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        for (int i = y; i < mChessArray[x].length; i++) {
-            if (mChessArray[x][i].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        // 循环执行完成后，当前落子位置算了两次，故条件应是大于 5
-        return amount > 5;
-    }
-
-    /**
-     * 判断坐标水平方向是否连成五子
-     *
-     * @param x     坐标 x
-     * @param y     坐标 y
-     * @param color 棋子颜色
-     * @return 连成五子返回 true，反之返回 false
-     */
-    private boolean isOverB(int x, int y, Chess.Color color) {
-        int amount = 0;
-        for (int i = x; i >= 0; i--) {
-            if (mChessArray[i][y].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        for (int i = x; i < mChessArray.length; i++) {
-            if (mChessArray[i][y].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        // 循环执行完成后，当前落子位置算了两次，故条件应是大于 5
-        return amount > 5;
-    }
-
-    /**
-     * 判断坐标左上至右下方向是否连成五子
-     *
-     * @param x     坐标 x
-     * @param y     坐标 y
-     * @param color 棋子颜色
-     * @return 连成五子返回 true，反之返回 false
-     */
-    private boolean isOverC(int x, int y, Chess.Color color) {
-        int amount = 0;
-        for (int i = x, j = y; i >= 0 && j >= 0; i--, j--) {
-            if (mChessArray[i][j].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        for (int i = x, j = y; i < mChessArray.length && j < mChessArray[i].length; i++, j++) {
-            if (mChessArray[i][j].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        // 循环执行完成后，当前落子位置算了两次，故条件应是大于 5
-        return amount > 5;
-    }
-
-    /**
-     * 判断坐标左下至右上方向是否连成五子
-     *
-     * @param x     坐标 x
-     * @param y     坐标 y
-     * @param color 棋子颜色
-     * @return 连成五子返回 true，反之返回 false
-     */
-    private boolean isOverD(int x, int y, Chess.Color color) {
-        int amount = 0;
-        for (int i = x, j = y; i < mChessArray.length && j >= 0; i++, j--) {
-            if (mChessArray[i][j].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        for (int i = x, j = y; i >= 0 && j < mChessArray[i].length; i--, j++) {
-            if (mChessArray[i][j].getColor() == color) {
-                amount++;
-            } else {
-                break;
-            }
-        }
-        // 循环执行完成后，当前落子位置算了两次，故条件应是大于 5
-        return amount > 5;
     }
 
     /**
@@ -430,4 +326,11 @@ public class ChessView extends View {
     public int getAiLevel(int who){
         return mainActivity.getAiLevel(who);
     }
+
+    @SuppressLint("HandlerLeak")
+    public Handler handler = new Handler(){
+        public void handleMessage(Message message){
+            showDialog();
+        }
+    };
 }

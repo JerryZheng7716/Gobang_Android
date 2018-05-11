@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +26,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
 import java.io.InputStream;
 import java.lang.reflect.Method;
 
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     ImageView imageViewWhiteChess, imageViewBlackChess;
     Window window;
     PlayAudio playBtnSound,playBackgroundMusic,playChessSound;
-    private ChessView chessView;
+    public ChessView chessView;
     AnimationDrawable animationDrawableWhite ;
     AnimationDrawable animationDrawableBlack ;
     @Override
@@ -419,4 +423,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         }
         else return -2;
     }
+
+    @SuppressLint("HandlerLeak")
+    public Handler handler = new Handler(){
+        public void handleMessage(Message message){
+            Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
+        }
+    };
 }
