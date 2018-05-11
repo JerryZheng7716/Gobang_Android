@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     boolean isMusicOpen = false;
     boolean isSoundOpen = true;
     public int levelBlackAi=-1,levelWhiteAi=-1;
+    private ModelDialog modelDialog;
     ImageView imageViewWhiteChess, imageViewBlackChess;
     Window window;
     PlayAudio playBtnSound,playBackgroundMusic,playChessSound;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_release));
                         chessView.resetChessBoard();
+                        chessView.isAiRuning=false;
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
                         btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_press));
@@ -323,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_model:
-                ModelDialog modelDialog = new ModelDialog(this);
+                modelDialog = new ModelDialog(this);
                 modelDialog.getModelDialog();
                 break;
             case R.id.menu_games_notes:
@@ -427,7 +429,43 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     @SuppressLint("HandlerLeak")
     public Handler handler = new Handler(){
         public void handleMessage(Message message){
-            Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
+            switch (message.arg1){
+                case 1:
+                    Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    showDialog();
+            }
+
         }
     };
+
+    /**
+     * 游戏结束，显示对话框
+     */
+    public void showDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("游戏结束");
+        if (chessView.isBlackPlay) {
+            builder.setMessage("恭喜！黑方获胜！！！");
+        } else {
+            builder.setMessage("恭喜！白方获胜！！！");
+        }
+        builder.setCancelable(false);
+        builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chessView.resetChessBoard();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("返回查看", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chessView.isLocked = true;
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 }

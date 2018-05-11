@@ -107,7 +107,7 @@ public class AI {
             xChess=xChess0;
             yChess=yChess0;
         }
-        if (gameCanvas.chessCount==0){
+        if (gameCanvas.mEveryPlay.size()==0){
             xChess=7;
             yChess=7;
         }

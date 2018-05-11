@@ -140,7 +140,7 @@ public class AlphaBetaCutBranch implements Runnable {
         p = juShiPingGu(player); p2 = juShiPingGu(player ^ 1);
         if (h == deep || is成五Chess)   //若到达深度 或是出现胜负
         {
-            if (is成五Chess) {        //若是胜负返回-inf 或+inf
+            if (is成五Chess&&h!=0) {        //若是胜负返回-inf 或+inf
                 is成五Chess = false;
                 if (this.player == player) {
                     return -999900000/ h + p - p2 ;
@@ -356,6 +356,7 @@ public class AlphaBetaCutBranch implements Runnable {
 
 
     public void getMap() {
+
         for (xPosition = 0; xPosition < 15; xPosition++) {
             for (yPosition = 0; yPosition < 15; yPosition++) {
                 switch (gameCanvas.mChessArray[xPosition][yPosition].getColor()) {

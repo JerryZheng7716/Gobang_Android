@@ -27,14 +27,15 @@ public class ChessView extends View {
 
     private static final String TAG = "ChessView";
     public boolean isBlackPlay = true;
-    private boolean isLocked = false;
-    public boolean isAiRuning=false;
+    public boolean isLocked = false;
+    public static boolean isAiRuning=false;
     private Paint mBoardPaint;
     private Paint mChessPaint;
     private Paint mBgPaint;
+    private Paint mLastChessPointPaint;
+    private Paint mNumberPaint;
     public Chess[][] mChessArray;
     public List<Point> mEveryPlay;
-    public int chessCount=0;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
     PublicFunction publicFunction = new PublicFunction();
     public MainActivity mainActivity;
@@ -50,12 +51,13 @@ public class ChessView extends View {
     public ChessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mainActivity = (MainActivity) context;
-        handler=mainActivity.handler;
         initEveryPlay();
         initChess();
         initBoardPaint();
         initChessPaint();
+        initLastChessPointPaint();
         initBgPaint();
+        initNumberPaint();
     }
 
     private void initEveryPlay() {
@@ -78,6 +80,12 @@ public class ChessView extends View {
         mChessPaint.setAntiAlias(true);
     }
 
+    private void initLastChessPointPaint(){
+        mLastChessPointPaint = new Paint();
+        mLastChessPointPaint.setColor(Color.RED);
+        mLastChessPointPaint.setStrokeWidth(2);
+    }
+
     private void initBoardPaint() {
         mBoardPaint = new Paint();
         mBoardPaint.setColor(android.graphics.Color.BLACK);
@@ -88,6 +96,13 @@ public class ChessView extends View {
         mBgPaint = new Paint();
         mBgPaint.setColor(android.graphics.Color.GRAY);
         mBgPaint.setAntiAlias(true);
+    }
+
+    private void initNumberPaint(){
+        mNumberPaint = new Paint();
+        mNumberPaint.setTextSize(35);
+        mNumberPaint.setColor(Color.BLACK);
+        mNumberPaint.setStrokeWidth(2);
     }
 
     @Override
@@ -116,27 +131,37 @@ public class ChessView extends View {
 //            // 画横线
 //            canvas.drawLine(avg, avg * i, width - avg, avg * i, mBoardPaint);
 //        }
-        for (int i = 1; i < 16; i++) {
-            for (int j = 1; j < 16; j++) {
-                Rect mSrcRect, mDestRect;
-                mSrcRect = new Rect(0,0,500,500);
-                mDestRect = new Rect(avg * i-35, avg * j-35,avg * i+35, avg * j+35);
-                switch (mChessArray[i - 1][j - 1].getColor()) {
-                    case BLACK:
-                        chessCount++;
-                        canvas.drawBitmap(publicFunction.readBitMap(R.drawable.black_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
-                        break;
-                    case WHITE:
-                        chessCount++;
-                        canvas.drawBitmap(publicFunction.readBitMap(R.drawable.white_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
-                        break;
-                    case NONE:
-                        continue;
-                }
-//                canvas.drawCircle(avg * i, avg * j, avg / 2 - 0.5f, mChessPaint);
+        int hand=0;
+        Point point;
+        while (hand<mEveryPlay.size()){
+            point = mEveryPlay.get(hand);
+            Rect mSrcRect, mDestRect;
+            mSrcRect = new Rect(0,0,500,500);
+            mDestRect = new Rect(avg * (point.x+1)-35, avg * (point.y+1)-35,avg * (point.x+1)+35, avg * (point.y+1)+35);
+            if (hand%2==0){
+                canvas.drawBitmap(publicFunction.readBitMap(R.drawable.black_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
+                mNumberPaint.setColor(Color.WHITE);
+            }else {
+                canvas.drawBitmap(publicFunction.readBitMap(R.drawable.white_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
+                mNumberPaint.setColor(Color.BLACK);
+            }
+            if (hand<9){
+                canvas.drawText(String.valueOf(hand),avg * (point.x+1)-10, avg * (point.y+1)+12,mNumberPaint);
+            }else if (hand<99){
+                canvas.drawText(String.valueOf(hand),avg * (point.x+1)-20, avg * (point.y+1)+12,mNumberPaint);
+            }else {
+                canvas.drawText(String.valueOf(hand),avg * (point.x+1)-30, avg * (point.y+1)+12,mNumberPaint);
+            }
+
+            hand++;
+            if (hand==mEveryPlay.size()) {
+                point = mEveryPlay.get(mEveryPlay.size() - 1);
+                canvas.drawCircle(avg * (point.x+1), avg * (point.y+1), 8, mLastChessPointPaint);
             }
         }
-        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
+
+
+        canvas.drawCircle(avg * (testY1+1), avg * (testX1+1), 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
@@ -172,7 +197,7 @@ public class ChessView extends View {
                     //使用Ai算法内的的算法判断是否有人获胜了
                     AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,this);
                     if (alphaBetaCutBranch.isWin()) {
-                        showDialog();
+                        mainActivity.showDialog();
                     }
                     // 更改游戏玩家
                     isBlackPlay = !isBlackPlay;
@@ -203,37 +228,6 @@ public class ChessView extends View {
         return super.onTouchEvent(event);
     }
 
-    /**
-     * 游戏结束，显示对话框
-     */
-    public void showDialog() {
-        Message message = handler.obtainMessage(300);
-        message.arg1 = 1;
-        handler.sendMessage(message);
-        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
-        builder.setTitle("游戏结束");
-        if (isBlackPlay) {
-            builder.setMessage("恭喜！黑方获胜！！！");
-        } else {
-            builder.setMessage("恭喜！白方获胜！！！");
-        }
-        builder.setCancelable(false);
-        builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                resetChessBoard();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("返回查看", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                isLocked = true;
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
 
     /**
      * 重新设定用户所点位置的棋子状态
@@ -302,7 +296,6 @@ public class ChessView extends View {
         mChessArray[point.x][point.y].setColor(Chess.Color.NONE);
         mEveryPlay.remove(mEveryPlay.size() - 1);
         isLocked = false;
-        chessCount--;
         isBlackPlay = !isBlackPlay;
         invalidate();
     }
@@ -316,7 +309,6 @@ public class ChessView extends View {
                 chess.setColor(Chess.Color.NONE);
             }
         }
-        chessCount=0;
         mEveryPlay.clear();
         isBlackPlay = true;
         isLocked = false;
@@ -327,10 +319,4 @@ public class ChessView extends View {
         return mainActivity.getAiLevel(who);
     }
 
-    @SuppressLint("HandlerLeak")
-    public Handler handler = new Handler(){
-        public void handleMessage(Message message){
-            showDialog();
-        }
-    };
 }

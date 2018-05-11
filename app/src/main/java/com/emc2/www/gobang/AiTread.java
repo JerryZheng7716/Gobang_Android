@@ -12,28 +12,25 @@ public class AiTread implements Runnable {
         this.chessView = chessView;
         this.player=player;
         this.handler=chessView.mainActivity.handler;
-
-
     }
 
 
     public void run() {
+        chessView.isAiRuning=true;
         AI ai = new AI();
         ai.Ai(chessView,player);
 //        chessView.chessCount = 0;
-        if (chessView.chessCount == 0) {
+        if (chessView.mEveryPlay.size() == 0) {
             Point point = new Point(7,7);
             chessView.setChessState(point);
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
-            chessView.chessCount++;
             chessView.isBlackPlay = !chessView.isBlackPlay;
         }else if (ai.xChess != -1 && ai.yChess != -1) {
             Point point = new Point(ai.xChess,ai.yChess);
             chessView.setChessState(point);
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
-            chessView.chessCount++;
 //使用Ai算法内的的算法判断是否有人获胜了
             AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,chessView);
             if (alphaBetaCutBranch.isWin()) {
@@ -51,4 +48,8 @@ public class AiTread implements Runnable {
         }
         chessView.isAiRuning=false;
     }
+
+    /**
+     * stop thread running
+     */
 }
