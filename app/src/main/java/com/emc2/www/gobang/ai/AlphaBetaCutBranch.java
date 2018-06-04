@@ -4,22 +4,22 @@ import com.emc2.www.gobang.view.ChessView;
 import com.emc2.www.gobang.activity.MainActivity;
 
 public class AlphaBetaCutBranch implements Runnable {
-    ChessView gameCanvas;
-    int xPosition; // 临时变量 x的位置
-    int yPosition; // 临时变量 y的位置
-    int h;
-    int deep;
-    int player;
-    int alpha;
-    int beta;
-    int block;
-    int qiPan = 23;
-    int[][] chessMap = new int[qiPan][qiPan];//0 1 2 3||19 20 21 22为墙
-    int[][] chessMap1 = new int[15][15];
-    int xChess, yChess;
-    int lastScore;
-    public int jd=0;
-    SituationAssessment sa;
+    private ChessView gameCanvas;
+    private int xPosition; // 临时变量 x的位置
+    private int yPosition; // 临时变量 y的位置
+    private int h;
+    private int deep;
+    private int player;
+    private int alpha;
+    private int beta;
+    private int block;
+    private int qiPan = 23;
+    private int[][] chessMap = new int[qiPan][qiPan];//0 1 2 3||19 20 21 22为墙
+    private int[][] chessMap1 = new int[15][15];
+    private int xChess, yChess;
+    private int lastScore;
+    int jd=0;
+    private SituationAssessment sa;
 
     public AlphaBetaCutBranch(int h, int deep,int player, int alpha, int beta, int block, ChessView gameCanvas) {//block代表四个区块，分别是1，2，3，4
         this.alpha = alpha;
