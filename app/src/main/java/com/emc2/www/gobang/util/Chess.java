@@ -1,4 +1,4 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.util;
 
 /**
  * Created by jerryzheng on 2018/5/8.

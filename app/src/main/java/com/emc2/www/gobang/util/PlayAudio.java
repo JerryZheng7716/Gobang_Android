@@ -1,4 +1,4 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

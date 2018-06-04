@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.emc2.www.gobang.MainActivity"
+    tools:context="com.emc2.www.gobang.activity.MainActivity"
     android:fitsSystemWindows="true">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
                 android:layout_marginTop="-20dp"/>
 
-            <com.emc2.www.gobang.ChessView
+            <com.emc2.www.gobang.view.ChessView
                 android:id="@+id/chessView"
                 android:layout_marginStart="-2dp"
                 android:layout_width="900dp"
