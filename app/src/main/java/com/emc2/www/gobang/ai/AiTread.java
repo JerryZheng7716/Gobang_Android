@@ -1,8 +1,11 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.ai;
 
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
+
+import com.emc2.www.gobang.view.ChessView;
+import com.emc2.www.gobang.util.PlayAudio;
 
 public class AiTread implements Runnable {
     private ChessView chessView;

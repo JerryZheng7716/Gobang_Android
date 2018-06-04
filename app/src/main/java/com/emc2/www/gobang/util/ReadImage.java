@@ -1,4 +1,4 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import java.io.InputStream;
  * Created by jerryzheng on 2018/5/8.
  */
 
-public class PublicFunction {
+public class ReadImage {
     /**
      * 以最省内存的方式读取本地资源的图片
      *

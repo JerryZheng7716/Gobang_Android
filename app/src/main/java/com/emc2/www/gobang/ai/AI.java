@@ -1,11 +1,9 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.ai;
 
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+
+import com.emc2.www.gobang.view.ChessView;
 
 import java.util.Random;
 

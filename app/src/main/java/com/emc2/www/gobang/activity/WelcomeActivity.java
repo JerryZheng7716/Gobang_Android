@@ -1,4 +1,4 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.emc2.www.gobang.R;
 
 import java.util.Date;
 

@@ -1,20 +1,23 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import com.emc2.www.gobang.util.Chess;
+import com.emc2.www.gobang.util.PlayAudio;
+import com.emc2.www.gobang.util.ReadImage;
+import com.emc2.www.gobang.R;
+import com.emc2.www.gobang.activity.MainActivity;
+import com.emc2.www.gobang.ai.AiTread;
+import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class ChessView extends View {
     public Chess[][] mChessArray;
     public List<Point> mEveryPlay;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
-    PublicFunction publicFunction = new PublicFunction();
+    ReadImage readImage = new ReadImage();
     public MainActivity mainActivity;
     int avg=0;
     public ChessView(Context context) {
@@ -139,10 +142,10 @@ public class ChessView extends View {
             mSrcRect = new Rect(0,0,500,500);
             mDestRect = new Rect(avg * (point.x+1)-35, avg * (point.y+1)-35,avg * (point.x+1)+35, avg * (point.y+1)+35);
             if (hand%2==0){
-                canvas.drawBitmap(publicFunction.readBitMap(R.drawable.black_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
+                canvas.drawBitmap(readImage.readBitMap(R.drawable.black_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
             }else {
-                canvas.drawBitmap(publicFunction.readBitMap(R.drawable.white_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
+                canvas.drawBitmap(readImage.readBitMap(R.drawable.white_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
                 mNumberPaint.setColor(Color.BLACK);
             }
             if (hand<9){

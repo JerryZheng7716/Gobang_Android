@@ -1,4 +1,4 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -27,6 +27,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.emc2.www.gobang.view.ChessView;
+import com.emc2.www.gobang.view.ModelDialog;
+import com.emc2.www.gobang.util.PlayAudio;
+import com.emc2.www.gobang.R;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;

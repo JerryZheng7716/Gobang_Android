@@ -1,8 +1,7 @@
-package com.emc2.www.gobang;
+package com.emc2.www.gobang.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Message;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,11 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.emc2.www.gobang.R;
+import com.emc2.www.gobang.activity.MainActivity;
+import com.emc2.www.gobang.ai.AiTread;
+import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 
 /**
  * Created by 74011 on 2018/5/1.
