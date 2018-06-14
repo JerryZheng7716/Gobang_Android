@@ -10,7 +10,7 @@ import java.util.Random;
 public class AI {
     private Handler handler;
 
-    ChessView gameCanvas;
+    ChessView chessView;
     int xPosition; // 临时变量 x的位置
     int yPosition; // 临时变量 y的位置
     int qiPan = 23;
@@ -20,21 +20,21 @@ public class AI {
     public static int score0 = -999999999,score1 = -999999999, score2 = -999999999, score3 = -999999999, score4 = -999999999;
     int score = -999999999;
     int maxSocre = -100000;
-    public void Ai(ChessView gameCanvas,int player) {
-        this.gameCanvas = gameCanvas;
-        handler=gameCanvas.mainActivity.handler;
+    public void Ai(ChessView chessView,int player) {
+        this.chessView = chessView;
+        handler=chessView.mainActivity.handler;
         int deep=0;
         long startTime=System.currentTimeMillis();   //获取开始时间
-        int level = gameCanvas.getAiLevel(player);
+        int level = chessView.getAiLevel(player);
         if (level==0||level==1){
             deep=2;
         }else {
             deep=4;
         }
-        AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 1,gameCanvas);
-        AlphaBetaCutBranch alphaBetaCutBranch2 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 2,gameCanvas);
-        AlphaBetaCutBranch alphaBetaCutBranch3 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 3,gameCanvas);
-        AlphaBetaCutBranch alphaBetaCutBranch4 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 4,gameCanvas);
+        AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 1,chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch2 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 2,chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch3 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 3,chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch4 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 4,chessView);
         Thread thread1 = new Thread(alphaBetaCutBranch1);//启动一个搜索线程
         thread1.start();
         Thread thread2 = new Thread(alphaBetaCutBranch2);//启动一个搜索线程
@@ -105,7 +105,7 @@ public class AI {
             xChess=xChess0;
             yChess=yChess0;
         }
-        if (gameCanvas.mEveryPlay.size()==0){
+        if (chessView.mEveryPlay.size()==0){
             xChess=7;
             yChess=7;
         }

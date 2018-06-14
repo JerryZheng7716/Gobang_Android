@@ -29,7 +29,7 @@ import java.util.List;
 public class ChessView extends View {
 
     private static final String TAG = "ChessView";
-    public boolean isBlackPlay = true;
+    public static boolean isBlackPlay = true;
     public boolean isLocked = false;
     public static boolean isAiRuning=false;
     private Paint mBoardPaint;
@@ -204,23 +204,23 @@ public class ChessView extends View {
                     }
                     // 更改游戏玩家
                     isBlackPlay = !isBlackPlay;
-                    if (getAiLevel(MainActivity.BLACK_CHESS)!=-1&&isBlackPlay){
+                    if (getAiLevel(Chess.BLACK_CHESS)!=-1&&isBlackPlay){
                         isAiRuning=true;
-                        AiTread aiTread = new AiTread(this,MainActivity.BLACK_CHESS);//启动黑棋AI
+                        AiTread aiTread = new AiTread(this,Chess.BLACK_CHESS);//启动黑棋AI
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                     }
 
-                    if (getAiLevel(MainActivity.WHITE_CHESS)!=-1&&!isBlackPlay){
+                    if (getAiLevel(Chess.WHITE_CHESS)!=-1&&!isBlackPlay){
                         isAiRuning=true;
-                        AiTread aiTread = new AiTread(this,MainActivity.WHITE_CHESS);//启动白棋AI
+                        AiTread aiTread = new AiTread(this,Chess.WHITE_CHESS);//启动白棋AI
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                     }
                     if (isBlackPlay)
-                        mainActivity.doJumpAnimation(MainActivity.BLACK_CHESS);
+                        mainActivity.doJumpAnimation(Chess.BLACK_CHESS);
                     else
-                        mainActivity.doJumpAnimation(MainActivity.WHITE_CHESS);
+                        mainActivity.doJumpAnimation(Chess.WHITE_CHESS);
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
