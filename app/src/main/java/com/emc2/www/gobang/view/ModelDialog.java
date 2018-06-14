@@ -16,6 +16,7 @@ import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.activity.MainActivity;
 import com.emc2.www.gobang.ai.AiTread;
 import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
+import com.emc2.www.gobang.util.Chess;
 
 /**
  * Created by 74011 on 2018/5/1.
@@ -30,9 +31,20 @@ public class ModelDialog {
     private AlertDialog dlg;
     private ImageView imageViewBlackPlayer, imageViewWhitePlayer;
     public Thread thread;
+    private static boolean aiFightFlag = true;
+
     public ModelDialog(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         view = LayoutInflater.from(mainActivity).inflate(R.layout.model_dialog, null);
+        findView();
+        textViewBlackLevel.setVisibility(View.GONE);
+        spinnerBlack.setVisibility(View.GONE);
+        textViewWhiteLevel.setVisibility(View.GONE);
+        spinnerWhite.setVisibility(View.GONE);
+        clickListener();
+    }
+
+    private void findView(){
         radioAiBlack = view.findViewById(R.id.radio_ai_black);
         radioHumanBlack = view.findViewById(R.id.radio_human_black);
         radioAiWhite = view.findViewById(R.id.radio_ai_white);
@@ -43,11 +55,6 @@ public class ModelDialog {
         spinnerWhite = view.findViewById(R.id.white_level);
         imageViewBlackPlayer = mainActivity.findViewById(R.id.image_player_black);
         imageViewWhitePlayer = mainActivity.findViewById(R.id.image_player_white);
-        textViewBlackLevel.setVisibility(View.GONE);
-        spinnerBlack.setVisibility(View.GONE);
-        textViewWhiteLevel.setVisibility(View.GONE);
-        spinnerWhite.setVisibility(View.GONE);
-        clickListener();
     }
 
     private void clickListener() {
@@ -96,6 +103,10 @@ public class ModelDialog {
         });
     }
 
+    /**
+     * 显示dialog
+     * @return dialog
+     */
     public AlertDialog getModelDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
         // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
@@ -142,21 +153,32 @@ public class ModelDialog {
                 if (!mainActivity.isWhiteAi) {
                     imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_people));
                 }
-                mainActivity.levelBlackAi=spinnerBlack.getSelectedItemPosition();
-                mainActivity.levelWhiteAi=spinnerWhite.getSelectedItemPosition();
-                Toast.makeText(mainActivity, "当前黑色AI级别:"+mainActivity.getAiLevel(MainActivity.BLACK_CHESS)
-                        +"，"+"当前白色AI级别:"+mainActivity.getAiLevel(MainActivity.WHITE_CHESS), Toast.LENGTH_SHORT).show();
-                if (mainActivity.getAiLevel(MainActivity.BLACK_CHESS)!=-1&&mainActivity.getAiLevel(MainActivity.WHITE_CHESS)!=-1){
-                    mainActivity.chessView.isAiRuning=true;
-                    AiFightThread aiFightThread = new AiFightThread(MainActivity.BLACK_CHESS);//启动黑棋AI
+                mainActivity.levelBlackAi = spinnerBlack.getSelectedItemPosition();
+                mainActivity.levelWhiteAi = spinnerWhite.getSelectedItemPosition();
+                Toast.makeText(mainActivity, "当前黑色AI级别:" + mainActivity.getAiLevel(Chess.BLACK_CHESS)
+                        + "，" + "当前白色AI级别:" + mainActivity.getAiLevel(Chess.WHITE_CHESS), Toast.LENGTH_SHORT).show();
+                if (mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1) {
+                    aiFightFlag = true;
+                    ChessView.isAiRuning = true;
+                    int who;
+                    who = ChessView.isBlackPlay? Chess.BLACK_CHESS : Chess.WHITE_CHESS;
+                    AiFightThread aiFightThread = new AiFightThread(who);//启动黑棋AI
                     thread = new Thread(aiFightThread);//启动AI
                     thread.start();
+                } else
+                    aiFightFlag = false;
+                if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+                    //如果现在是黑棋回合，且黑棋是机器人持有，且没有ai线程在运行
+                    runAi(Chess.BLACK_CHESS);
+                }
+                if (!ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+                    //如果现在是白棋回合，且白棋是机器人持有，且没有ai线程在运行
+                    runAi(Chess.WHITE_CHESS);
                 }
             }
         });
         //取消
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
                 // TODO Auto-generated method stub
@@ -169,6 +191,9 @@ public class ModelDialog {
         return dlg;
     }
 
+    /**
+     * 设置Dialog的高度
+     */
     private void setDialogWidth() {
         WindowManager m = mainActivity.getWindowManager();
         Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
@@ -177,50 +202,61 @@ public class ModelDialog {
         dlg.getWindow().setAttributes(p);     //设置生效
     }
 
-    public void aiFight(int who){
-        if (who==MainActivity.BLACK_CHESS){
-            AiTread aiTread = new AiTread(mainActivity.chessView,MainActivity.BLACK_CHESS);//启动黑棋AI
-            Thread thread = new Thread(aiTread);//启动AI
-            thread.start();
+    /**
+     * 设置A对战
+     * @param who 轮到哪个颜色落子
+     */
+    public void aiFight(int who) {
+        if (!aiFightFlag)
+            return;
+        if (who == Chess.BLACK_CHESS) {
+            Thread thread = runAi(Chess.BLACK_CHESS);//启动黑棋AI
             try {
                 thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //使用Ai算法内的的算法判断是否有人获胜了
-            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,mainActivity.chessView);
+            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, mainActivity.chessView);
             if (alphaBetaCutBranch.isWin()) {
                 return;
             }
-            aiFight(MainActivity.WHITE_CHESS);
+            aiFight(Chess.WHITE_CHESS);
         }
-        if (who==MainActivity.WHITE_CHESS){
-            AiTread aiTread = new AiTread(mainActivity.chessView,MainActivity.WHITE_CHESS);//启动黑棋AI
-            Thread thread = new Thread(aiTread);//启动AI
-            thread.start();
+        if (who == Chess.WHITE_CHESS) {
+            Thread thread = runAi(Chess.WHITE_CHESS);//启动白棋AI
             try {
                 thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //使用Ai算法内的的算法判断是否有人获胜了
-            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,mainActivity.chessView);
+            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, mainActivity.chessView);
             if (alphaBetaCutBranch.isWin()) {
                 return;
             }
-            aiFight(MainActivity.BLACK_CHESS);
+            aiFight(Chess.BLACK_CHESS);
         }
     }
 
-    class AiFightThread implements Runnable
-    {
+    /**
+     * 创建新的线程，进行ai对战
+     */
+    class AiFightThread implements Runnable {
         private int who;
-        public AiFightThread(int who){
-            this.who=who;
+        public AiFightThread(int who) {
+            this.who = who;
         }
-        public void run()
-        {
-            aiFight(who);
+        public void run() {
+            if (aiFightFlag)
+                aiFight(who);
         }
+    }
+
+    private Thread runAi(int who) {
+        AiTread aiTread = new AiTread(mainActivity.chessView, who);//启动黑棋AI
+        Thread thread = new Thread(aiTread);//启动AI
+        thread.start();
+        return thread;
     }
 }

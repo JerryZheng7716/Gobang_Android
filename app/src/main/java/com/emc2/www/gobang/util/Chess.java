@@ -5,7 +5,7 @@ package com.emc2.www.gobang.util;
  */
 
 public class Chess {
-
+    public static final int BLACK_CHESS=0,WHITE_CHESS=1;
     public enum Color {BLACK, WHITE, NONE}
     private Color color;
 

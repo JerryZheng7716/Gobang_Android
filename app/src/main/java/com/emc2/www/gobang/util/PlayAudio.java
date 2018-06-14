@@ -4,12 +4,6 @@ import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.util.Log;
-/**
- * 为了可以使得在后台播放音乐，我们需要Service
- * Service就是用来在后台完成一些不需要和用户交互的动作
- * @author Administrator
- *
- */
 @SuppressLint("Registered")
 public class PlayAudio{
     private static PlayAudio playAudio = null;

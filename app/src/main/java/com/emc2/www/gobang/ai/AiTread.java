@@ -4,22 +4,28 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
 
+import com.emc2.www.gobang.util.Chess;
+import com.emc2.www.gobang.util.HandlerMessage;
 import com.emc2.www.gobang.view.ChessView;
 import com.emc2.www.gobang.util.PlayAudio;
 
 public class AiTread implements Runnable {
     private ChessView chessView;
-    int player;
-    Handler handler;
+    private int player;
+    private Handler handler;
     public AiTread(ChessView chessView,int player) {
         this.chessView = chessView;
         this.player=player;
         this.handler=chessView.mainActivity.handler;
+        AlphaBetaCutBranch.setRunningFlag(true);
     }
 
 
     public void run() {
-        chessView.isAiRuning=true;
+        if (!AlphaBetaCutBranch.isRunningFlag()){
+            return;
+        }
+        ChessView.isAiRuning =true;
         AI ai = new AI();
         ai.Ai(chessView,player);
 //        chessView.chessCount = 0;
@@ -28,9 +34,9 @@ public class AiTread implements Runnable {
             chessView.setChessState(point);
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
-            chessView.isBlackPlay = !chessView.isBlackPlay;
-        }else if (ai.xChess != -1 && ai.yChess != -1) {
-            Point point = new Point(ai.xChess,ai.yChess);
+            ChessView.isBlackPlay = !ChessView.isBlackPlay;
+        }else if (AI.xChess != -1 && AI.yChess != -1) {
+            Point point = new Point(AI.xChess, AI.yChess);
             chessView.setChessState(point);
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
@@ -41,18 +47,21 @@ public class AiTread implements Runnable {
                 message.arg1 = 2;
                 handler.sendMessage(message);
             }
-            ai.xChess = -1;
-            ai.yChess = -1;
-            chessView.isBlackPlay = !chessView.isBlackPlay;
+            AI.xChess = -1;
+            AI.yChess = -1;
+            ChessView.isBlackPlay = !ChessView.isBlackPlay;
             chessView.invalidate();//重新绘制
             PlayAudio playChessSound;
             playChessSound=PlayAudio.getInstance(chessView.getContext());
             playChessSound.play("chess_sound.wav",false);
         }
-        chessView.isAiRuning=false;
+        ChessView.isAiRuning =false;
+        Message message = handler.obtainMessage(300);
+        if (player== Chess.BLACK_CHESS)
+            message.arg1 = HandlerMessage.JUMP_WHITE;
+        else
+            message.arg1 = HandlerMessage.JUMP_BLACK;
+        handler.sendMessage(message);
     }
 
-    /**
-     * stop thread running
-     */
 }

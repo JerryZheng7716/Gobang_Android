@@ -1,5 +1,6 @@
 package com.emc2.www.gobang.ai;
 
+import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.view.ChessView;
 import com.emc2.www.gobang.activity.MainActivity;
 
@@ -21,6 +22,16 @@ public class AlphaBetaCutBranch implements Runnable {
     int jd=0;
     private SituationAssessment sa;
 
+    public static boolean isRunningFlag() {
+        return runningFlag;
+    }
+
+    public static void setRunningFlag(boolean runningFlag) {
+        AlphaBetaCutBranch.runningFlag = runningFlag;
+    }
+
+    private static boolean runningFlag=true;
+
     public AlphaBetaCutBranch(int h, int deep,int player, int alpha, int beta, int block, ChessView gameCanvas) {//block代表四个区块，分别是1，2，3，4
         this.alpha = alpha;
         this.h = h;
@@ -29,7 +40,7 @@ public class AlphaBetaCutBranch implements Runnable {
         this.block = block;
         this.player = player;
         this.gameCanvas = gameCanvas;
-        sa=new SituationAssessment(chessMap);
+        sa= new SituationAssessment(chessMap);
     }
 
     @Override
@@ -118,6 +129,8 @@ public class AlphaBetaCutBranch implements Runnable {
     }
     int county=0;
     private int alphaBetaCutBranch(int h,int deep, int player, int alpha, int beta, int[][] calculationPoint, int[] range) { //h搜索深度，player=1表示自己,player=0表示对手,range代表范围，用数组表示，分别是i（行）的开始结束，j（列）的开始结束
+        if (!runningFlag)
+            return -99999;
         int p,p2;
         p = sa.evaluation(player); p2 = sa.evaluation(player ^ 1);
         if (h == deep || sa.getIs成五Chess())   //若到达深度 或是出现胜负
@@ -343,10 +356,10 @@ public class AlphaBetaCutBranch implements Runnable {
             for (yPosition = 0; yPosition < 15; yPosition++) {
                 switch (gameCanvas.mChessArray[xPosition][yPosition].getColor()) {
                     case BLACK:
-                        chessMap1[xPosition][yPosition] = MainActivity.BLACK_CHESS;
+                        chessMap1[xPosition][yPosition] = Chess.BLACK_CHESS;
                         break;
                     case WHITE:
-                        chessMap1[xPosition][yPosition] = MainActivity.WHITE_CHESS;
+                        chessMap1[xPosition][yPosition] = Chess.WHITE_CHESS;
                         break;
                     case NONE:
                         chessMap1[xPosition][yPosition] = 2;

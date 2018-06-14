@@ -28,6 +28,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.emc2.www.gobang.ai.AiTread;
+import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
+import com.emc2.www.gobang.util.Chess;
+import com.emc2.www.gobang.util.HandlerMessage;
 import com.emc2.www.gobang.view.ChessView;
 import com.emc2.www.gobang.view.ModelDialog;
 import com.emc2.www.gobang.util.PlayAudio;
@@ -37,7 +41,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 
 public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuItemClickListener {
-    public static final int BLACK_CHESS=0,WHITE_CHESS=1;
+
     ImageView btnRestart, btnBackMove, btnAiHelp, btnSound, btnMusic, btnGiveUp;
     public boolean isBlackAi = false, isWhiteAi = false;
     boolean isMusicOpen = false;
@@ -50,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public ChessView chessView;
     AnimationDrawable animationDrawableWhite ;
     AnimationDrawable animationDrawableBlack ;
+    LinearLayout playerLayout;
+    LinearLayout btnLayout;
+    ImageView background;
+    ImageView chessBoard;
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,12 +67,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         window = this.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setOnMenuItemClickListener(this);
+        findView();
         init();
-        clickBtn();
-        doJumpAnimation(0);
     }
 
     @Override
@@ -71,10 +77,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         return true;
     }
 
-
-    @SuppressLint({"WrongViewCast", "CutPasteId"})
-    private void init() {
-        setBarColor();
+    private void findView(){
+        toolbar = findViewById(R.id.toolbar);
         btnRestart = findViewById(R.id.btn_restart);
         btnBackMove = findViewById(R.id.btn_move_back);
         btnAiHelp = findViewById(R.id.btn_ai_help);
@@ -89,14 +93,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_release));
         imageViewWhiteChess = findViewById(R.id.chess_white);
         imageViewBlackChess = findViewById(R.id.chess_black);
-        ImageView backround = findViewById(R.id.background);
-        backround.setImageBitmap(readBitMap(R.drawable.background));
-        ImageView chessBoard = findViewById(R.id.chess_board);
-        chessBoard.setImageBitmap(readBitMap(R.drawable.chess_borad));
-        LinearLayout playerLayout = findViewById(R.id.player_layout);
-        LinearLayout btnLayout = findViewById(R.id.btn_layout);
-        chessView = (ChessView) findViewById(R.id.chessView);
+        background = findViewById(R.id.background);
+        background.setImageBitmap(readBitMap(R.drawable.background));
+        chessBoard = findViewById(R.id.chess_board);
+        playerLayout = findViewById(R.id.player_layout);
+        btnLayout = findViewById(R.id.btn_layout);
+        chessView = findViewById(R.id.chessView);
+    }
 
+
+    @SuppressLint({"WrongViewCast", "CutPasteId"})
+    private void init() {
+        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(this);
+        setBarColor();
+        chessBoard.setImageBitmap(readBitMap(R.drawable.chess_borad));
         imageViewWhiteChess.setImageResource(R.drawable.wihte_chess_jump);
         animationDrawableWhite = (AnimationDrawable) imageViewWhiteChess.getDrawable();
         imageViewBlackChess.setImageResource(R.drawable.black_chess_jump);
@@ -109,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         playBackgroundMusic = PlayAudio.getInstance(this);
         playChessSound=PlayAudio.getInstance(this);
         playBtnSound=PlayAudio.getInstance(this);
+        clickBtn();
+        doJumpAnimation(Chess.BLACK_CHESS);
     }
 
     /**
@@ -118,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      */
     @SuppressLint("ClickableViewAccessibility")
     public void clickBtn() {
+        /*
+          重新开始
+         */
         btnRestart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -125,13 +141,15 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_release));
                         chessView.resetChessBoard();
-                        chessView.isAiRuning=false;
+                        ChessView.isAiRuning =false;
+                        AlphaBetaCutBranch.setRunningFlag(false);
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
                         btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_press));
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
+                        AlphaBetaCutBranch.setRunningFlag(false);
                         break;
                     default:
                         break;
@@ -139,13 +157,33 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 return true;
             }
         });
-
+        /*
+          Ai辅助按钮
+         */
         btnAiHelp.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_release));
+                        AlphaBetaCutBranch.setRunningFlag(false);
+                        AiTread aiTread;
+                        if (ChessView.isAiRuning)
+                            return false;
+                        int oldLevelBlack;
+                        int oldLevelWhite;
+                        oldLevelBlack=levelBlackAi;
+                        oldLevelWhite=levelWhiteAi;
+                        levelBlackAi=2;//将ai等级设为高级
+                        levelWhiteAi=2;
+                        if (ChessView.isBlackPlay)
+                            aiTread = new AiTread(chessView, Chess.BLACK_CHESS);//启动黑棋AI
+                        else
+                            aiTread = new AiTread(chessView, Chess.WHITE_CHESS);
+                        Thread thread = new Thread(aiTread);//启动AI
+                        thread.start();
+                        levelBlackAi=oldLevelBlack;//还原ai等级
+                        levelWhiteAi=oldLevelWhite;
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
                         btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_press));
@@ -159,7 +197,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 return true;
             }
         });
-
+        /*
+          悔棋按钮
+         */
         btnBackMove.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -173,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
+                        AlphaBetaCutBranch.setRunningFlag(false);
                         break;
                     default:
                         break;
@@ -180,7 +221,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 return true;
             }
         });
-
+        /*
+          认输按钮
+         */
         btnGiveUp.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -193,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
+                        AlphaBetaCutBranch.setRunningFlag(false);
                         break;
                     default:
                         break;
@@ -200,7 +244,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 return true;
             }
         });
-
+        /*
+          音乐按钮
+         */
         btnMusic.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -231,7 +277,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 return true;
             }
         });
-
+        /*
+          音效按钮
+         */
         btnSound.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -280,7 +328,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         return BitmapFactory.decodeStream(is, null, opt);
     }
 
-    //获取是否存在NavigationBar
+    /**
+     * 获取是否存在虚拟按钮
+     * @param context
+     * @return
+     */
     public static boolean checkDeviceHasNavigationBar(Context context) {
         boolean hasNavigationBar = false;
         Resources rs = context.getResources();
@@ -304,6 +356,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     }
 
+    /**
+     * 设置状态栏的颜色
+     */
     public void setBarColor() {
         ViewGroup decorViewGroup = (ViewGroup) window.getDecorView();
         View statusBarView = new View(window.getContext());
@@ -314,7 +369,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         statusBarView.setBackgroundColor(Color.parseColor("#4a61f5"));
         decorViewGroup.addView(statusBarView);
     }
-
+    /**
+     * 设置状态栏的高度
+     */
     private static int getStatusBarHeight(Context context) {//获取状态栏高度
         int statusBarHeight = 0;
         Resources res = context.getResources();
@@ -348,12 +405,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      *
      * @param who 0=黑棋跳，1=白棋跳
      */
-
     public void doJumpAnimation(int who) {
 
-
-
-        if (who == BLACK_CHESS) {
+        if (who == Chess.BLACK_CHESS) {
             imageViewBlackChess.setImageResource(R.drawable.black_chess_jump);
             animationDrawableBlack = (AnimationDrawable) imageViewBlackChess.getDrawable();
             animationDrawableBlack.start();
@@ -362,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             imageViewWhiteChess.setPadding(0,80,0,0);
             imageViewWhiteChess.setImageBitmap(readBitMap(R.drawable.white_chess));
         }
-        if (who == WHITE_CHESS) {
+        if (who == Chess.WHITE_CHESS) {
             imageViewWhiteChess.setImageResource(R.drawable.wihte_chess_jump);
             animationDrawableWhite = (AnimationDrawable) imageViewWhiteChess.getDrawable();
             animationDrawableWhite.start();
@@ -413,16 +467,16 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
      * 获取ai的棋力，和此颜色是否ai持有
      *
      * @param who 0黑色，1白色
-     * @return int -1表示此颜色费Ai持有，0初级。1中级，2高级, -2没有这个颜色
+     * @return int -1表示此颜色非Ai持有，0初级。1中级，2高级, -2没有这个颜色
      */
     public int getAiLevel(int who){
-        if(who==BLACK_CHESS){
+        if(who==Chess.BLACK_CHESS){
             if (isBlackAi){
                 return levelBlackAi;
             }
             else return -1;
         }
-        else if(who==WHITE_CHESS){
+        else if(who==Chess.WHITE_CHESS){
             if (isWhiteAi){
                 return levelWhiteAi;
             }
@@ -435,11 +489,19 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public Handler handler = new Handler(){
         public void handleMessage(Message message){
             switch (message.arg1){
-                case 1:
+                case HandlerMessage.DEFEAT:
                     Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
                     break;
-                case 2:
+                case HandlerMessage.SHOW_DIALOG:
                     showDialog();
+                    break;
+                case HandlerMessage.JUMP_BLACK:
+                    doJumpAnimation(Chess.BLACK_CHESS);
+                    break;
+                case HandlerMessage.JUMP_WHITE:
+                    doJumpAnimation(Chess.WHITE_CHESS);
+                    break;
+
             }
 
         }
