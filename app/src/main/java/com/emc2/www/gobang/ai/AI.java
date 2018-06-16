@@ -15,26 +15,27 @@ public class AI {
     int yPosition; // 临时变量 y的位置
     int qiPan = 23;
     int[][] chessMap = new int[qiPan][qiPan];//0 1 2 3||19 20 21 22为墙
-    public static int xChess=-1,yChess=-1;
-    public static int xChess0 = -1, yChess0 = -1,xChess1 = -1, yChess1 = -1, xChess2 = -1, yChess2 = -1, xChess3 = -1, yChess3 = -1, xChess4 = -1, yChess4 = -1;
-    public static int score0 = -999999999,score1 = -999999999, score2 = -999999999, score3 = -999999999, score4 = -999999999;
+    public static int xChess = -1, yChess = -1;
+    public static int xChess0 = -1, yChess0 = -1, xChess1 = -1, yChess1 = -1, xChess2 = -1, yChess2 = -1, xChess3 = -1, yChess3 = -1, xChess4 = -1, yChess4 = -1;
+    public static int score0 = -999999999, score1 = -999999999, score2 = -999999999, score3 = -999999999, score4 = -999999999;
     int score = -999999999;
     int maxSocre = -100000;
-    public void Ai(ChessView chessView,int player) {
+
+    public void Ai(ChessView chessView, int player) {
         this.chessView = chessView;
-        handler=chessView.mainActivity.handler;
-        int deep=0;
-        long startTime=System.currentTimeMillis();   //获取开始时间
+        handler = chessView.mainActivity.handler;
+        int deep = 0;
+        long startTime = System.currentTimeMillis();   //获取开始时间
         int level = chessView.getAiLevel(player);
-        if (level==0||level==1){
-            deep=2;
-        }else {
-            deep=4;
+        if (level == 0 || level == 1) {
+            deep = 2;
+        } else {
+            deep = 4;
         }
-        AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 1,chessView);
-        AlphaBetaCutBranch alphaBetaCutBranch2 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 2,chessView);
-        AlphaBetaCutBranch alphaBetaCutBranch3 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 3,chessView);
-        AlphaBetaCutBranch alphaBetaCutBranch4 = new AlphaBetaCutBranch(0, deep,player, -999990000, 999990000, 4,chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 1, chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch2 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 2, chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch3 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 3, chessView);
+        AlphaBetaCutBranch alphaBetaCutBranch4 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 4, chessView);
         Thread thread1 = new Thread(alphaBetaCutBranch1);//启动一个搜索线程
         thread1.start();
         Thread thread2 = new Thread(alphaBetaCutBranch2);//启动一个搜索线程
@@ -51,66 +52,70 @@ public class AI {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        long endTime=System.currentTimeMillis(); //获取结束时间
-        System.out.println("程序运行时间： "+(endTime-startTime)+"ms");
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        System.out.println("程序运行时间： " + (endTime - startTime) + "ms");
         //+alphaBetaCutBranch2.jd+alphaBetaCutBranch3.jd+alphaBetaCutBranch4.jd
-        System.out.println("总节点数："+(alphaBetaCutBranch1.jd));
-        xChess=xChess1;
-        yChess=yChess1;
-        score=score1;
-        if (score2>=score){
-            if (score2==score){
+        System.out.println("总节点数：" + (alphaBetaCutBranch1.jd));
+        xChess = xChess1;
+        yChess = yChess1;
+        score = score1;
+        if (score2 >= score) {
+            if (score2 == score) {
                 Random random = new Random();
-                if (random.nextBoolean()){
-                    score=score2;
-                    xChess=xChess2;
-                    yChess=yChess2;
+                if (random.nextBoolean()) {
+                    score = score2;
+                    xChess = xChess2;
+                    yChess = yChess2;
                 }
-            }else{
-                score=score2;
-                xChess=xChess2;
-                yChess=yChess2;
+            } else {
+                score = score2;
+                xChess = xChess2;
+                yChess = yChess2;
             }
         }
-        if (score3>=score){
-            if (score3==score){
+        if (score3 >= score) {
+            if (score3 == score) {
                 Random random = new Random();
-                if (random.nextBoolean()){
-                    score=score3;
-                    xChess=xChess3;
-                    yChess=yChess3;
+                if (random.nextBoolean()) {
+                    score = score3;
+                    xChess = xChess3;
+                    yChess = yChess3;
                 }
-            }else{
-                score=score3;
-                xChess=xChess3;
-                yChess=yChess3;
+            } else {
+                score = score3;
+                xChess = xChess3;
+                yChess = yChess3;
             }
         }
-        if (score4>=score){
-            if (score4==score){
+        if (score4 >= score) {
+            if (score4 == score) {
                 Random random = new Random();
-                if (random.nextBoolean()){
-                    score=score4;
-                    xChess=xChess4;
-                    yChess=yChess4;
+                if (random.nextBoolean()) {
+                    score = score4;
+                    xChess = xChess4;
+                    yChess = yChess4;
                 }
-            }else{
-                score=score4;
-                xChess=xChess4;
-                yChess=yChess4;
+            } else {
+                score = score4;
+                xChess = xChess4;
+                yChess = yChess4;
             }
         }
-        if (score0>=score){
-            score=score0;
-            xChess=xChess0;
-            yChess=yChess0;
+        if (score0 >= score) {
+            score = score0;
+            xChess = xChess0;
+            yChess = yChess0;
         }
-        if (chessView.mEveryPlay.size()==0){
-            xChess=7;
-            yChess=7;
+        if (chessView.mEveryPlay.size() == 0) {
+            xChess = 7;
+            yChess = 7;
         }
-        score0 = -999999999;score1 = -999999999; score2 = -999999999; score3 = -999999999; score4 = -999999999;
-        if (score<-300000000){
+        score0 = -999999999;
+        score1 = -999999999;
+        score2 = -999999999;
+        score3 = -999999999;
+        score4 = -999999999;
+        if (score < -300000000) {
             //更新ui（工作线程不能更新UI）
             //((Button)view).setText("下载完成");
             //pBar.setVisibility(View.GONE);//GONE不显示也不占空间
@@ -121,7 +126,7 @@ public class AI {
             handler.sendMessage(message);
 //            Toast.makeText(gameCanvas.getContext(), "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
         }
-        System.out.println("当前Ai得分： "+score);
+        System.out.println("当前Ai得分： " + score);
     }
 
 //    private void getMap(){//调试地图

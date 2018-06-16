@@ -23,17 +23,18 @@ public class SituationAssessment {
 
 
     boolean is成五Chess = false;
-    boolean nextChessIsWin=false;
-    int[][] chessMap;
-    AI ai = new AI();
-    int color = 0;
-    int othetColor = 1;
-    int count活三 = 0, count活二 = 0, count冲四 = 0, count眠三 = 0, count跳活三 = 0, count跳四 = 0;
-    int score = 0;
+    private boolean nextChessIsWin = false;
+    private int[][] chessMap;
+    private int color = 0;
+    private int otherColor = 1;
+    private int count活三 = 0, count活二 = 0, count冲四 = 0, count眠三 = 0, count跳活三 = 0, count跳四 = 0;
+    private int score = 0;
     int maxSocre = -100000;
-    public SituationAssessment(int[][] chessMap){
-        this.chessMap=chessMap;
+
+    public SituationAssessment(int[][] chessMap) {
+        this.chessMap = chessMap;
     }
+
     private void searchMap() {
         count活三 = 0;
         count活二 = 0;
@@ -52,7 +53,7 @@ public class SituationAssessment {
         }
         int count = count跳活三 + count活三 + count跳四 + count冲四;
         if (count >= 2) {
-            score = score + SCORE双活三*(1+count跳四 + count冲四);
+            score = score + SCORE双活三 * (1 + count跳四 + count冲四);
 //            System.out.println(" count跳活三 + count活三 + count跳四 + count冲四: "+count跳活三 +":"+ count活三 +":"+ count跳四 +":"+ count冲四+": "+score);
         }
     }
@@ -60,7 +61,7 @@ public class SituationAssessment {
     private void searchLandscape(int i, int j) {
         int count = 1;
         for (int k = j - 1; k > j - 5; k--) {
-            if (chessMap[i][k] == 2 || chessMap[i][k] == othetColor || chessMap[i][k] == 4) {
+            if (chessMap[i][k] == 2 || chessMap[i][k] == otherColor || chessMap[i][k] == 4) {
                 break;//找到非本子，跳出循环
             }
             if (chessMap[i][k] == color) {
@@ -72,10 +73,10 @@ public class SituationAssessment {
             if (chessMap[i][k - 1] == 2 && chessMap[i][k + 4] == 2) {
                 is活四();
             }
-            if (chessMap[i][k - 1] == 2 && (chessMap[i][k + 4] == othetColor || chessMap[i][k + 4] == 4)) {
+            if (chessMap[i][k - 1] == 2 && (chessMap[i][k + 4] == otherColor || chessMap[i][k + 4] == 4)) {
                 is冲四();
             }
-            if ((chessMap[i][k - 1] == othetColor || chessMap[i][k - 1] == 4) && chessMap[i][k + 4] == 2) {
+            if ((chessMap[i][k - 1] == otherColor || chessMap[i][k - 1] == 4) && chessMap[i][k + 4] == 2) {
                 is冲四();
             }
         }
@@ -84,20 +85,20 @@ public class SituationAssessment {
             if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2) {
                 is活三();
             }
-            if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && (chessMap[i][k - 1] == othetColor || chessMap[i][k - 1] == 4)) {
+            if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && (chessMap[i][k - 1] == otherColor || chessMap[i][k - 1] == 4)) {
                 is眠三();
             }
             if (chessMap[i][k - 1] != 4) {
-                if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && chessMap[i][k - 1] == 2 && (chessMap[i][k - 2] == othetColor || chessMap[i][k - 2] == 4)) {
+                if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && chessMap[i][k - 1] == 2 && (chessMap[i][k - 2] == otherColor || chessMap[i][k - 2] == 4)) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
             }
-            if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2 && (chessMap[i][k + 3] == othetColor || chessMap[i][k + 3] == 4)) {
+            if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2 && (chessMap[i][k + 3] == otherColor || chessMap[i][k + 3] == 4)) {
                 is眠三();
             }
             if (chessMap[i][k + 3] != 4) {
-                if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2 && chessMap[i][k + 3] == 2 && (chessMap[i][k + 4] == othetColor || chessMap[i][k + 4] == 4)) {
+                if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2 && chessMap[i][k + 3] == 2 && (chessMap[i][k + 4] == otherColor || chessMap[i][k + 4] == 4)) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
@@ -112,10 +113,10 @@ public class SituationAssessment {
 
         if (count == 2) {
             int k = j - 1;
-            if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && chessMap[i][k + 2] == 2 && (chessMap[i][k - 1] == othetColor || chessMap[i][k - 1] == 4)) {
+            if (chessMap[i][k + 4] == 2 && chessMap[i][k + 3] == 2 && chessMap[i][k + 2] == 2 && (chessMap[i][k - 1] == otherColor || chessMap[i][k - 1] == 4)) {
                 is眠二();
             }
-            if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2 && chessMap[i][k - 3] == 2 && (chessMap[i][k + 2] == othetColor || chessMap[i][k + 2] == 4)) {
+            if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == 2 && chessMap[i][k - 3] == 2 && (chessMap[i][k + 2] == otherColor || chessMap[i][k + 2] == 4)) {
                 is眠二();
             }
             if (chessMap[i][k - 1] == 2 && chessMap[i][k - 2] == color && chessMap[i][k - 3] == 2 && chessMap[i][k + 2] == 2) {
@@ -136,7 +137,7 @@ public class SituationAssessment {
     private void searchPortrait(int i, int j) {
         int count = 1;
         for (int k = i - 1; k > i - 5; k--) {
-            if (chessMap[k][j] == 2 || chessMap[k][j] == othetColor || chessMap[k][j] == 4) {
+            if (chessMap[k][j] == 2 || chessMap[k][j] == otherColor || chessMap[k][j] == 4) {
                 break;
             }
             if (chessMap[k][j] == color) {
@@ -148,10 +149,10 @@ public class SituationAssessment {
             if (chessMap[k - 1][j] == 2 && chessMap[k + 4][j] == 2) {
                 is活四();
             }
-            if (chessMap[k - 1][j] == 2 && (chessMap[k + 4][j] == othetColor || chessMap[k + 4][j] == 4)) {
+            if (chessMap[k - 1][j] == 2 && (chessMap[k + 4][j] == otherColor || chessMap[k + 4][j] == 4)) {
                 is冲四();
             }
-            if ((chessMap[k - 1][j] == othetColor || chessMap[k - 1][j] == 4) && chessMap[k + 4][j] == 2) {
+            if ((chessMap[k - 1][j] == otherColor || chessMap[k - 1][j] == 4) && chessMap[k + 4][j] == 2) {
                 is冲四();
             }
         }
@@ -160,20 +161,20 @@ public class SituationAssessment {
             if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2) {
                 is活三();
             }
-            if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && (chessMap[k + 3][j] == othetColor || chessMap[k + 3][j] == 4)) {
+            if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && (chessMap[k + 3][j] == otherColor || chessMap[k + 3][j] == 4)) {
                 is眠三();
             }
             if (chessMap[k + 4][j] != 4) {
-                if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && chessMap[k + 3][j] == 2 && (chessMap[k + 4][j] == othetColor || chessMap[k + 4][j] == 4)) {
+                if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && chessMap[k + 3][j] == 2 && (chessMap[k + 4][j] == otherColor || chessMap[k + 4][j] == 4)) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
             }
-            if ((chessMap[k - 1][j] == othetColor || chessMap[k - 1][j] == 4) && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2) {
+            if ((chessMap[k - 1][j] == otherColor || chessMap[k - 1][j] == 4) && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2) {
                 is眠三();
             }
             if (chessMap[k - 1][j] != 4) {
-                if ((chessMap[k - 2][j] == othetColor || chessMap[k - 2][j] == 4) && chessMap[k - 1][j] == 2 && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2) {
+                if ((chessMap[k - 2][j] == otherColor || chessMap[k - 2][j] == 4) && chessMap[k - 1][j] == 2 && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
@@ -191,10 +192,10 @@ public class SituationAssessment {
             if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && chessMap[k - 3][j] == 2 && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2 && chessMap[k + 2][j] == 2) {
                 is活二();
             }
-            if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && chessMap[k - 3][j] == 2 && (chessMap[k + 2][j] == othetColor || chessMap[k + 2][j] == 4)) {
+            if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == 2 && chessMap[k - 3][j] == 2 && (chessMap[k + 2][j] == otherColor || chessMap[k + 2][j] == 4)) {
                 is眠二();
             }
-            if ((chessMap[k - 1][j] == othetColor || chessMap[k - 1][j] == 4) && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2 && chessMap[k + 2][j] == 2) {
+            if ((chessMap[k - 1][j] == otherColor || chessMap[k - 1][j] == 4) && chessMap[k + 4][j] == 2 && chessMap[k + 3][j] == 2 && chessMap[k + 2][j] == 2) {
                 is眠二();
             }
             if (chessMap[k - 1][j] == 2 && chessMap[k - 2][j] == color && chessMap[k - 3][j] == 2 && chessMap[k + 2][j] == 2) {
@@ -215,7 +216,7 @@ public class SituationAssessment {
     private void searchSlant(int i, int j) {
         int count = 1;
         for (int k = 1; k < 5; k++) {
-            if (chessMap[i + k][j + k] == 2 || chessMap[i + k][j + k] == othetColor || chessMap[i + k][j + k] == 4) {
+            if (chessMap[i + k][j + k] == 2 || chessMap[i + k][j + k] == otherColor || chessMap[i + k][j + k] == 4) {
                 break;//找到非本子。停止搜索
             }
             if (chessMap[i + k][j + k] == color) {
@@ -227,10 +228,10 @@ public class SituationAssessment {
             if (chessMap[i - 1][j - 1] == 2 && chessMap[i + 4][j + 4] == 2) {
                 is活四();
             }
-            if (chessMap[i - 1][j - 1] == 2 && (chessMap[i + 4][j + 4] == othetColor || chessMap[i + 4][j + 4] == 4)) {
+            if (chessMap[i - 1][j - 1] == 2 && (chessMap[i + 4][j + 4] == otherColor || chessMap[i + 4][j + 4] == 4)) {
                 is冲四();
             }
-            if ((chessMap[i - 1][j - 1] == othetColor || chessMap[i - 1][j - 1] == 4) && chessMap[i + 4][j + 4] == 2) {
+            if ((chessMap[i - 1][j - 1] == otherColor || chessMap[i - 1][j - 1] == 4) && chessMap[i + 4][j + 4] == 2) {
                 is冲四();
             }
         }
@@ -238,20 +239,20 @@ public class SituationAssessment {
             if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2) {
                 is活三();
             }
-            if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && (chessMap[i + 3][j + 3] == othetColor || chessMap[i + 3][j + 3] == 4)) {
+            if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && (chessMap[i + 3][j + 3] == otherColor || chessMap[i + 3][j + 3] == 4)) {
                 is眠三();//1000221
             }
             if (chessMap[i + 3][j + 3] != 4) {
-                if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && chessMap[i + 3][j + 3] == 2 && (chessMap[i + 4][j + 4] == othetColor || chessMap[i + 4][j + 4] == 4)) {
+                if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && chessMap[i + 3][j + 3] == 2 && (chessMap[i + 4][j + 4] == otherColor || chessMap[i + 4][j + 4] == 4)) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
             }
-            if ((chessMap[i - 1][j - 1] == othetColor || chessMap[i - 1][j - 1] == 4) && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2) {
+            if ((chessMap[i - 1][j - 1] == otherColor || chessMap[i - 1][j - 1] == 4) && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2) {
                 is眠三();
             }
             if (chessMap[i - 1][j - 1] != 4) {
-                if ((chessMap[i - 2][j - 2] == othetColor || chessMap[i - 2][j - 2] == 4) && chessMap[i - 1][j - 1] == 2 && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2) {
+                if ((chessMap[i - 2][j - 2] == otherColor || chessMap[i - 2][j - 2] == 4) && chessMap[i - 1][j - 1] == 2 && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
@@ -269,10 +270,10 @@ public class SituationAssessment {
             if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && chessMap[i - 3][j - 3] == 2 && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2 && chessMap[i + 2][j + 2] == 2) {
                 is活二();
             }
-            if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && chessMap[i - 3][j - 3] == 2 && (chessMap[i + 2][j + 2] == othetColor || chessMap[i + 2][j + 2] == 4)) {
+            if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == 2 && chessMap[i - 3][j - 3] == 2 && (chessMap[i + 2][j + 2] == otherColor || chessMap[i + 2][j + 2] == 4)) {
                 is眠二();
             }
-            if ((chessMap[i - 1][j - 1] == othetColor || chessMap[i - 1][j - 1] == 4) && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2 && chessMap[i + 2][j + 2] == 2) {
+            if ((chessMap[i - 1][j - 1] == otherColor || chessMap[i - 1][j - 1] == 4) && chessMap[i + 4][j + 4] == 2 && chessMap[i + 3][j + 3] == 2 && chessMap[i + 2][j + 2] == 2) {
                 is眠二();
             }
             if (chessMap[i - 1][j - 1] == 2 && chessMap[i - 2][j - 2] == color && chessMap[i - 3][j - 3] == 2 && chessMap[i + 2][j + 2] == 2) {
@@ -293,7 +294,7 @@ public class SituationAssessment {
         //进行左下搜索
         count = 1;
         for (int k = 1; k < 6; k++) {
-            if (chessMap[i + k][j - k] == 2 || chessMap[i + k][j - k] == othetColor || chessMap[i + k][j - k] == 4) {
+            if (chessMap[i + k][j - k] == 2 || chessMap[i + k][j - k] == otherColor || chessMap[i + k][j - k] == 4) {
                 break;//找到非本子。停止搜索
             }
 
@@ -305,10 +306,10 @@ public class SituationAssessment {
             if (chessMap[i - 1][j + 1] == 2 && chessMap[i + 4][j - 4] == 2) {
                 is活四();
             }
-            if (chessMap[i - 1][j + 1] == 2 && (chessMap[i + 4][j - 4] == othetColor || chessMap[i + 4][j - 4] == 4)) {
+            if (chessMap[i - 1][j + 1] == 2 && (chessMap[i + 4][j - 4] == otherColor || chessMap[i + 4][j - 4] == 4)) {
                 is冲四();
             }
-            if ((chessMap[i - 1][j + 1] == othetColor || chessMap[i - 1][j + 1] == 4) && chessMap[i + 4][j - 4] == 2) {
+            if ((chessMap[i - 1][j + 1] == otherColor || chessMap[i - 1][j + 1] == 4) && chessMap[i + 4][j - 4] == 2) {
                 is冲四();
             }
         }
@@ -316,20 +317,20 @@ public class SituationAssessment {
             if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2) {
                 is活三();
             }
-            if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && (chessMap[i + 3][j - 3] == othetColor || chessMap[i + 3][j - 3] == 4)) {
+            if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && (chessMap[i + 3][j - 3] == otherColor || chessMap[i + 3][j - 3] == 4)) {
                 is眠三();
             }
             if (chessMap[i + 3][j - 3] != 4) {
-                if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && chessMap[i + 3][j - 3] == 2 && (chessMap[i + 4][j - 4] == othetColor || chessMap[i + 4][j - 4] == 4)) {
+                if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && chessMap[i + 3][j - 3] == 2 && (chessMap[i + 4][j - 4] == otherColor || chessMap[i + 4][j - 4] == 4)) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
             }
-            if ((chessMap[i - 1][j + 1] == othetColor || chessMap[i - 1][j + 1] == 4) && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2) {
+            if ((chessMap[i - 1][j + 1] == otherColor || chessMap[i - 1][j + 1] == 4) && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2) {
                 is眠三();
             }
             if (chessMap[i - 1][j + 1] != 4) {
-                if ((chessMap[i - 2][j + 2] == othetColor || chessMap[i - 2][j + 2] == 4) && chessMap[i - 1][j + 1] == 2 && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2) {
+                if ((chessMap[i - 2][j + 2] == otherColor || chessMap[i - 2][j + 2] == 4) && chessMap[i - 1][j + 1] == 2 && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2) {
                     is活三();//这种棋形，对方必须应答,但是比普通活三略弱，可能无法形成冲四
                     score = score - 2 * SCORE眠三;
                 }
@@ -346,10 +347,10 @@ public class SituationAssessment {
             if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && chessMap[i - 3][j + 3] == 2 && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2 && chessMap[i + 2][j - 2] == 2) {
                 is活二();
             }
-            if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && chessMap[i - 3][j + 3] == 2 && (chessMap[i + 2][j - 2] == othetColor || chessMap[i + 2][j - 2] == 4)) {
+            if (chessMap[i - 1][j + 1] == 2 && chessMap[i - 2][j + 2] == 2 && chessMap[i - 3][j + 3] == 2 && (chessMap[i + 2][j - 2] == otherColor || chessMap[i + 2][j - 2] == 4)) {
                 is眠二();
             }
-            if ((chessMap[i - 1][j + 1] == othetColor || chessMap[i - 1][j + 1] == 4) && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2 && chessMap[i + 2][j - 2] == 2) {
+            if ((chessMap[i - 1][j + 1] == otherColor || chessMap[i - 1][j + 1] == 4) && chessMap[i + 4][j - 4] == 2 && chessMap[i + 3][j - 3] == 2 && chessMap[i + 2][j - 2] == 2) {
                 is眠二();
             }
 
@@ -406,16 +407,16 @@ public class SituationAssessment {
                 if (chessMap[k][l] == 2) {
                     if (who == 0) {
                         color = 0;
-                        othetColor = 1;
+                        otherColor = 1;
                     } else {
                         color = 1;
-                        othetColor = 0;
+                        otherColor = 0;
                     }
                     chessMap[k][l] = color;
                     for (int i = 4; i < 19; i++) {
                         for (int j = 4; j < 19; j++) {
                             if (chessMap[i][j] == 2) {
-                                chessMap[i][j] = othetColor;
+                                chessMap[i][j] = otherColor;
 
                                 searchMap();
                                 scoreMe = score;
@@ -423,8 +424,8 @@ public class SituationAssessment {
 
                                 int x;
                                 x = color;
-                                color = othetColor;
-                                othetColor = x;
+                                color = otherColor;
+                                otherColor = x;
 
                                 searchMap();
                                 scoreHe = score;
@@ -454,19 +455,19 @@ public class SituationAssessment {
     public int evaluation(int who) {
         score = 0;
         color = who;
-        othetColor = who ^ 1;
+        otherColor = who ^ 1;
         searchMap();
         getPositionScore();
         return score;
     }
 
-    public  boolean isWin(int[][] chessMap){
-        this.chessMap=chessMap;
+    public boolean isWin(int[][] chessMap) {
+        this.chessMap = chessMap;
         color = 1;
-        othetColor = 0;
+        otherColor = 0;
         searchMap();
         color = 0;
-        othetColor = 1;
+        otherColor = 1;
         searchMap();
         return is成五Chess;
     }
@@ -474,7 +475,7 @@ public class SituationAssessment {
     private void is成五() {
         score = score + SCORE成五;
         is成五Chess = true;
-        nextChessIsWin=true;
+        nextChessIsWin = true;
     }
 
     private void is活四() {
@@ -522,16 +523,17 @@ public class SituationAssessment {
             score = score + SCORE活三;
         }
     }
+
     private void is眠二() {
         score = score + SCORE眠二;
     }
 
-    public boolean getNextChessIsWin(){
+    public boolean getNextChessIsWin() {
         return nextChessIsWin;
     }
 
-    public void setNextChessIsWin(Boolean nextChessIsWin){
-        this.nextChessIsWin=nextChessIsWin;
+    public void setNextChessIsWin(Boolean nextChessIsWin) {
+        this.nextChessIsWin = nextChessIsWin;
     }
 
     public boolean getIs成五Chess() {

@@ -1,12 +1,16 @@
 package com.emc2.www.gobang.util;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.util.Log;
+
 @SuppressLint("Registered")
-public class PlayAudio{
-    private static PlayAudio playAudio = null;
+public class PlayAudio {
+    private static PlayAudio playButtonAudio = null;
+    private static PlayAudio playMusic = null;
+    private static PlayAudio playChessAudio = null;
     private static final String TAG = "Bg_Music";
     private float mLeftVolume;
     private float mRightVolume;
@@ -14,33 +18,43 @@ public class PlayAudio{
     private MediaPlayer mBackgroundMediaPlayer;
     private String mCurrentPath;
 
-    private PlayAudio(Context context) {
+    public PlayAudio(Context context) {
         this.mContext = context;
         initData();
     }
 
-    public static PlayAudio getInstance(Context context) {
-        if (playAudio == null) {
-            playAudio = new PlayAudio(context);
-        }
-        return playAudio;
+    public static PlayAudio getButtonAudioInstance(Context context) {
+        if (playButtonAudio == null)
+            playButtonAudio = new PlayAudio(context);
+        return playButtonAudio;
+    }
+
+    public static PlayAudio getMusicInstance(Context context) {
+        if (playMusic == null)
+            playMusic = new PlayAudio(context);
+        return playMusic;
+    }
+
+    public static PlayAudio getChessAudioInstance(Context context) {
+        if (playChessAudio == null)
+            playChessAudio = new PlayAudio(context);
+        return playChessAudio;
     }
 
     // 初始化一些数据
     private void initData() {
         mLeftVolume = 0.5f;
         mRightVolume = 0.5f;
-        mBackgroundMediaPlayer = null;;
+        mBackgroundMediaPlayer = null;
+        ;
         mCurrentPath = null;
     }
 
     /**
      * 根据path路径播放背景音乐
      *
-     * @param path
-     *            :assets中的音频路径
-     * @param isLoop
-     *            :是否循环播放
+     * @param path   :assets中的音频路径
+     * @param isLoop :是否循环播放
      */
     public void play(String path, boolean isLoop) {
         if (mCurrentPath == null) {
@@ -92,8 +106,7 @@ public class PlayAudio{
     /**
      * create mediaplayer for music
      *
-     * @param path
-     *            the path relative to assets
+     * @param path the path relative to assets
      * @return
      */
     private MediaPlayer createMediaplayerFromAssets(String path) {

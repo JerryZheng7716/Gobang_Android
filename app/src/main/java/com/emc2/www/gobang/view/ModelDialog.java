@@ -1,7 +1,6 @@
 package com.emc2.www.gobang.view;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.emc2.www.gobang.activity.MainActivity;
 import com.emc2.www.gobang.ai.AiTread;
 import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 import com.emc2.www.gobang.util.Chess;
+import com.emc2.www.gobang.util.CustomDialog;
 
 /**
  * Created by 74011 on 2018/5/1.
@@ -28,9 +28,9 @@ public class ModelDialog {
     private TextView textViewWhiteLevel, textViewBlackLevel;
     private Spinner spinnerBlack, spinnerWhite;
     private MainActivity mainActivity;
-    private AlertDialog dlg;
     private ImageView imageViewBlackPlayer, imageViewWhitePlayer;
     public Thread thread;
+    private CustomDialog dialog;
     private static boolean aiFightFlag = true;
 
     public ModelDialog(MainActivity mainActivity) {
@@ -44,7 +44,7 @@ public class ModelDialog {
         clickListener();
     }
 
-    private void findView(){
+    private void findView() {
         radioAiBlack = view.findViewById(R.id.radio_ai_black);
         radioHumanBlack = view.findViewById(R.id.radio_human_black);
         radioAiWhite = view.findViewById(R.id.radio_ai_white);
@@ -105,105 +105,169 @@ public class ModelDialog {
 
     /**
      * 显示dialog
+     *
      * @return dialog
      */
-    public AlertDialog getModelDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
-        // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
-// 设置我们自己定义的布局文件作为弹出框的Content
-        builder.setView(view);
-        builder.setIcon(R.drawable.set_model);//设置标题图标
-        if (mainActivity.isBlackAi) {
-            radioAiBlack.setChecked(true);
-        }
-        if (mainActivity.isWhiteAi) {
-            radioAiWhite.setChecked(true);
-        }
-        if (!mainActivity.isBlackAi) {
-            radioHumanBlack.setChecked(true);
-        }
-        if (!mainActivity.isWhiteAi) {
-            radioHumanWhite.setChecked(true);
-        }
-        builder.setTitle(R.string.set_model);//设置标题内容
-        if (radioAiBlack.isChecked()) {
-            textViewBlackLevel.setVisibility(View.VISIBLE);
-            spinnerBlack.setVisibility(View.VISIBLE);
-            mainActivity.isBlackAi = true;
-        }
-        if (radioAiWhite.isChecked()) {
-            textViewWhiteLevel.setVisibility(View.VISIBLE);
-            spinnerWhite.setVisibility(View.VISIBLE);
-            mainActivity.isWhiteAi = true;
-        }
-        //确认按钮
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                if (mainActivity.isBlackAi) {
-                    imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_robot));
-                }
-                if (mainActivity.isWhiteAi) {
-                    imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_robot));
-                }
-                if (!mainActivity.isBlackAi) {
-                    imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_people));
-                }
-                if (!mainActivity.isWhiteAi) {
-                    imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_people));
-                }
-                mainActivity.levelBlackAi = spinnerBlack.getSelectedItemPosition();
-                mainActivity.levelWhiteAi = spinnerWhite.getSelectedItemPosition();
-                Toast.makeText(mainActivity, "当前黑色AI级别:" + mainActivity.getAiLevel(Chess.BLACK_CHESS)
-                        + "，" + "当前白色AI级别:" + mainActivity.getAiLevel(Chess.WHITE_CHESS), Toast.LENGTH_SHORT).show();
-                if (mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1) {
-                    aiFightFlag = true;
-                    ChessView.isAiRuning = true;
-                    int who;
-                    who = ChessView.isBlackPlay? Chess.BLACK_CHESS : Chess.WHITE_CHESS;
-                    AiFightThread aiFightThread = new AiFightThread(who);//启动黑棋AI
-                    thread = new Thread(aiFightThread);//启动AI
-                    thread.start();
-                } else
-                    aiFightFlag = false;
-                if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
-                    //如果现在是黑棋回合，且黑棋是机器人持有，且没有ai线程在运行
-                    runAi(Chess.BLACK_CHESS);
-                }
-                if (!ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
-                    //如果现在是白棋回合，且白棋是机器人持有，且没有ai线程在运行
-                    runAi(Chess.WHITE_CHESS);
-                }
-            }
-        });
-        //取消
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-        dlg = builder.create();
-        dlg.show();
-        setDialogWidth();
-        return dlg;
+    public CustomDialog getModelDialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+//        // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
+//// 设置我们自己定义的布局文件作为弹出框的Content
+//        builder.setView(view);
+//        builder.setIcon(R.drawable.set_model);//设置标题图标
+//        if (mainActivity.isBlackAi) {
+//            radioAiBlack.setChecked(true);
+//        }
+//        if (mainActivity.isWhiteAi) {
+//            radioAiWhite.setChecked(true);
+//        }
+//        if (!mainActivity.isBlackAi) {
+//            radioHumanBlack.setChecked(true);
+//        }
+//        if (!mainActivity.isWhiteAi) {
+//            radioHumanWhite.setChecked(true);
+//        }
+//        builder.setTitle(R.string.set_model);//设置标题内容
+//        if (radioAiBlack.isChecked()) {
+//            textViewBlackLevel.setVisibility(View.VISIBLE);
+//            spinnerBlack.setVisibility(View.VISIBLE);
+//            mainActivity.isBlackAi = true;
+//        }
+//        if (radioAiWhite.isChecked()) {
+//            textViewWhiteLevel.setVisibility(View.VISIBLE);
+//            spinnerWhite.setVisibility(View.VISIBLE);
+//            mainActivity.isWhiteAi = true;
+//        }
+//        //确认按钮
+//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//
+//            @Override
+//            public void onClick(DialogInterface arg0, int arg1) {
+//                if (mainActivity.isBlackAi) {
+//                    imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_robot));
+//                }
+//                if (mainActivity.isWhiteAi) {
+//                    imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_robot));
+//                }
+//                if (!mainActivity.isBlackAi) {
+//                    imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_people));
+//                }
+//                if (!mainActivity.isWhiteAi) {
+//                    imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_people));
+//                }
+//                mainActivity.levelBlackAi = spinnerBlack.getSelectedItemPosition();
+//                mainActivity.levelWhiteAi = spinnerWhite.getSelectedItemPosition();
+//                Toast.makeText(mainActivity, "当前黑色AI级别:" + mainActivity.getAiLevel(Chess.BLACK_CHESS)
+//                        + "，" + "当前白色AI级别:" + mainActivity.getAiLevel(Chess.WHITE_CHESS), Toast.LENGTH_SHORT).show();
+//                if (mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1) {
+//                    aiFightFlag = true;
+//                    ChessView.isAiRuning = true;
+//                    int who;
+//                    who = ChessView.isBlackPlay? Chess.BLACK_CHESS : Chess.WHITE_CHESS;
+//                    AiFightThread aiFightThread = new AiFightThread(who);//启动黑棋AI
+//                    thread = new Thread(aiFightThread);//启动AI
+//                    thread.start();
+//                } else
+//                    aiFightFlag = false;
+//                if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+//                    //如果现在是黑棋回合，且黑棋是机器人持有，且没有ai线程在运行
+//                    runAi(Chess.BLACK_CHESS);
+//                }
+//                if (!ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+//                    //如果现在是白棋回合，且白棋是机器人持有，且没有ai线程在运行
+//                    runAi(Chess.WHITE_CHESS);
+//                }
+//            }
+//        });
+//        //取消
+//        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface arg0, int arg1) {
+//                // TODO Auto-generated method stub
+//
+//            }
+//        });
+//        dlg = builder.create();
+//        dlg.show();
+//        setDialogWidth();
+        add_dialog();
+        return dialog;
     }
 
-    /**
-     * 设置Dialog的高度
-     */
-    private void setDialogWidth() {
-        WindowManager m = mainActivity.getWindowManager();
-        Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
-        android.view.WindowManager.LayoutParams p = dlg.getWindow().getAttributes();  //获取对话框当前的参数值
-        p.width = (int) (d.getWidth() * 0.7);    //宽度设置为屏幕的0.7
-        dlg.getWindow().setAttributes(p);     //设置生效
+    private void add_dialog() {
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.cancel_btn:
+                        dialog.dismiss();
+                        break;
+                    case R.id.ok_btn:
+                        if (mainActivity.isBlackAi) {
+                            imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_robot));
+                        }
+                        if (mainActivity.isWhiteAi) {
+                            imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_robot));
+                        }
+                        if (!mainActivity.isBlackAi) {
+                            imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_people));
+                        }
+                        if (!mainActivity.isWhiteAi) {
+                            imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_people));
+                        }
+                        mainActivity.levelBlackAi = spinnerBlack.getSelectedItemPosition();
+                        mainActivity.levelWhiteAi = spinnerWhite.getSelectedItemPosition();
+                        Toast.makeText(mainActivity, "当前黑色AI级别:" + mainActivity.getAiLevel(Chess.BLACK_CHESS)
+                                + "，" + "当前白色AI级别:" + mainActivity.getAiLevel(Chess.WHITE_CHESS), Toast.LENGTH_SHORT).show();
+                        if (mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1) {
+                            aiFightFlag = true;
+                            ChessView.isAiRuning = true;
+                            int who;
+                            who = ChessView.isBlackPlay ? Chess.BLACK_CHESS : Chess.WHITE_CHESS;
+                            AiFightThread aiFightThread = new AiFightThread(who);//启动黑棋AI
+                            thread = new Thread(aiFightThread);//启动AI
+                            thread.start();
+                        } else
+                            aiFightFlag = false;
+                        if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+                            //如果现在是黑棋回合，且黑棋是机器人持有，且没有ai线程在运行
+                            runAi(Chess.BLACK_CHESS);
+                        }
+                        if (!ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+                            //如果现在是白棋回合，且白棋是机器人持有，且没有ai线程在运行
+                            runAi(Chess.WHITE_CHESS);
+                        }
+                        break;
+                }
+            }
+        };
+
+        CustomDialog.Builder builder = new CustomDialog.Builder(mainActivity);
+        dialog = builder
+                .style(R.style.Dialog)
+                .heightDimenRes(1100)
+                .widthDimenRes(700)
+                .cancelTouchout(false)
+                .view(R.layout.model_dialog)
+                .addViewOnclick(R.id.cancel_btn, listener)
+                .addViewOnclick(R.id.ok_btn, listener)
+                .build();
+        dialog.show();
     }
+
+//    /**
+//     * 设置Dialog的高度
+//     */
+//    private void setDialogWidth() {
+//        WindowManager m = mainActivity.getWindowManager();
+//        Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
+//        android.view.WindowManager.LayoutParams p = dlg.getWindow().getAttributes();  //获取对话框当前的参数值
+//        p.width = (int) (d.getWidth() * 0.7);    //宽度设置为屏幕的0.7
+//        dlg.getWindow().setAttributes(p);     //设置生效
+//    }
 
     /**
      * 设置A对战
+     *
      * @param who 轮到哪个颜色落子
      */
     public void aiFight(int who) {
@@ -244,9 +308,11 @@ public class ModelDialog {
      */
     class AiFightThread implements Runnable {
         private int who;
+
         public AiFightThread(int who) {
             this.who = who;
         }
+
         public void run() {
             if (aiFightFlag)
                 aiFight(who);
