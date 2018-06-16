@@ -31,7 +31,7 @@ public class ChessView extends View {
     private static final String TAG = "ChessView";
     public static boolean isBlackPlay = true;
     public boolean isLocked = false;
-    public static boolean isAiRuning=false;
+    public static boolean isAiRuning = false;
     private Paint mBoardPaint;
     private Paint mChessPaint;
     private Paint mBgPaint;
@@ -42,7 +42,8 @@ public class ChessView extends View {
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
     ReadImage readImage = new ReadImage();
     public MainActivity mainActivity;
-    int avg=0;
+    int avg = 0;
+
     public ChessView(Context context) {
         this(context, null);
     }
@@ -83,7 +84,7 @@ public class ChessView extends View {
         mChessPaint.setAntiAlias(true);
     }
 
-    private void initLastChessPointPaint(){
+    private void initLastChessPointPaint() {
         mLastChessPointPaint = new Paint();
         mLastChessPointPaint.setColor(Color.RED);
         mLastChessPointPaint.setStrokeWidth(2);
@@ -101,7 +102,7 @@ public class ChessView extends View {
         mBgPaint.setAntiAlias(true);
     }
 
-    private void initNumberPaint(){
+    private void initNumberPaint() {
         mNumberPaint = new Paint();
         mNumberPaint.setTextSize(35);
         mNumberPaint.setColor(Color.BLACK);
@@ -117,15 +118,15 @@ public class ChessView extends View {
         int min = widthSize < heightSize ? widthSize : heightSize;
         min = min / 16 * 16;
 
-        setMeasuredDimension(min+15, min+15);
+        setMeasuredDimension(min + 15, min + 15);
     }
 
     @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
-        int height = getMeasuredHeight()+48;
-        int width = getMeasuredWidth()+48;
-        avg = (height)/ 16;
+        int height = getMeasuredHeight() + 48;
+        int width = getMeasuredWidth() + 48;
+        avg = (height) / 16;
 
 //        canvas.drawRect(0, 0, width, height, mBgPaint);
 //        for (int i = 1; i < 16; i++) {
@@ -134,37 +135,37 @@ public class ChessView extends View {
 //            // 画横线
 //            canvas.drawLine(avg, avg * i, width - avg, avg * i, mBoardPaint);
 //        }
-        int hand=0;
+        int hand = 0;
         Point point;
-        while (hand<mEveryPlay.size()){
+        while (hand < mEveryPlay.size()) {
             point = mEveryPlay.get(hand);
             Rect mSrcRect, mDestRect;
-            mSrcRect = new Rect(0,0,500,500);
-            mDestRect = new Rect(avg * (point.x+1)-35, avg * (point.y+1)-35,avg * (point.x+1)+35, avg * (point.y+1)+35);
-            if (hand%2==0){
-                canvas.drawBitmap(readImage.readBitMap(R.drawable.black_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
+            mSrcRect = new Rect(0, 0, 500, 500);
+            mDestRect = new Rect(avg * (point.x + 1) - 35, avg * (point.y + 1) - 35, avg * (point.x + 1) + 35, avg * (point.y + 1) + 35);
+            if (hand % 2 == 0) {
+                canvas.drawBitmap(readImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
-            }else {
-                canvas.drawBitmap(readImage.readBitMap(R.drawable.white_chess,getContext()),  mSrcRect, mDestRect,mChessPaint);
+            } else {
+                canvas.drawBitmap(readImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.BLACK);
             }
-            if (hand<9){
-                canvas.drawText(String.valueOf(hand),avg * (point.x+1)-10, avg * (point.y+1)+12,mNumberPaint);
-            }else if (hand<99){
-                canvas.drawText(String.valueOf(hand),avg * (point.x+1)-20, avg * (point.y+1)+12,mNumberPaint);
-            }else {
-                canvas.drawText(String.valueOf(hand),avg * (point.x+1)-30, avg * (point.y+1)+12,mNumberPaint);
+            if (hand < 9) {
+                canvas.drawText(String.valueOf(hand), avg * (point.x + 1) - 10, avg * (point.y + 1) + 12, mNumberPaint);
+            } else if (hand < 99) {
+                canvas.drawText(String.valueOf(hand), avg * (point.x + 1) - 20, avg * (point.y + 1) + 12, mNumberPaint);
+            } else {
+                canvas.drawText(String.valueOf(hand), avg * (point.x + 1) - 30, avg * (point.y + 1) + 12, mNumberPaint);
             }
 
             hand++;
-            if (hand==mEveryPlay.size()) {
+            if (hand == mEveryPlay.size()) {
                 point = mEveryPlay.get(mEveryPlay.size() - 1);
-                canvas.drawCircle(avg * (point.x+1), avg * (point.y+1), 8, mLastChessPointPaint);
+                canvas.drawCircle(avg * (point.x + 1), avg * (point.y + 1), 8, mLastChessPointPaint);
             }
         }
 
 
-        canvas.drawCircle(avg * (testY1+1), avg * (testX1+1), 5, mChessPaint);
+        canvas.drawCircle(avg * (testY1 + 1), avg * (testX1 + 1), 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
@@ -172,8 +173,8 @@ public class ChessView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isAiRuning){
-            return false ;
+        if (isAiRuning) {
+            return false;
         }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -196,24 +197,24 @@ public class ChessView extends View {
                     //播放下棋的声音
                     PlayAudio playChessSound;
                     playChessSound = PlayAudio.getChessAudioInstance(mainActivity);
-                    playChessSound.play("chess_sound.wav",false);
+                    playChessSound.play("chess_sound.wav", false);
                     //使用Ai算法内的的算法判断是否有人获胜了
-                    AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,this);
+                    AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, this);
                     if (alphaBetaCutBranch.isWin()) {
                         mainActivity.showDialog();
                     }
                     // 更改游戏玩家
                     isBlackPlay = !isBlackPlay;
-                    if (getAiLevel(Chess.BLACK_CHESS)!=-1&&isBlackPlay){
-                        isAiRuning=true;
-                        AiTread aiTread = new AiTread(this,Chess.BLACK_CHESS);//启动黑棋AI
+                    if (getAiLevel(Chess.BLACK_CHESS) != -1 && isBlackPlay) {
+                        isAiRuning = true;
+                        AiTread aiTread = new AiTread(this, Chess.BLACK_CHESS);//启动黑棋AI
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                     }
 
-                    if (getAiLevel(Chess.WHITE_CHESS)!=-1&&!isBlackPlay){
-                        isAiRuning=true;
-                        AiTread aiTread = new AiTread(this,Chess.WHITE_CHESS);//启动白棋AI
+                    if (getAiLevel(Chess.WHITE_CHESS) != -1 && !isBlackPlay) {
+                        isAiRuning = true;
+                        AiTread aiTread = new AiTread(this, Chess.WHITE_CHESS);//启动白棋AI
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                     }
@@ -254,7 +255,7 @@ public class ChessView extends View {
      * @return 所得矩形
      */
     private Rect getLittleRect(float x, float y) {
-        float side = (getMeasuredHeight()+48) / 16;
+        float side = (getMeasuredHeight() + 48) / 16;
         int left = (int) (x - side / 2);
         int top = (int) (y - side / 2);
         int right = (int) (x + side / 2);
@@ -269,7 +270,7 @@ public class ChessView extends View {
      * @return 返回包含的点，若没有包含任何点或者包含点已有棋子返回 null
      */
     private Point getContainPoint(Rect rect) {
-        int avg = (getMeasuredHeight()+48) / 16;
+        int avg = (getMeasuredHeight() + 48) / 16;
         for (int i = 1; i < 16; i++) {
             for (int j = 1; j < 16; j++) {
                 if (rect.contains(avg * i, avg * j)) {
@@ -318,7 +319,7 @@ public class ChessView extends View {
         invalidate();
     }
 
-    public int getAiLevel(int who){
+    public int getAiLevel(int who) {
         return mainActivity.getAiLevel(who);
     }
 

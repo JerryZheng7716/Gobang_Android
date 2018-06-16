@@ -1,11 +1,13 @@
 package com.emc2.www.gobang.util;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.util.Log;
+
 @SuppressLint("Registered")
-public class PlayAudio{
+public class PlayAudio {
     private static PlayAudio playButtonAudio = null;
     private static PlayAudio playMusic = null;
     private static PlayAudio playChessAudio = null;
@@ -43,17 +45,16 @@ public class PlayAudio{
     private void initData() {
         mLeftVolume = 0.5f;
         mRightVolume = 0.5f;
-        mBackgroundMediaPlayer = null;;
+        mBackgroundMediaPlayer = null;
+        ;
         mCurrentPath = null;
     }
 
     /**
      * 根据path路径播放背景音乐
      *
-     * @param path
-     *            :assets中的音频路径
-     * @param isLoop
-     *            :是否循环播放
+     * @param path   :assets中的音频路径
+     * @param isLoop :是否循环播放
      */
     public void play(String path, boolean isLoop) {
         if (mCurrentPath == null) {
@@ -105,8 +106,7 @@ public class PlayAudio{
     /**
      * create mediaplayer for music
      *
-     * @param path
-     *            the path relative to assets
+     * @param path the path relative to assets
      * @return
      */
     private MediaPlayer createMediaplayerFromAssets(String path) {

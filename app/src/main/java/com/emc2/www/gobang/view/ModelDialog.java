@@ -44,7 +44,7 @@ public class ModelDialog {
         clickListener();
     }
 
-    private void findView(){
+    private void findView() {
         radioAiBlack = view.findViewById(R.id.radio_ai_black);
         radioHumanBlack = view.findViewById(R.id.radio_human_black);
         radioAiWhite = view.findViewById(R.id.radio_ai_white);
@@ -105,6 +105,7 @@ public class ModelDialog {
 
     /**
      * 显示dialog
+     *
      * @return dialog
      */
     public CustomDialog getModelDialog() {
@@ -266,6 +267,7 @@ public class ModelDialog {
 
     /**
      * 设置A对战
+     *
      * @param who 轮到哪个颜色落子
      */
     public void aiFight(int who) {
@@ -306,9 +308,11 @@ public class ModelDialog {
      */
     class AiFightThread implements Runnable {
         private int who;
+
         public AiFightThread(int who) {
             this.who = who;
         }
+
         public void run() {
             if (aiFightFlag)
                 aiFight(who);

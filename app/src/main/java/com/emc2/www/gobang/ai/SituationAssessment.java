@@ -30,9 +30,11 @@ public class SituationAssessment {
     private int count活三 = 0, count活二 = 0, count冲四 = 0, count眠三 = 0, count跳活三 = 0, count跳四 = 0;
     private int score = 0;
     int maxSocre = -100000;
-    public SituationAssessment(int[][] chessMap){
-        this.chessMap=chessMap;
+
+    public SituationAssessment(int[][] chessMap) {
+        this.chessMap = chessMap;
     }
+
     private void searchMap() {
         count活三 = 0;
         count活二 = 0;
@@ -51,7 +53,7 @@ public class SituationAssessment {
         }
         int count = count跳活三 + count活三 + count跳四 + count冲四;
         if (count >= 2) {
-            score = score + SCORE双活三*(1+count跳四 + count冲四);
+            score = score + SCORE双活三 * (1 + count跳四 + count冲四);
 //            System.out.println(" count跳活三 + count活三 + count跳四 + count冲四: "+count跳活三 +":"+ count活三 +":"+ count跳四 +":"+ count冲四+": "+score);
         }
     }
@@ -459,8 +461,8 @@ public class SituationAssessment {
         return score;
     }
 
-    public  boolean isWin(int[][] chessMap){
-        this.chessMap=chessMap;
+    public boolean isWin(int[][] chessMap) {
+        this.chessMap = chessMap;
         color = 1;
         otherColor = 0;
         searchMap();
@@ -473,7 +475,7 @@ public class SituationAssessment {
     private void is成五() {
         score = score + SCORE成五;
         is成五Chess = true;
-        nextChessIsWin=true;
+        nextChessIsWin = true;
     }
 
     private void is活四() {
@@ -521,16 +523,17 @@ public class SituationAssessment {
             score = score + SCORE活三;
         }
     }
+
     private void is眠二() {
         score = score + SCORE眠二;
     }
 
-    public boolean getNextChessIsWin(){
+    public boolean getNextChessIsWin() {
         return nextChessIsWin;
     }
 
-    public void setNextChessIsWin(Boolean nextChessIsWin){
-        this.nextChessIsWin=nextChessIsWin;
+    public void setNextChessIsWin(Boolean nextChessIsWin) {
+        this.nextChessIsWin = nextChessIsWin;
     }
 
     public boolean getIs成五Chess() {
