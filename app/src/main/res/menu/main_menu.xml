@@ -11,5 +11,4 @@
         android:orderInCategory="200"
         android:title="@string/game_notes"
         app:showAsAction="never"/>
-
 </menu>

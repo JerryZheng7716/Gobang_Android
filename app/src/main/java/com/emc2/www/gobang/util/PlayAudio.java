@@ -6,7 +6,9 @@ import android.media.MediaPlayer;
 import android.util.Log;
 @SuppressLint("Registered")
 public class PlayAudio{
-    private static PlayAudio playAudio = null;
+    private static PlayAudio playButtonAudio = null;
+    private static PlayAudio playMusic = null;
+    private static PlayAudio playChessAudio = null;
     private static final String TAG = "Bg_Music";
     private float mLeftVolume;
     private float mRightVolume;
@@ -14,16 +16,27 @@ public class PlayAudio{
     private MediaPlayer mBackgroundMediaPlayer;
     private String mCurrentPath;
 
-    private PlayAudio(Context context) {
+    public PlayAudio(Context context) {
         this.mContext = context;
         initData();
     }
 
-    public static PlayAudio getInstance(Context context) {
-        if (playAudio == null) {
-            playAudio = new PlayAudio(context);
-        }
-        return playAudio;
+    public static PlayAudio getButtonAudioInstance(Context context) {
+        if (playButtonAudio == null)
+            playButtonAudio = new PlayAudio(context);
+        return playButtonAudio;
+    }
+
+    public static PlayAudio getMusicInstance(Context context) {
+        if (playMusic == null)
+            playMusic = new PlayAudio(context);
+        return playMusic;
+    }
+
+    public static PlayAudio getChessAudioInstance(Context context) {
+        if (playChessAudio == null)
+            playChessAudio = new PlayAudio(context);
+        return playChessAudio;
     }
 
     // 初始化一些数据

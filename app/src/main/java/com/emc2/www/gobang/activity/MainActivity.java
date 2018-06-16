@@ -9,8 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -79,22 +81,23 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     private void findView(){
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.icon_menu));
         btnRestart = findViewById(R.id.btn_restart);
         btnBackMove = findViewById(R.id.btn_move_back);
         btnAiHelp = findViewById(R.id.btn_ai_help);
         btnSound = findViewById(R.id.btn_sound);
         btnMusic = findViewById(R.id.btn_music);
         btnGiveUp = findViewById(R.id.btn_give_up);
-        btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_release));
-        btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_release));
-        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_release));
-        btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound_release));
-        btnMusic.setImageBitmap(readBitMap(R.drawable.btn_openmusic_release));
-        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_release));
+        btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart));
+        btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove));
+        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp));
+        btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound));
+        btnMusic.setImageBitmap(readBitMap(R.drawable.btn_openmusic));
+        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup));
         imageViewWhiteChess = findViewById(R.id.chess_white);
         imageViewBlackChess = findViewById(R.id.chess_black);
         background = findViewById(R.id.background);
-        background.setImageBitmap(readBitMap(R.drawable.background));
+        background.setImageBitmap(readBitMap(R.drawable.old_paper));
         chessBoard = findViewById(R.id.chess_board);
         playerLayout = findViewById(R.id.player_layout);
         btnLayout = findViewById(R.id.btn_layout);
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         setSupportActionBar(toolbar);
         toolbar.setOnMenuItemClickListener(this);
         setBarColor();
-        chessBoard.setImageBitmap(readBitMap(R.drawable.chess_borad));
+//        chessBoard.setImageBitmap(readBitMap(R.drawable.ic_chessbord));
         imageViewWhiteChess.setImageResource(R.drawable.wihte_chess_jump);
         animationDrawableWhite = (AnimationDrawable) imageViewWhiteChess.getDrawable();
         imageViewBlackChess.setImageResource(R.drawable.black_chess_jump);
@@ -117,9 +120,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             chessBoard.setPadding(0, 20, 0, 0);
             btnLayout.setPadding(0, 60, 0, 0);
         }
-        playBackgroundMusic = PlayAudio.getInstance(this);
-        playChessSound=PlayAudio.getInstance(this);
-        playBtnSound=PlayAudio.getInstance(this);
+        playBackgroundMusic = PlayAudio.getMusicInstance(this);
+        playChessSound = PlayAudio.getChessAudioInstance(this);
+        playBtnSound = PlayAudio.getButtonAudioInstance(this);
         clickBtn();
         doJumpAnimation(Chess.BLACK_CHESS);
     }
@@ -139,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
-                        btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_release));
+//                        btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_release));
                         chessView.resetChessBoard();
                         ChessView.isAiRuning =false;
                         AlphaBetaCutBranch.setRunningFlag(false);
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
-                        btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_press));
+//                        btnRestart.setImageBitmap(readBitMap(R.drawable.btn_restart_press));
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
@@ -165,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
-                        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_release));
+//                        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_release));
                         AlphaBetaCutBranch.setRunningFlag(false);
                         AiTread aiTread;
                         if (ChessView.isAiRuning)
@@ -186,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                         levelWhiteAi=oldLevelWhite;
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
-                        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_press));
+//                        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_press));
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
@@ -205,11 +208,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
-                        btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_release));
+//                        btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_release));
                         chessView.retract();
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
-                        btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_press));
+//                        btnBackMove.setImageBitmap(readBitMap(R.drawable.btn_backmove_press));
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
@@ -229,10 +232,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
-                        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_release));
+//                        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_release));
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
-                        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_press));
+//                        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_press));
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
@@ -253,11 +256,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         if (isMusicOpen){
-                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_openmusic_release));
+                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_openmusic));
                             playBackgroundMusic.stop();
                         }
                         else{
-                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_closemusic_release));
+                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_closemusic));
                             playBackgroundMusic.play("back_music.wav",true);
                         }
                         isMusicOpen = !isMusicOpen;
@@ -266,10 +269,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                         if (isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
-                        if (!isMusicOpen)
-                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_closemusic_press));
-                        else
-                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_openmusic_press));
+//                        if (!isMusicOpen)
+//                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_closemusic_press));
+//                        else
+//                            btnMusic.setImageBitmap(readBitMap(R.drawable.btn_openmusic_press));
                         break;
                     default:
                         break;
@@ -286,20 +289,20 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
                         if (isSoundOpen){
-                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_opensound_release));
+                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_opensound));
                         }
                         else{
-                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound_release));
+                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound));
                         }
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
                         if (!isSoundOpen){
                             playBtnSound.play("button_sound.wav",false);
                         }
-                        if (!isSoundOpen)
-                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound_press));
-                        else
-                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_opensound_press));
+//                        if (!isSoundOpen)
+//                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound_press));
+//                        else
+//                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_opensound_press));
                         isSoundOpen = !isSoundOpen;
                         break;
                     default:

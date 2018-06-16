@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">五子棋博弈平台</string>
+    <string name="app_name">五子棋博弈</string>
     <string name="setting">设置:</string>
     <string name="set_model">人机模式选择</string>
     <string name="game_notes">对战记录</string>

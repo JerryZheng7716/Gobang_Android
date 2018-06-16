@@ -52,7 +52,7 @@ public class AiTread implements Runnable {
             ChessView.isBlackPlay = !ChessView.isBlackPlay;
             chessView.invalidate();//重新绘制
             PlayAudio playChessSound;
-            playChessSound=PlayAudio.getInstance(chessView.getContext());
+            playChessSound = PlayAudio.getChessAudioInstance(chessView.getContext());
             playChessSound.play("chess_sound.wav",false);
         }
         ChessView.isAiRuning =false;

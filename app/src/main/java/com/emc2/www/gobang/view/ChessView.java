@@ -195,7 +195,7 @@ public class ChessView extends View {
                     mEveryPlay.add(point);
                     //播放下棋的声音
                     PlayAudio playChessSound;
-                    playChessSound=PlayAudio.getInstance(mainActivity);
+                    playChessSound = PlayAudio.getChessAudioInstance(mainActivity);
                     playChessSound.play("chess_sound.wav",false);
                     //使用Ai算法内的的算法判断是否有人获胜了
                     AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2,1, -999990000, 999990000, 1,this);
