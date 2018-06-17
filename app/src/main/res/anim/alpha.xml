@@ -7,5 +7,5 @@
         android:fromAlpha="1.0"
         android:toAlpha="0.0"
         android:startOffset="500"
-        android:duration="1000"/>
+        android:duration="1000" />
 </set>

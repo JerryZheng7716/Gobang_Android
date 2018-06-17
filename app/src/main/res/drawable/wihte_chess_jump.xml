@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="false">
-    <item android:drawable="@drawable/wihte_chess_jump00" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump01" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump02" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump03" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump04" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump05" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump06" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump05" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump04" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump03" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump02" android:duration="70" />
-    <item android:drawable="@drawable/wihte_chess_jump01" android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump00"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump01"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump02"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump03"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump04"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump05"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump06"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump05"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump04"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump03"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump02"
+        android:duration="70" />
+    <item
+        android:drawable="@drawable/wihte_chess_jump01"
+        android:duration="70" />
 </animation-list>

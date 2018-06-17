@@ -1,10 +1,6 @@
 package com.emc2.www.gobang.view;
 
-import android.graphics.Color;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -23,7 +19,6 @@ import com.emc2.www.gobang.util.CustomDialog;
  */
 
 public class ModelDialog {
-    private View view;
     private RadioButton radioAiBlack, radioHumanBlack, radioAiWhite, radioHumanWhite;
     private TextView textViewWhiteLevel, textViewBlackLevel;
     private Spinner spinnerBlack, spinnerWhite;
@@ -101,7 +96,7 @@ public class ModelDialog {
      *
      * @return dialog
      */
-    public CustomDialog getModelDialog() {
+    public void getModelDialog() {
 //        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
 //        // 通过LayoutInflater来加载一个xml的布局文件作为一个View对象
 //// 设置我们自己定义的布局文件作为弹出框的Content
@@ -183,7 +178,6 @@ public class ModelDialog {
 //        dlg.show();
 //        setDialogWidth();
         add_dialog();
-        return dialog;
     }
 
     private void add_dialog() {

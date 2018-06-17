@@ -1,5 +1,13 @@
 package com.emc2.www.gobang.view;
 
-public class WinDialog {
+import android.content.Context;
 
+import com.emc2.www.gobang.activity.MainActivity;
+
+public class WinDialog {
+    private Context context;
+
+    public WinDialog(Context context) {
+        this.context = context;
+    }
 }
