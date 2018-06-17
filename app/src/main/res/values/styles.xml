@@ -8,36 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ToolbarOverflow" parent="@android:style/Widget.ActionButton.Overflow">
-        <!-- 更换右侧actionbar图标-->
-        <item name="actionOverflowButtonStyle">@style/OverflowStyle</item>
-    </style>
 
     <style name="OverflowStyle" parent="@android:style/Widget.ActionButton.Overflow">
-        <item name="android:src">@drawable/icon_menu</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginEnd">1000dp</item>
-        <!-- 弹出层垂直方向上的偏移，即在竖直方向上距离Toolbar的距离，值为负则会盖住Toolbar -->
-        <item name="android:dropDownVerticalOffset">5dp</item>
-        <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
-        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <item name="android:src">@mipmap/ic_menu</item>
     </style>
 
     <!-- 控制 toolbar 绑定的 menu的风格-->
     <style name="ToolbarPopupTheme" parent="@style/ThemeOverlay.AppCompat.Dark">
-        <item name="android:colorBackground">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:colorBackground">@color/color_bg_normal</item>
+        <item name="android:textColor">@color/dialog_text</item>
         <!--<item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item> &lt;!&ndash;新增一个item，用于控制menu&ndash;&gt;-->
         <item name="android:textSize">18sp</item>
         <!-- 更换右侧actionbar图标-->
         <item name="actionOverflowButtonStyle">@style/OverflowStyle</item>
     </style>
 
-    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
-        <item name="overlapAnchor">true</item>  <!--把该属性改为false即可使menu位置位于toolbar之下-->
-        <!-- 更换右侧actionbar图标-->
-        <item name="actionOverflowButtonStyle">@style/ToolbarOverflow</item>
-    </style>
 
     <style name="Dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>

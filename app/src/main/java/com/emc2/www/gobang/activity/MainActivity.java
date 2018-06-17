@@ -25,7 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight);
         params.gravity = Gravity.TOP;
         statusBarView.setLayoutParams(params);
-        statusBarView.setBackgroundColor(Color.parseColor("#4a61f5"));
+        statusBarView.setBackgroundColor(getResources().getColor(R.color.button_background));
         decorViewGroup.addView(statusBarView);
     }
 
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
 
     private void findView() {
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.icon_menu));
+//        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.icon_menu));
         btnRestart = findViewById(R.id.btn_restart);
         btnBackMove = findViewById(R.id.btn_move_back);
         btnAiHelp = findViewById(R.id.btn_ai_help);
