@@ -9,8 +9,9 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_height="40dp"
+        android:theme="@style/ToolbarPopupTheme"
         android:layout_width="match_parent"
-
+        app:title=" "
         android:background="@color/color_bg_normal">
         <!--<TextView-->
             <!--android:layout_width="wrap_content"-->
@@ -116,41 +117,53 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/btn_restart"
-                android:layout_width="90dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="7dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="25dp"/>
+                android:layout_marginStart="20dp"
+                android:layout_weight="1" />
             <ImageView
                 android:id="@+id/btn_move_back"
-                android:layout_width="90dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="7dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="7dp"
+                android:layout_weight="1" />
             <ImageView
                 android:id="@+id/btn_ai_help"
-                android:layout_width="90dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="20dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="7dp"
+                android:layout_weight="1" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/btn_layout2"
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:paddingEnd="20dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_height="40dp">
+            android:layout_marginTop="20dp">
             <ImageView
                 android:id="@+id/btn_sound"
-                android:layout_width="90dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="7dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="25dp"/>
+                android:layout_marginStart="20dp"
+                android:layout_weight="1" />
             <ImageView
                 android:id="@+id/btn_music"
-                android:layout_width="90dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="7dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="7dp"
+                android:layout_weight="1" />
             <ImageView
                 android:id="@+id/btn_give_up"
-                android:layout_width="90dp"
+                android:layout_width="0dp"
+                android:layout_marginEnd="20dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="7dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

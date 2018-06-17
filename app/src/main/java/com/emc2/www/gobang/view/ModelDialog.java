@@ -35,16 +35,9 @@ public class ModelDialog {
 
     public ModelDialog(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        view = LayoutInflater.from(mainActivity).inflate(R.layout.model_dialog, null);
-        findView();
-        textViewBlackLevel.setVisibility(View.GONE);
-        spinnerBlack.setVisibility(View.GONE);
-        textViewWhiteLevel.setVisibility(View.GONE);
-        spinnerWhite.setVisibility(View.GONE);
-        clickListener();
     }
 
-    private void findView() {
+    private void findView(CustomDialog view) {
         radioAiBlack = view.findViewById(R.id.radio_ai_black);
         radioHumanBlack = view.findViewById(R.id.radio_human_black);
         radioAiWhite = view.findViewById(R.id.radio_ai_white);
@@ -84,8 +77,8 @@ public class ModelDialog {
             @Override
             public void onClick(View view) {
                 if (!radioAiBlack.isChecked()) {
-                    textViewBlackLevel.setVisibility(View.GONE);
-                    spinnerBlack.setVisibility(View.GONE);
+                    textViewBlackLevel.setVisibility(View.INVISIBLE);
+                    spinnerBlack.setVisibility(View.INVISIBLE);
                     mainActivity.isBlackAi = false;
                 }
             }
@@ -95,8 +88,8 @@ public class ModelDialog {
             @Override
             public void onClick(View view) {
                 if (!radioAiWhite.isChecked()) {
-                    textViewWhiteLevel.setVisibility(View.GONE);
-                    spinnerWhite.setVisibility(View.GONE);
+                    textViewWhiteLevel.setVisibility(View.INVISIBLE);
+                    spinnerWhite.setVisibility(View.INVISIBLE);
                     mainActivity.isWhiteAi = false;
                 }
             }
@@ -209,10 +202,10 @@ public class ModelDialog {
                             imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_robot));
                         }
                         if (!mainActivity.isBlackAi) {
-                            imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.left_people));
+                            imageViewBlackPlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.girl));
                         }
                         if (!mainActivity.isWhiteAi) {
-                            imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.right_people));
+                            imageViewWhitePlayer.setImageBitmap(mainActivity.readBitMap(R.drawable.boy));
                         }
                         mainActivity.levelBlackAi = spinnerBlack.getSelectedItemPosition();
                         mainActivity.levelWhiteAi = spinnerWhite.getSelectedItemPosition();
@@ -236,6 +229,17 @@ public class ModelDialog {
                             //如果现在是白棋回合，且白棋是机器人持有，且没有ai线程在运行
                             runAi(Chess.WHITE_CHESS);
                         }
+                        if (radioAiBlack.isChecked()) {
+                            textViewBlackLevel.setVisibility(View.VISIBLE);
+                            spinnerBlack.setVisibility(View.VISIBLE);
+                            mainActivity.isBlackAi = true;
+                        }
+                        if (radioAiWhite.isChecked()) {
+                            textViewWhiteLevel.setVisibility(View.VISIBLE);
+                            spinnerWhite.setVisibility(View.VISIBLE);
+                            mainActivity.isWhiteAi = true;
+                        }
+                        dialog.dismiss();
                         break;
                 }
             }
@@ -252,6 +256,24 @@ public class ModelDialog {
                 .addViewOnclick(R.id.ok_btn, listener)
                 .build();
         dialog.show();
+        findView(dialog);
+        if (mainActivity.isBlackAi) {
+            radioAiBlack.setChecked(true);
+        }
+        if (mainActivity.isWhiteAi) {
+            radioAiWhite.setChecked(true);
+        }
+        if (!mainActivity.isBlackAi) {
+            radioHumanBlack.setChecked(true);
+            textViewBlackLevel.setVisibility(View.INVISIBLE);
+            spinnerBlack.setVisibility(View.INVISIBLE);
+        }
+        if (!mainActivity.isWhiteAi) {
+            radioHumanWhite.setChecked(true);
+            textViewWhiteLevel.setVisibility(View.INVISIBLE);
+            spinnerWhite.setVisibility(View.INVISIBLE);
+        }
+        clickListener();
     }
 
 //    /**
