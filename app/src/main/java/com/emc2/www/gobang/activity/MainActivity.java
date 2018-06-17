@@ -7,12 +7,9 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,9 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -37,6 +32,7 @@ import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
 import com.emc2.www.gobang.view.ChessView;
+import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
 import com.emc2.www.gobang.util.PlayAudio;
 import com.emc2.www.gobang.R;
@@ -49,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     ImageView btnRestart, btnBackMove, btnAiHelp, btnSound, btnMusic, btnGiveUp;
     public boolean isBlackAi = false, isWhiteAi = false;
     boolean isMusicOpen = false;
-    boolean isSoundOpen = true;
+    public static boolean isSoundOpen = true;
     public int levelBlackAi = -1, levelWhiteAi = -1;
     private ModelDialog modelDialog;
     ImageView imageViewWhiteChess, imageViewBlackChess;
@@ -88,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 case HandlerMessage.DEFEAT:
                     Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
                     break;
-                case HandlerMessage.SHOW_DIALOG:
-                    showDialog();
+                case HandlerMessage.SHOW_WIN_DIALOG:
+                    showWinDialog(ChessView.isBlackPlay);
                     break;
                 case HandlerMessage.JUMP_BLACK:
                     doJumpAnimation(Chess.BLACK_CHESS);
@@ -97,7 +93,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 case HandlerMessage.JUMP_WHITE:
                     doJumpAnimation(Chess.WHITE_CHESS);
                     break;
-
+                case HandlerMessage.SHOW_DRAW_DIALOG:
+                    showDrawDialog();
+                    break;
             }
 
         }
@@ -365,6 +363,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
+                        GiveUpDialog giveUpDialog = new GiveUpDialog(MainActivity.this);
+                        giveUpDialog.getModelDialog();
 //                        btnGiveUp.setImageBitmap(readBitMap(R.drawable.btn_giveup_release));
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
@@ -420,21 +420,21 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
-                        if (isSoundOpen) {
+                        if (!isSoundOpen) {
                             btnSound.setImageBitmap(readBitMap(R.drawable.btn_opensound));
                         } else {
                             btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound));
                         }
                         break;
                     case MotionEvent.ACTION_DOWN://按住事件发生后执行代码的区域
-                        if (!isSoundOpen) {
+                        isSoundOpen = !isSoundOpen;
+                        if (isSoundOpen) {
                             playBtnSound.play("button_sound.wav", false);
                         }
 //                        if (!isSoundOpen)
 //                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_closesound_press));
 //                        else
 //                            btnSound.setImageBitmap(readBitMap(R.drawable.btn_opensound_press));
-                        isSoundOpen = !isSoundOpen;
                         break;
                     default:
                         break;
@@ -510,14 +510,39 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     /**
      * 游戏结束，显示对话框
      */
-    public void showDialog() {
+    public void showWinDialog(boolean isBlackWin) {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("游戏结束");
-        if (chessView.isBlackPlay) {
+        if (isBlackWin) {
             builder.setMessage("恭喜！黑方获胜！！！");
         } else {
             builder.setMessage("恭喜！白方获胜！！！");
         }
+        builder.setCancelable(false);
+        builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chessView.resetChessBoard();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("返回查看", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                chessView.isLocked = true;
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * 游戏结束，显示对话框
+     */
+    public void showDrawDialog() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("和棋");
+        builder.setMessage("哦我的汤姆森·陈独秀先生，你们居然走出了和棋！！");
         builder.setCancelable(false);
         builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
             @Override

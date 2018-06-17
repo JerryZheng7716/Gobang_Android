@@ -189,7 +189,7 @@ public class ChessView extends View {
                 Rect rect = getLittleRect(x, y);
                 // 获得上述矩形包含的棋盘上的点
                 Point point = getContainPoint(rect);
-                if (point != null) {
+                if (point != null && mEveryPlay.size() != 225) {
                     // 若点不为空，则刷新对应位置棋子的属性
                     setChessState(point);
                     // 记录下每步操作，方便悔棋操作
@@ -197,11 +197,14 @@ public class ChessView extends View {
                     //播放下棋的声音
                     PlayAudio playChessSound;
                     playChessSound = PlayAudio.getChessAudioInstance(mainActivity);
-                    playChessSound.play("chess_sound.wav", false);
+                    if (MainActivity.isSoundOpen)
+                        playChessSound.play("chess_sound.wav", false);
                     //使用Ai算法内的的算法判断是否有人获胜了
                     AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, this);
                     if (alphaBetaCutBranch.isWin()) {
-                        mainActivity.showDialog();
+                        mainActivity.showWinDialog(ChessView.isBlackPlay);
+                    } else if (mEveryPlay.size() == 225) {
+                        mainActivity.showDrawDialog();
                     }
                     // 更改游戏玩家
                     isBlackPlay = !isBlackPlay;

@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
 
+import com.emc2.www.gobang.activity.MainActivity;
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
 import com.emc2.www.gobang.view.ChessView;
@@ -36,7 +37,7 @@ public class AiTread implements Runnable {
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
             ChessView.isBlackPlay = !ChessView.isBlackPlay;
-        } else if (AI.xChess != -1 && AI.yChess != -1) {
+        } else if (AI.xChess != -1 && AI.yChess != -1 && chessView.mEveryPlay.size() != 225) {
             Point point = new Point(AI.xChess, AI.yChess);
             chessView.setChessState(point);
             // 记录下每步操作，方便悔棋操作
@@ -45,7 +46,11 @@ public class AiTread implements Runnable {
             AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, chessView);
             if (alphaBetaCutBranch.isWin()) {
                 Message message = handler.obtainMessage(300);
-                message.arg1 = 2;
+                message.arg1 = HandlerMessage.SHOW_WIN_DIALOG;
+                handler.sendMessage(message);
+            } else if (chessView.mEveryPlay.size() == 225) {
+                Message message = handler.obtainMessage(300);
+                message.arg1 = HandlerMessage.SHOW_DRAW_DIALOG;
                 handler.sendMessage(message);
             }
             AI.xChess = -1;
@@ -54,7 +59,8 @@ public class AiTread implements Runnable {
             chessView.invalidate();//重新绘制
             PlayAudio playChessSound;
             playChessSound = PlayAudio.getChessAudioInstance(chessView.getContext());
-            playChessSound.play("chess_sound.wav", false);
+            if (MainActivity.isSoundOpen)
+                playChessSound.play("chess_sound.wav", false);
         }
         ChessView.isAiRuning = false;
         Message message = handler.obtainMessage(300);

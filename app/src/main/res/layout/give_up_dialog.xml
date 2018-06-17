@@ -1,92 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="250dp"
+    android:layout_height="180dp"
+    android:background="@drawable/ic_dialog"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:src="@drawable/model_chose" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/under_line_black" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/black_player"
-        android:textColor="@android:color/white"
-        android:textSize="8pt" />
+        android:layout_gravity="center"
+        android:text="@string/give_up_text"
+        android:textColor="@color/dialog_text"
+        android:textSize="@dimen/dialog_tittle_size" />
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/radio_ai_black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/computer" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/black_level_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/computer_level" />
-
-            <Spinner
-                android:id="@+id/black_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/game_level" />
-        </LinearLayout>
-
-        <RadioButton
-            android:id="@+id/radio_human_black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/human" />
-    </RadioGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:text="@string/white_player"
-        android:textColor="@android:color/white"
-        android:textSize="8pt" />
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/under_line_black" />
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/radio_ai_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/computer" />
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dialog_button_height"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_frame"
+            android:text="取消"
+            android:textSize="16sp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/white_level_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/computer_level" />
-
-            <Spinner
-                android:id="@+id/white_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/game_level" />
-        </LinearLayout>
-
-        <RadioButton
-            android:id="@+id/radio_human_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/human" />
-    </RadioGroup>
+        <Button
+            android:id="@+id/ok_btn"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dialog_button_height"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_frame"
+            android:text="确定"
+            android:textSize="16sp" />
+    </LinearLayout>
 </LinearLayout>

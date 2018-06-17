@@ -32,7 +32,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/black_player"
             android:textColor="@android:color/black"
-            android:textSize="8pt" />
+            android:textSize="@dimen/dialog_tittle_size" />
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/white_player"
             android:textColor="@android:color/black"
-            android:textSize="8pt" />
+            android:textSize="@dimen/dialog_tittle_size" />
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -166,7 +166,7 @@
         <Button
             android:id="@+id/cancel_btn"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/dialog_button_height"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
@@ -177,7 +177,7 @@
         <Button
             android:id="@+id/ok_btn"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/dialog_button_height"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
