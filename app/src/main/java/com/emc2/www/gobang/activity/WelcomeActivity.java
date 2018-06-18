@@ -1,5 +1,6 @@
 package com.emc2.www.gobang.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
@@ -18,6 +19,7 @@ import java.util.Date;
  * Created by 74011 on 2018/4/29.
  */
 
+@SuppressLint("Registered")
 public class WelcomeActivity extends AppCompatActivity {
     ImageView imageView;
 
