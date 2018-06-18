@@ -1,8 +1,10 @@
 package com.emc2.www.gobang.ai;
 
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 
 import com.emc2.www.gobang.activity.MainActivity;
 import com.emc2.www.gobang.util.Chess;
@@ -23,6 +25,7 @@ public class AiTread implements Runnable {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void run() {
         if (!AlphaBetaCutBranch.isRunningFlag()) {
             return;

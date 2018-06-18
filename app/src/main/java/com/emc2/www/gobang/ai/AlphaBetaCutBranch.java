@@ -1,8 +1,13 @@
 package com.emc2.www.gobang.ai;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.view.ChessView;
 import com.emc2.www.gobang.activity.MainActivity;
+
+import java.util.ArrayList;
 
 public class AlphaBetaCutBranch implements Runnable {
     private ChessView gameCanvas;
@@ -20,7 +25,9 @@ public class AlphaBetaCutBranch implements Runnable {
     private int xChess, yChess;
     private int lastScore;
     private static boolean runningFlag = true;
-    private SituationAssessment sa;
+    public SituationAssessment sa;
+    private ArrayList<Node> nodes = new ArrayList<>();
+    private int[][] calculationPoint;
 
     public static boolean isRunningFlag() {
         return runningFlag;
@@ -44,94 +51,149 @@ public class AlphaBetaCutBranch implements Runnable {
         sa = new SituationAssessment(chessMap);
     }
 
+    public void setCalculationPoint(int[][] calculationPoint) {
+        this.calculationPoint = calculationPoint;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void run() {
         getMap();
-        int[][] calculationPoint = getCalculationPoint(chessMap);
+//        int[][] calculationPoint = getCalculationPoint(chessMap);
+//        int length = calculationPoint[0][0];
+//        int[] range1 = new int[2], range2 = new int[2], range3 = new int[2], range4 = new int[2];
+//        range1[0] = 1;
+//        range1[1] = length / 4;
+//        range2[0] = range1[1] + 1;
+//        range2[1] = length / 2;
+//        range3[0] = range2[1] + 1;
+//        range3[1] = (range2[1] + 1 + length) / 2;
+//        range4[0] = range3[1] + 1;
+//        range4[1] = length;
+//        range4[1] = length + 4;
+//        int[] firstRange = {1, length};
+//        alphaBetaCutBranch(0, 2, player, alpha, beta, calculationPoint, firstRange);
+//        if (sa.getNextChessIsWin()) {
+//            AI.score0 = lastScore;
+//            AI.xChess0 = xChess;
+//            AI.yChess0 = yChess;
+//            sa.setNextChessIsWin(false);
+//            return;
+//        }
+//        calculationPoint[0][0] = length + 4;
+//        calculationPoint[length + 1][0] = calculationPoint[range1[0]][0];
+//        calculationPoint[length + 1][1] = calculationPoint[range1[0]][1];
+//        calculationPoint[length + 2][0] = calculationPoint[range2[0]][0];
+//        calculationPoint[length + 2][1] = calculationPoint[range2[0]][1];
+//        calculationPoint[length + 3][0] = calculationPoint[range3[0]][0];
+//        calculationPoint[length + 3][1] = calculationPoint[range3[0]][1];
+//        calculationPoint[length + 4][0] = calculationPoint[range4[0]][0];
+//        calculationPoint[length + 4][1] = calculationPoint[range4[0]][1];
+//        calculationPoint[range1[0]][0] = yChess + 4;
+//        calculationPoint[range1[0]][1] = xChess + 4;
+//        calculationPoint[range2[0]][0] = yChess + 4;
+//        calculationPoint[range2[0]][1] = xChess + 4;
+//        calculationPoint[range3[0]][0] = yChess + 4;
+//        calculationPoint[range3[0]][1] = xChess + 4;
+//        calculationPoint[range4[0]][0] = yChess + 4;
+//        calculationPoint[range4[0]][1] = xChess + 4;
+
         int length = calculationPoint[0][0];
-        int[] range1 = new int[2], range2 = new int[2], range3 = new int[2], range4 = new int[2];
-        range1[0] = 1;
-        range1[1] = length / 4;
-        range2[0] = range1[1] + 1;
-        range2[1] = length / 2;
-        range3[0] = range2[1] + 1;
-        range3[1] = (range2[1] + 1 + length) / 2;
-        range4[0] = range3[1] + 1;
-        range4[1] = length;
-        range4[1] = length + 4;
-        int[] firstRange = {1, length};
-        alphaBetaCutBranch(0, 2, player, alpha, beta, calculationPoint, firstRange);
-        if (sa.getNextChessIsWin()) {
-            AI.score0 = lastScore;
-            AI.xChess0 = xChess;
-            AI.yChess0 = yChess;
-            sa.setNextChessIsWin(false);
-            return;
-        }
-        calculationPoint[0][0] = length + 4;
-        calculationPoint[length + 1][0] = calculationPoint[range1[0]][0];
-        calculationPoint[length + 1][1] = calculationPoint[range1[0]][1];
-        calculationPoint[length + 2][0] = calculationPoint[range2[0]][0];
-        calculationPoint[length + 2][1] = calculationPoint[range2[0]][1];
-        calculationPoint[length + 3][0] = calculationPoint[range3[0]][0];
-        calculationPoint[length + 3][1] = calculationPoint[range3[0]][1];
-        calculationPoint[length + 4][0] = calculationPoint[range4[0]][0];
-        calculationPoint[length + 4][1] = calculationPoint[range4[0]][1];
-        calculationPoint[range1[0]][0] = yChess + 4;
-        calculationPoint[range1[0]][1] = xChess + 4;
-        calculationPoint[range2[0]][0] = yChess + 4;
-        calculationPoint[range2[0]][1] = xChess + 4;
-        calculationPoint[range3[0]][0] = yChess + 4;
-        calculationPoint[range3[0]][1] = xChess + 4;
-        calculationPoint[range4[0]][0] = yChess + 4;
-        calculationPoint[range4[0]][1] = xChess + 4;
-        int[] rangex = {1, length};
+        int[] rangeAll = {1, length};
+        alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, rangeAll);
         if (block == 1) {
-            System.out.println("第一层次一共有" + length + "个节点");
-            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range1);
             AI.score1 = lastScore;
             AI.xChess1 = xChess;
             AI.yChess1 = yChess;
-            System.out.println("第一个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+
             gameCanvas.testX1 = 0;
             gameCanvas.testY1 = 0;
-            gameCanvas.invalidate();//重新绘制
         }
         if (block == 2) {
-            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range2);
             AI.score2 = lastScore;
             AI.xChess2 = xChess;
             AI.yChess2 = yChess;
-            System.out.println("第二个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+
             gameCanvas.testX2 = 0;
             gameCanvas.testY2 = 0;
-            gameCanvas.invalidate();//重新绘制
         }
         if (block == 3) {
-            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range3);
             AI.score3 = lastScore;
             AI.xChess3 = xChess;
             AI.yChess3 = yChess;
-            System.out.println("第三个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+
             gameCanvas.testX3 = 0;
             gameCanvas.testY3 = 0;
-            gameCanvas.invalidate();//重新绘制
         }
         if (block == 4) {
-            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range4);
             AI.score4 = lastScore;
             AI.xChess4 = xChess;
             AI.yChess4 = yChess;
-            System.out.println("第四个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+
             gameCanvas.testX4 = 0;
             gameCanvas.testY4 = 0;
-            gameCanvas.invalidate();//重新绘制
         }
+        System.out.println("第" + block + "个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+        gameCanvas.invalidate();//重新绘制
+
+//        if (block == 1) {
+//            System.out.println("第一层次一共有" + length + "个节点");
+//            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range1);
+//            AI.score1 = lastScore;
+//            AI.xChess1 = xChess;
+//            AI.yChess1 = yChess;
+//            System.out.println("第一个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+//            gameCanvas.testX1 = 0;
+//            gameCanvas.testY1 = 0;
+//            gameCanvas.invalidate();//重新绘制
+//        }
+//        if (block == 2) {
+//            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range2);
+//            AI.score2 = lastScore;
+//            AI.xChess2 = xChess;
+//            AI.yChess2 = yChess;
+//            System.out.println("第二个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+//            gameCanvas.testX2 = 0;
+//            gameCanvas.testY2 = 0;
+//            gameCanvas.invalidate();//重新绘制
+//        }
+//        if (block == 3) {
+//            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range3);
+//            AI.score3 = lastScore;
+//            AI.xChess3 = xChess;
+//            AI.yChess3 = yChess;
+//            System.out.println("第三个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+//            gameCanvas.testX3 = 0;
+//            gameCanvas.testY3 = 0;
+//            gameCanvas.invalidate();//重新绘制
+//        }
+//        if (block == 4) {
+//            alphaBetaCutBranch(h, deep, player, alpha, beta, calculationPoint, range4);
+//            AI.score4 = lastScore;
+//            AI.xChess4 = xChess;
+//            AI.yChess4 = yChess;
+//            System.out.println("第四个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
+//            gameCanvas.testX4 = 0;
+//            gameCanvas.testY4 = 0;
+//            gameCanvas.invalidate();//重新绘制
+//        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public ArrayList<Node> getSortNodes() {
+        getMap();
+        int[][] calculationPoint = getCalculationPoint(chessMap);
+        int length = calculationPoint[0][0];
+        int[] firstRange = {1, length};
+        alphaBetaCutBranch(0, 2, player, alpha, beta, calculationPoint, firstRange);
+        SortNode.sortNodeByScore(nodes);
+        return nodes;
     }
 
     private int alphaBetaCutBranch(int h, int deep, int player, int alpha, int beta, int[][] calculationPoint, int[] range) { //h搜索深度，player=1表示自己,player=0表示对手,range代表范围，用数组表示，分别是i（行）的开始结束，j（列）的开始结束
         if (!runningFlag)
-            return -99999;
+            return -999900000;
         int p, p2;
         p = sa.evaluation(player);
         p2 = sa.evaluation(player ^ 1);
@@ -161,6 +223,7 @@ public class AlphaBetaCutBranch implements Runnable {
                     nextRange[0] = 1;
                     nextRange[1] = nextCalculationPoint[0][0];
                     int ans = alphaBetaCutBranch(h + 1, deep, player ^ 1, alpha, beta, nextCalculationPoint, nextRange);
+                    nodes.add(new Node(ans, i, j));
                     if (ans > alpha) {    //通过向上传递的子节点beta值修正alpha值
                         alpha = ans;
                         if (h == 0) {

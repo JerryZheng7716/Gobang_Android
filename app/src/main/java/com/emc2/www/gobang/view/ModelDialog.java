@@ -26,7 +26,7 @@ public class ModelDialog {
     private ImageView imageViewBlackPlayer, imageViewWhitePlayer;
     public Thread thread;
     private CustomDialog dialog;
-    private static boolean aiFightFlag = true;
+    public static boolean aiFightFlag = true;
 
     public ModelDialog(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -298,7 +298,7 @@ public class ModelDialog {
             }
             //使用Ai算法内的的算法判断是否有人获胜了
             AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, mainActivity.chessView);
-            if (alphaBetaCutBranch.isWin()) {
+            if (alphaBetaCutBranch.isWin()||mainActivity.chessView.mEveryPlay.size()==225) {
                 return;
             }
             aiFight(Chess.WHITE_CHESS);
@@ -312,7 +312,7 @@ public class ModelDialog {
             }
             //使用Ai算法内的的算法判断是否有人获胜了
             AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, mainActivity.chessView);
-            if (alphaBetaCutBranch.isWin()) {
+            if (alphaBetaCutBranch.isWin()||mainActivity.chessView.mEveryPlay.size()==225) {
                 return;
             }
             aiFight(Chess.BLACK_CHESS);

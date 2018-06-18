@@ -29,6 +29,7 @@ public class GiveUpDialog {
                     case R.id.ok_btn:
                         winDialog = new WinDialog(mainActivity, mainActivity.chessView);
                         winDialog.getWinlDialog(ChessView.isBlackPlay);
+                        ModelDialog.aiFightFlag=false;
                         dialog.dismiss();
                         break;
                 }
