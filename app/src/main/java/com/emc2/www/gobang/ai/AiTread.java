@@ -46,7 +46,11 @@ public class AiTread implements Runnable {
             AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, chessView);
             if (alphaBetaCutBranch.isWin()) {
                 Message message = handler.obtainMessage(300);
-                message.arg1 = HandlerMessage.SHOW_WIN_DIALOG;
+                if (ChessView.isBlackPlay) {
+                    message.arg1 = HandlerMessage.SHOW_WIN_DIALOG_BLACK;
+                } else {
+                    message.arg1 = HandlerMessage.SHOW_WIN_DIALOG_WHITE;
+                }
                 handler.sendMessage(message);
             } else if (chessView.mEveryPlay.size() == 225) {
                 Message message = handler.obtainMessage(300);

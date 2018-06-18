@@ -2,4 +2,6 @@
 <resources>
     <dimen name="dialog_tittle_size">8pt</dimen>
     <dimen name="dialog_button_height">40dp</dimen>
+    <dimen name="dialog_button_text">14sp</dimen>
+    <dimen name="dialog_tittle_height">25dp</dimen>
 </resources>

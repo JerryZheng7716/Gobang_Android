@@ -36,6 +36,7 @@ import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
 import com.emc2.www.gobang.util.PlayAudio;
 import com.emc2.www.gobang.R;
+import com.emc2.www.gobang.view.WinDialog;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     ImageView background;
     ImageView chessBoard;
     Toolbar toolbar;
+    WinDialog winDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 case HandlerMessage.DEFEAT:
                     Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
                     break;
-                case HandlerMessage.SHOW_WIN_DIALOG:
-                    showWinDialog(ChessView.isBlackPlay);
+                case HandlerMessage.SHOW_WIN_DIALOG_BLACK:
+                    winDialog = new WinDialog(MainActivity.this, chessView);
+                    winDialog.getWinlDialog(true);
+                    break;
+                case HandlerMessage.SHOW_WIN_DIALOG_WHITE:
+                    winDialog = new WinDialog(MainActivity.this, chessView);
+                    winDialog.getWinlDialog(false);
                     break;
                 case HandlerMessage.JUMP_BLACK:
                     doJumpAnimation(Chess.BLACK_CHESS);
@@ -507,37 +514,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         } else return -2;
     }
 
-    /**
-     * 游戏结束，显示对话框
-     */
-    public void showWinDialog(boolean isBlackWin) {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("游戏结束");
-        if (isBlackWin) {
-            builder.setMessage("恭喜！黑方获胜！！！");
-        } else {
-            builder.setMessage("恭喜！白方获胜！！！");
-        }
-        builder.setCancelable(false);
-        builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                chessView.resetChessBoard();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("返回查看", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                chessView.isLocked = true;
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
 
     /**
-     * 游戏结束，显示对话框
+     * 游戏和棋，显示对话框
      */
     public void showDrawDialog() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);

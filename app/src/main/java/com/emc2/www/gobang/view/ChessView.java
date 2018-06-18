@@ -40,8 +40,9 @@ public class ChessView extends View {
     public Chess[][] mChessArray;
     public List<Point> mEveryPlay;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
-    ReadImage readImage = new ReadImage();
+    private ReadImage readImage = new ReadImage();
     public MainActivity mainActivity;
+    private WinDialog winDialog;
     int avg = 0;
 
     public ChessView(Context context) {
@@ -202,7 +203,8 @@ public class ChessView extends View {
                     //使用Ai算法内的的算法判断是否有人获胜了
                     AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, this);
                     if (alphaBetaCutBranch.isWin()) {
-                        mainActivity.showWinDialog(ChessView.isBlackPlay);
+                        winDialog = new WinDialog(getContext(), this);
+                        winDialog.getWinlDialog(isBlackPlay);
                     } else if (mEveryPlay.size() == 225) {
                         mainActivity.showDrawDialog();
                     }
