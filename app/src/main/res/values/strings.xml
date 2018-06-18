@@ -9,6 +9,10 @@
     <string name="human">人类</string>
     <string name="computer_level">电脑等级: </string>
     <string name="give_up_text">您确定认输吗？</string>
+    <string name="cancel">取消</string>
+    <string name="determine">确定</string>
+    <string name="return_and_check">返回查看</string>
+    <string name="restart">重新开始</string>
     <string-array name="game_level">
         <item>入门学童</item>
         <item>小有研究</item>
