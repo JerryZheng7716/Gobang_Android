@@ -96,6 +96,9 @@ public class GameNotesDialog {
     public ArrayList<Map<String,Object>> getDate() {
         List<Record> recordList = RecordDao.searchAllRecord();
         ArrayList<Map<String,Object>> date=new ArrayList<>();
+        if (recordList==null){
+            return date;
+        }
         for(int i=0;i<recordList.size();i++){
             Map<String,Object> map=new HashMap<>();
             int id = recordList.get(i).getId();
