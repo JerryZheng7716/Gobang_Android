@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.emc2.www.gobang.entity.Record;
+import com.emc2.www.gobang.util.FormatDate;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,11 +91,13 @@ public class RecordDao {
                 record.setBlackPlayer(cursor.getString(cursor.getColumnIndex("blackPlayer")));
                 record.setWhitePlayer(cursor.getString(cursor.getColumnIndex("whitePlayer")));
                 record.setWinner(cursor.getString(cursor.getColumnIndex("winner")));
-                record.setTime(cursor.getString(cursor.getColumnIndex("time")));
+                String time = FormatDate.changeDate(cursor.getString(cursor.getColumnIndex("time")));
+                record.setTime(time);
                 record.setChessCount(Integer.parseInt(cursor.getString(cursor.getColumnIndex("chessCount"))));
                 list.add(record);
             }
         }
+        cursor.close();
         return list;
     }
 

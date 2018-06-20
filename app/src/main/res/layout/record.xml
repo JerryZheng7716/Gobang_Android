@@ -23,13 +23,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:paddingEnd="20dp"
-        android:paddingStart="20dp">
+        android:paddingEnd="10dp"
+        android:layout_weight="1"
+        android:paddingStart="10dp">
 
         <ListView
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
@@ -37,43 +37,23 @@
             android:textSize="8pt"
             android:id="@+id/list_view" />
 
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/under_line_black" />
-        <Button
-            android:id="@+id/ok_btn"
-            android:layout_gravity="center"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/button_frame"
-            android:text="确定"
-            android:layout_marginBottom="10dp"
-            android:textSize="16sp" />
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:gravity="center"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--&lt;!&ndash;<Button&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/ok_btn"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="80dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="40dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_marginEnd="20dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_marginStart="20dp"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:background="@drawable/button_frame"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:text="确定"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:textSize="16sp" />&ndash;&gt;-->
-
-    <!--</LinearLayout>-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/under_line_black" />
+    <Button
+        android:id="@+id/ok_btn"
+        android:layout_gravity="center"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/button_frame"
+        android:text="确定"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp" />
 </LinearLayout>
