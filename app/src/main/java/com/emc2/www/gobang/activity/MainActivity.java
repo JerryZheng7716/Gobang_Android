@@ -31,6 +31,7 @@ import com.emc2.www.gobang.ai.AiTread;
 import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
+import com.emc2.www.gobang.util.ReadImage;
 import com.emc2.www.gobang.view.ChessView;
 import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     LinearLayout btnLayout;
     ImageView background;
     ImageView chessBoard;
+    ImageView appTittle;
     Toolbar toolbar;
     WinDialog winDialog;
 
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 case HandlerMessage.SHOW_DRAW_DIALOG:
                     showDrawDialog();
                     break;
+                case HandlerMessage.REPAINT_CHESS:
+                    chessView.invalidate();
+                    break;
             }
 
         }
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         playBackgroundMusic = PlayAudio.getMusicInstance(this);
         playChessSound = PlayAudio.getChessAudioInstance(this);
         playBtnSound = PlayAudio.getButtonAudioInstance(this);
+        appTittle.setImageBitmap(readBitMap(R.drawable.tittle));
         clickBtn();
         doJumpAnimation(Chess.BLACK_CHESS);
     }
@@ -263,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         playerLayout = findViewById(R.id.player_layout);
         btnLayout = findViewById(R.id.btn_layout);
         chessView = findViewById(R.id.chessView);
+        appTittle = findViewById(R.id.app_title);
     }
 
     /**
@@ -323,6 +330,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                             aiTread = new AiTread(chessView, Chess.WHITE_CHESS);
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         levelBlackAi = oldLevelBlack;//还原ai等级
                         levelWhiteAi = oldLevelWhite;
                         break;

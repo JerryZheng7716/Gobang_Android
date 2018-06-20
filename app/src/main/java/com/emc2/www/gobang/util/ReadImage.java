@@ -17,7 +17,7 @@ public class ReadImage {
      * @param resId
      * @return Bitmap
      */
-    public Bitmap readBitMap(int resId, Context context) {
+    public static Bitmap readBitMap(int resId, Context context) {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inPreferredConfig = Bitmap.Config.RGB_565;
         opt.inPurgeable = true;

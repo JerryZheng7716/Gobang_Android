@@ -267,6 +267,10 @@ public class ModelDialog {
             textViewWhiteLevel.setVisibility(View.INVISIBLE);
             spinnerWhite.setVisibility(View.INVISIBLE);
         }
+        int levelBlack=mainActivity.getAiLevel(Chess.BLACK_CHESS);
+        int levelWhite=mainActivity.getAiLevel(Chess.WHITE_CHESS);
+        spinnerBlack.setSelection(levelBlack);
+        spinnerWhite.setSelection(levelWhite);
         clickListener();
     }
 

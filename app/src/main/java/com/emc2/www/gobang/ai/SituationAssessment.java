@@ -1,12 +1,15 @@
 package com.emc2.www.gobang.ai;
 
+import com.emc2.www.gobang.util.Chess;
+import com.emc2.www.gobang.view.ChessView;
+
 /**
  * Created by jerryzheng on 2018/6/4.
  */
 
 public class SituationAssessment {
     private static final int SCORE成五 = 9999999;
-    private static final int SCORE活四 = 1000000;
+    private static final int SCORE活四 = 100000;
     private static final int SCORE冲四 = 200;
     private static final int SCORE跳四 = 120;
     private static final int SCORE活三 = 200;
@@ -29,6 +32,7 @@ public class SituationAssessment {
     private int otherColor = 1;
     private int count活三 = 0, count活二 = 0, count冲四 = 0, count眠三 = 0, count跳活三 = 0, count跳四 = 0;
     private int score = 0;
+    private boolean isMe = false;
     int maxSocre = -100000;
 
     public SituationAssessment(int[][] chessMap) {
@@ -452,12 +456,14 @@ public class SituationAssessment {
         return zuoBiao;
     }
 
-    public int evaluation(int who) {
+    public int evaluation(int who, boolean isMe) {
         score = 0;
         color = who;
         otherColor = who ^ 1;
+        this.isMe = isMe;
         searchMap();
         getPositionScore();
+        this.isMe = false;
         return score;
     }
 
@@ -480,14 +486,17 @@ public class SituationAssessment {
 
     private void is活四() {
         score = score + SCORE活四;
-        if (color == 1) {
-            score = score + 500;
+        if (isMe) {
+            score = score + SCORE双活三;
         }
     }
 
     private void is冲四() {
         score = score + SCORE冲四;
         count冲四++;
+        if (isMe) {
+            score = score + SCORE双活三;
+        }
     }
 
     private void is活三() {
@@ -495,17 +504,26 @@ public class SituationAssessment {
         if (color == 1) {
             score += 20;
         }
+        if (isMe) {
+            score = score + SCORE双活三;
+        }
         count活三++;
     }
 
     private void is跳活三() {
         score = score + SCORE跳活三;
+        if (isMe) {
+            score = score + SCORE双活三;
+        }
         count跳活三++;
     }
 
     private void is跳四() {
         score = score + SCORE跳四;
         count跳四++;
+        if (isMe) {
+            score = score + SCORE双活三;
+        }
     }
 
     private void is眠三() {

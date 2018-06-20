@@ -144,10 +144,10 @@ public class ChessView extends View {
             mSrcRect = new Rect(0, 0, 500, 500);
             mDestRect = new Rect(avg * (point.x + 1) - 35, avg * (point.y + 1) - 35, avg * (point.x + 1) + 35, avg * (point.y + 1) + 35);
             if (hand % 2 == 0) {
-                canvas.drawBitmap(readImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
+                canvas.drawBitmap(ReadImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
             } else {
-                canvas.drawBitmap(readImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
+                canvas.drawBitmap(ReadImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.BLACK);
             }
             if (hand < 9) {
@@ -193,6 +193,7 @@ public class ChessView extends View {
                 if (point != null && mEveryPlay.size() != 225) {
                     // 若点不为空，则刷新对应位置棋子的属性
                     setChessState(point);
+                    invalidate();
                     // 记录下每步操作，方便悔棋操作
                     mEveryPlay.add(point);
                     //播放下棋的声音
@@ -249,7 +250,6 @@ public class ChessView extends View {
         } else {
             mChessArray[point.x][point.y].setColor(Chess.Color.WHITE);
         }
-        invalidate();
     }
 
     /**
