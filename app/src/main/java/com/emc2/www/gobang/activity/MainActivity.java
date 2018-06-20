@@ -8,10 +8,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -27,16 +27,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.ai.AiTread;
 import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
-import com.emc2.www.gobang.util.ReadImage;
+import com.emc2.www.gobang.util.PlayAudio;
 import com.emc2.www.gobang.view.ChessView;
+import com.emc2.www.gobang.view.GameNotesDialog;
 import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
-import com.emc2.www.gobang.util.PlayAudio;
-import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.view.WinDialog;
 
 import java.io.InputStream;
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     ImageView appTittle;
     Toolbar toolbar;
     WinDialog winDialog;
+    private GameNotesDialog gameNotesDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,7 +238,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 modelDialog.getModelDialog();
                 break;
             case R.id.menu_games_notes:
-
+                gameNotesDialog = new GameNotesDialog(this);
+                gameNotesDialog.getModelDialog();
                 break;
 
             default:
