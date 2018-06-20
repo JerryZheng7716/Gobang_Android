@@ -21,9 +21,9 @@
         <!--android:textColor="@android:color/white"-->
         <!--android:textSize="20dp"/>-->
         <ImageView
+            android:id="@+id/app_title"
             android:layout_width="200dp"
             android:layout_height="30dp"
-            android:src="@drawable/tittle"
             android:text="@string/setting" />
     </android.support.v7.widget.Toolbar>
 

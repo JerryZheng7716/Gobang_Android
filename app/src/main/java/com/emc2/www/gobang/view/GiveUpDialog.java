@@ -12,6 +12,7 @@ import com.emc2.www.gobang.util.CustomDialog;
 public class GiveUpDialog {
     private MainActivity mainActivity;
     private CustomDialog dialog;
+    private WinDialog winDialog;
 
     public GiveUpDialog(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -26,7 +27,9 @@ public class GiveUpDialog {
                         dialog.dismiss();
                         break;
                     case R.id.ok_btn:
-                        mainActivity.showWinDialog(!ChessView.isBlackPlay);
+                        winDialog = new WinDialog(mainActivity, mainActivity.chessView);
+                        winDialog.getWinlDialog(ChessView.isBlackPlay);
+                        ModelDialog.aiFightFlag=false;
                         dialog.dismiss();
                         break;
                 }

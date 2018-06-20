@@ -1,10 +1,13 @@
 package com.emc2.www.gobang.ai;
 
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 
 import com.emc2.www.gobang.view.ChessView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class AI {
@@ -20,22 +23,97 @@ public class AI {
     public static int score0 = -999999999, score1 = -999999999, score2 = -999999999, score3 = -999999999, score4 = -999999999;
     int score = -999999999;
     int maxSocre = -100000;
+    private static int step = 0;//标记这是第几次执行ai，用了防止计时器冲突
 
+    public static int getStep() {
+        return step;
+    }
+
+    public static void setStep(int step) {
+        AI.step = step;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void Ai(ChessView chessView, int player) {
         this.chessView = chessView;
         handler = chessView.mainActivity.handler;
         int deep = 0;
         long startTime = System.currentTimeMillis();   //获取开始时间
         int level = chessView.getAiLevel(player);
-        if (level == 0 || level == 1) {
+        if (level == 0) {
             deep = 2;
+        } else if (level == 1) {
+            deep = 4;
+            AiTimer aiTimer = new AiTimer(2000, getStep());
+            aiTimer.breakAi();
         } else {
             deep = 4;
+            AiTimer aiTimer = new AiTimer(3000, getStep());
+            aiTimer.breakAi();
         }
-        AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 1, chessView);
-        AlphaBetaCutBranch alphaBetaCutBranch2 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 2, chessView);
-        AlphaBetaCutBranch alphaBetaCutBranch3 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 3, chessView);
-        AlphaBetaCutBranch alphaBetaCutBranch4 = new AlphaBetaCutBranch(0, deep, player, -999990000, 999990000, 4, chessView);
+        ArrayList<Node> nodes;
+        AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, player, -999993333, 999993333, 1, chessView);
+        nodes = alphaBetaCutBranch.getSortNodes();
+        System.out.println("第一层共有 "+nodes.size()+" 个节点");
+//        for (Node n:nodes
+//             ) {
+//            System.out.println(n.getScore()+" : "+n.getX()+" : "+n.getY());
+//        }
+        if (alphaBetaCutBranch.sa.getNextChessIsWin()) {
+            score = 999990000;
+            if (nodes.size()!=0){
+                AI.xChess = nodes.get(0).getY() - 4;
+                AI.yChess = nodes.get(0).getX() - 4;
+                alphaBetaCutBranch.sa.setNextChessIsWin(false);
+            }
+            return;
+        }
+        int[][] calculationPoint1 = new int[226][2];
+        int[][] calculationPoint2 = new int[226][2];
+        int[][] calculationPoint3 = new int[226][2];
+        int[][] calculationPoint4 = new int[226][2];
+        int cycle = 4;
+        for (int i = 0; i < nodes.size(); i++) {
+//            System.out.println(nodes.get(i).getX() + " : " + nodes.get(i).getY() + " : " + nodes.get(i).getScore());
+            if (i == 0) {
+                calculationPoint4[i + 1][0] = nodes.get(i).getX();
+                calculationPoint4[i + 1][1] = nodes.get(i).getY();
+                calculationPoint4[0][0]++;
+                calculationPoint3[i + 1][0] = nodes.get(i).getX();
+                calculationPoint3[i + 1][1] = nodes.get(i).getY();
+                calculationPoint3[0][0]++;
+                calculationPoint2[i + 1][0] = nodes.get(i).getX();
+                calculationPoint2[i + 1][1] = nodes.get(i).getY();
+                calculationPoint2[0][0]++;
+                calculationPoint1[i + 1][0] = nodes.get(i).getX();
+                calculationPoint1[i + 1][1] = nodes.get(i).getY();
+                calculationPoint1[0][0]++;
+            } else if (cycle==4) {
+                calculationPoint4[++calculationPoint4[0][0]][0] = nodes.get(i).getX();
+                calculationPoint4[calculationPoint4[0][0]][1] = nodes.get(i).getY();
+                cycle--;
+            } else if (cycle == 3) {
+                calculationPoint3[++calculationPoint3[0][0]][0] = nodes.get(i).getX();
+                calculationPoint3[calculationPoint3[0][0]][1] = nodes.get(i).getY();
+                cycle--;
+            } else if (cycle == 2) {
+                calculationPoint2[++calculationPoint2[0][0]][0] = nodes.get(i).getX();
+                calculationPoint2[calculationPoint2[0][0]][1] = nodes.get(i).getY();
+                cycle--;
+            } else {
+                calculationPoint1[++calculationPoint1[0][0]][0] = nodes.get(i).getX();
+                calculationPoint1[calculationPoint1[0][0]][1] = nodes.get(i).getY();
+                cycle=4;
+            }
+        }
+        AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep, player, -999991212, 999991212, 1, chessView);
+        alphaBetaCutBranch1.setCalculationPoint(calculationPoint1);
+        AlphaBetaCutBranch alphaBetaCutBranch2 = new AlphaBetaCutBranch(0, deep, player, -999991212, 999991212, 2, chessView);
+        alphaBetaCutBranch2.setCalculationPoint(calculationPoint2);
+        AlphaBetaCutBranch alphaBetaCutBranch3 = new AlphaBetaCutBranch(0, deep, player, -999991212, 999991212, 3, chessView);
+        alphaBetaCutBranch3.setCalculationPoint(calculationPoint3);
+        AlphaBetaCutBranch alphaBetaCutBranch4 = new AlphaBetaCutBranch(0, deep, player, -999991212, 999991212, 4, chessView);
+        alphaBetaCutBranch4.setCalculationPoint(calculationPoint4);
         Thread thread1 = new Thread(alphaBetaCutBranch1);//启动一个搜索线程
         thread1.start();
         Thread thread2 = new Thread(alphaBetaCutBranch2);//启动一个搜索线程
@@ -52,6 +130,8 @@ public class AI {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        setStep(getStep() + 1);
+        AlphaBetaCutBranch.setRunningFlag(true);
         long endTime = System.currentTimeMillis(); //获取结束时间
         System.out.println("程序运行时间： " + (endTime - startTime) + "ms");
         //+alphaBetaCutBranch2.jd+alphaBetaCutBranch3.jd+alphaBetaCutBranch4.jd
@@ -158,20 +238,15 @@ public class AI {
     private boolean goCutTree(int i, int cutTree[]) {
         if (i == cutTree[i - 4]) {
             if (i == 4) {
-                if (i + 1 == cutTree[i - 4 + 1] && i + 2 == cutTree[i - 4 + 2])
-                    return true;
+                return i + 1 == cutTree[i - 4 + 1] && i + 2 == cutTree[i - 4 + 2];
             } else if (i == 5) {
-                if (i - 1 == cutTree[i - 4 - 1] && i + 1 == cutTree[i - 4 + 1] && i + 2 == cutTree[i - 4 + 2])
-                    return true;
+                return i - 1 == cutTree[i - 4 - 1] && i + 1 == cutTree[i - 4 + 1] && i + 2 == cutTree[i - 4 + 2];
             } else if (i == 18) {
-                if (i - 1 == cutTree[i - 4 - 1] && i - 2 == cutTree[i - 4 - 2])
-                    return true;
+                return i - 1 == cutTree[i - 4 - 1] && i - 2 == cutTree[i - 4 - 2];
             } else if (i == 17) {
-                if (i - 1 == cutTree[i - 4 - 1] && i + 1 == cutTree[i - 4 + 1] && i - 2 == cutTree[i - 4 - 2])
-                    return true;
+                return i - 1 == cutTree[i - 4 - 1] && i + 1 == cutTree[i - 4 + 1] && i - 2 == cutTree[i - 4 - 2];
             } else {
-                if (i - 1 == cutTree[i - 4 - 1] && i + 1 == cutTree[i - 4 + 1] && i - 2 == cutTree[i - 4 - 2] && i + 2 == cutTree[i - 4 + 2])
-                    return true;
+                return i - 1 == cutTree[i - 4 - 1] && i + 1 == cutTree[i - 4 + 1] && i - 2 == cutTree[i - 4 - 2] && i + 2 == cutTree[i - 4 + 2];
             }
         }
         return false;

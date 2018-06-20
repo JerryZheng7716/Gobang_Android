@@ -8,10 +8,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -27,16 +27,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.ai.AiTread;
 import com.emc2.www.gobang.ai.AlphaBetaCutBranch;
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
-import com.emc2.www.gobang.util.PlayAudio;
+import com.emc2.www.gobang.util.ReadImage;
 import com.emc2.www.gobang.view.ChessView;
-import com.emc2.www.gobang.view.GameNotesDialog;
 import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
+import com.emc2.www.gobang.util.PlayAudio;
+import com.emc2.www.gobang.R;
+import com.emc2.www.gobang.view.WinDialog;
 
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -59,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     LinearLayout btnLayout;
     ImageView background;
     ImageView chessBoard;
+    ImageView appTittle;
     Toolbar toolbar;
-    private GameNotesDialog gameNotesDialog;
-
+    WinDialog winDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +88,13 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 case HandlerMessage.DEFEAT:
                     Toast.makeText(MainActivity.this, "大佬牛逼！大佬！在下认输了！", Toast.LENGTH_SHORT).show();
                     break;
-                case HandlerMessage.SHOW_WIN_DIALOG:
-                    showWinDialog(ChessView.isBlackPlay);
+                case HandlerMessage.SHOW_WIN_DIALOG_BLACK:
+                    winDialog = new WinDialog(MainActivity.this, chessView);
+                    winDialog.getWinlDialog(true);
+                    break;
+                case HandlerMessage.SHOW_WIN_DIALOG_WHITE:
+                    winDialog = new WinDialog(MainActivity.this, chessView);
+                    winDialog.getWinlDialog(false);
                     break;
                 case HandlerMessage.JUMP_BLACK:
                     doJumpAnimation(Chess.BLACK_CHESS);
@@ -98,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                     break;
                 case HandlerMessage.SHOW_DRAW_DIALOG:
                     showDrawDialog();
+                    break;
+                case HandlerMessage.REPAINT_CHESS:
+                    chessView.invalidate();
                     break;
             }
 
@@ -123,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         playBackgroundMusic = PlayAudio.getMusicInstance(this);
         playChessSound = PlayAudio.getChessAudioInstance(this);
         playBtnSound = PlayAudio.getButtonAudioInstance(this);
+        appTittle.setImageBitmap(readBitMap(R.drawable.tittle));
         clickBtn();
         doJumpAnimation(Chess.BLACK_CHESS);
     }
@@ -227,8 +237,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 modelDialog.getModelDialog();
                 break;
             case R.id.menu_games_notes:
-                gameNotesDialog = new GameNotesDialog(this);
-                gameNotesDialog.getModelDialog();
+
                 break;
 
             default:
@@ -260,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         playerLayout = findViewById(R.id.player_layout);
         btnLayout = findViewById(R.id.btn_layout);
         chessView = findViewById(R.id.chessView);
+        appTittle = findViewById(R.id.app_title);
     }
 
     /**
@@ -320,6 +330,11 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                             aiTread = new AiTread(chessView, Chess.WHITE_CHESS);
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         levelBlackAi = oldLevelBlack;//还原ai等级
                         levelWhiteAi = oldLevelWhite;
                         break;
@@ -511,37 +526,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         } else return -2;
     }
 
-    /**
-     * 游戏结束，显示对话框
-     */
-    public void showWinDialog(boolean isBlackWin) {
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("游戏结束");
-        if (isBlackWin) {
-            builder.setMessage("恭喜！黑方获胜！！！");
-        } else {
-            builder.setMessage("恭喜！白方获胜！！！");
-        }
-        builder.setCancelable(false);
-        builder.setPositiveButton("重新开始", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                chessView.resetChessBoard();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("返回查看", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                chessView.isLocked = true;
-                dialog.dismiss();
-            }
-        });
-        builder.show();
-    }
 
     /**
-     * 游戏结束，显示对话框
+     * 游戏和棋，显示对话框
      */
     public void showDrawDialog() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);

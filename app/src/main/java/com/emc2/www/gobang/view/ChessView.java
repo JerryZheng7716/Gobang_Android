@@ -40,8 +40,9 @@ public class ChessView extends View {
     public Chess[][] mChessArray;
     public List<Point> mEveryPlay;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
-    ReadImage readImage = new ReadImage();
+    private ReadImage readImage = new ReadImage();
     public MainActivity mainActivity;
+    private WinDialog winDialog;
     int avg = 0;
 
     public ChessView(Context context) {
@@ -143,10 +144,10 @@ public class ChessView extends View {
             mSrcRect = new Rect(0, 0, 500, 500);
             mDestRect = new Rect(avg * (point.x + 1) - 35, avg * (point.y + 1) - 35, avg * (point.x + 1) + 35, avg * (point.y + 1) + 35);
             if (hand % 2 == 0) {
-                canvas.drawBitmap(readImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
+                canvas.drawBitmap(ReadImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
             } else {
-                canvas.drawBitmap(readImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
+                canvas.drawBitmap(ReadImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.BLACK);
             }
             if (hand < 9) {
@@ -192,6 +193,7 @@ public class ChessView extends View {
                 if (point != null && mEveryPlay.size() != 225) {
                     // 若点不为空，则刷新对应位置棋子的属性
                     setChessState(point);
+                    invalidate();
                     // 记录下每步操作，方便悔棋操作
                     mEveryPlay.add(point);
                     //播放下棋的声音
@@ -202,7 +204,8 @@ public class ChessView extends View {
                     //使用Ai算法内的的算法判断是否有人获胜了
                     AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, this);
                     if (alphaBetaCutBranch.isWin()) {
-                        mainActivity.showWinDialog(ChessView.isBlackPlay);
+                        winDialog = new WinDialog(getContext(), this);
+                        winDialog.getWinlDialog(isBlackPlay);
                     } else if (mEveryPlay.size() == 225) {
                         mainActivity.showDrawDialog();
                     }
@@ -247,7 +250,6 @@ public class ChessView extends View {
         } else {
             mChessArray[point.x][point.y].setColor(Chess.Color.WHITE);
         }
-        invalidate();
     }
 
     /**
