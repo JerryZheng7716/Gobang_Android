@@ -79,7 +79,7 @@ public class RecordDao {
     public static List<Record> searchAllRecord() {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         List<Record> list = new ArrayList<Record>();
-        Cursor cursor = db.query(DatabaseFiled.Tables.Record, null, null, new String[]{}, null, null, null);
+        Cursor cursor = db.query(DatabaseFiled.Tables.Record, null, null, new String[]{}, null, null, "id DESC");
         if (cursor.getCount() == 0) {
             return null;
         }else{
