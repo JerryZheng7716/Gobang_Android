@@ -2,75 +2,66 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:oneshot="true">
     <item
-        android:drawable="@drawable/logo_emc2_00"
+        android:drawable="@drawable/logo_flash01"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_01"
+        android:drawable="@drawable/logo_flash02"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_02"
+        android:drawable="@drawable/logo_flash03"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_03"
+        android:drawable="@drawable/logo_flash04"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_04"
+        android:drawable="@drawable/logo_flash05"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_05"
+        android:drawable="@drawable/logo_flash06"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_06"
+        android:drawable="@drawable/logo_flash07"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_07"
+        android:drawable="@drawable/logo_flash08"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_08"
+        android:drawable="@drawable/logo_flash09"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_09"
+        android:drawable="@drawable/logo_flash10"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_10"
+        android:drawable="@drawable/logo_flash11"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_11"
+        android:drawable="@drawable/logo_flash12"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_12"
+        android:drawable="@drawable/logo_flash13"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_13"
+        android:drawable="@drawable/logo_flash14"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_14"
+        android:drawable="@drawable/logo_flash15"
         android:duration="70" />
     <item
-        android:drawable="@drawable/logo_emc2_15"
-        android:duration="70" />
+        android:drawable="@drawable/logo_flash16"
+        android:duration="100" />
     <item
-        android:drawable="@drawable/logo_emc2_16"
-        android:duration="70" />
+        android:drawable="@drawable/logo_flash17"
+        android:duration="100" />
     <item
-        android:drawable="@drawable/logo_emc2_17"
-        android:duration="70" />
+        android:drawable="@drawable/logo_flash18"
+        android:duration="100" />
     <item
-        android:drawable="@drawable/logo_emc2_18"
-        android:duration="70" />
+        android:drawable="@drawable/logo_flash19"
+        android:duration="100" />
     <item
-        android:drawable="@drawable/logo_emc2_19"
-        android:duration="70" />
+        android:drawable="@drawable/logo_flash20"
+        android:duration="100" />
     <item
-        android:drawable="@drawable/logo_emc2_20"
-        android:duration="70" />
-    <item
-        android:drawable="@drawable/logo_emc2_21"
-        android:duration="70" />
-    <item
-        android:drawable="@drawable/logo_emc2_22"
-        android:duration="70" />
-    <item
-        android:drawable="@drawable/logo_emc2_23"
-        android:duration="70" />
+        android:drawable="@drawable/logo_flash21"
+        android:duration="1000" />
 </animation-list>
