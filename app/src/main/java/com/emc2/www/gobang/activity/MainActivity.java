@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                             playBackgroundMusic.stop();
                         } else {
                             btnMusic.setImageBitmap(readBitMap(R.drawable.btn_closemusic));
-                            playBackgroundMusic.play("back_music.wav", true);
+                            playBackgroundMusic.play("back_music.mp3", true);
                         }
                         isMusicOpen = !isMusicOpen;
                         break;

@@ -69,7 +69,7 @@ public class GameNotesDialog {
         CustomDialog.Builder builder = new CustomDialog.Builder(mainActivity);
         dialog = builder
                 .style(R.style.Dialog)
-                .heightDimenRes(1100)
+                .heightDimenRes(1600)
                 .widthDimenRes(1000)
                 .cancelTouchout(false)
                 .view(R.layout.record)

@@ -9,19 +9,19 @@ import com.emc2.www.gobang.view.ChessView;
 
 public class SituationAssessment {
     private static final int SCORE成五 = 9999999;
-    private static final int SCORE活四 = 100000;
+    private static final int SCORE活四 = 200000;
     private static final int SCORE冲四 = 200;
     private static final int SCORE跳四 = 120;
     private static final int SCORE活三 = 200;
-    private static final int SCORE跳活三 = 30;
-    private static final int SCORE眠三 = 15;
+    private static final int SCORE跳活三 = 70;
+    private static final int SCORE眠三 = 10;
     private static final int SCORE活二 = 20;
     private static final int SCORE跳活二 = 15;
     private static final int SCORE眠二 = 5;
-    private static final int SCORE双活三 = 10000;
+    private static final int FINAL_KILL = 10000;
     private static final int SCORE双冲四 = 10000;
     private static final int SCORE冲四活三 = 10000;
-    private static final int SCORE双活二 = 40;
+    private static final int SCORE双活二 = 50;
     private static final int SCORE活二眠二 = 20;
 
 
@@ -57,7 +57,7 @@ public class SituationAssessment {
         }
         int count = count跳活三 + count活三 + count跳四 + count冲四;
         if (count >= 2) {
-            score = score + SCORE双活三 * (1 + count跳四 + count冲四);
+            score = score + FINAL_KILL * (2 + count跳四 + count冲四);
 //            System.out.println(" count跳活三 + count活三 + count跳四 + count冲四: "+count跳活三 +":"+ count活三 +":"+ count跳四 +":"+ count冲四+": "+score);
         }
     }
@@ -487,7 +487,7 @@ public class SituationAssessment {
     private void is活四() {
         score = score + SCORE活四;
         if (isMe) {
-            score = score + SCORE双活三;
+            score = score + FINAL_KILL;
         }
     }
 
@@ -495,7 +495,7 @@ public class SituationAssessment {
         score = score + SCORE冲四;
         count冲四++;
         if (isMe) {
-            score = score + SCORE双活三;
+            score = score + FINAL_KILL;
         }
     }
 
@@ -505,7 +505,7 @@ public class SituationAssessment {
             score += 20;
         }
         if (isMe) {
-            score = score + SCORE双活三;
+            score = score + FINAL_KILL;
         }
         count活三++;
     }
@@ -513,7 +513,7 @@ public class SituationAssessment {
     private void is跳活三() {
         score = score + SCORE跳活三;
         if (isMe) {
-            score = score + SCORE双活三;
+            score = score + FINAL_KILL;
         }
         count跳活三++;
     }
@@ -522,7 +522,7 @@ public class SituationAssessment {
         score = score + SCORE跳四;
         count跳四++;
         if (isMe) {
-            score = score + SCORE双活三;
+            score = score + FINAL_KILL;
         }
     }
 
