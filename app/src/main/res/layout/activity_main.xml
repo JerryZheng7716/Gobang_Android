@@ -95,12 +95,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="-10dp">
 
-            <ImageView
-                android:id="@+id/chess_board"
-                android:layout_width="match_parent"
-                android:layout_height="370dp"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_chessbord" />
+            <!--<ImageView-->
+                <!--android:id="@+id/chess_board"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="370dp"-->
+                <!--android:scaleType="fitCenter"-->
+                <!--app:srcCompat="@drawable/ic_chessbord" />-->
 
             <com.emc2.www.gobang.view.ChessView
                 android:id="@+id/chessView"
@@ -122,7 +122,7 @@
             android:id="@+id/btn_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-20dp"
+            android:paddingTop="8dp"
             android:orientation="horizontal">
 
             <ImageView

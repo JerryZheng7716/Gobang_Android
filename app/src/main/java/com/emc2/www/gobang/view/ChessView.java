@@ -37,9 +37,11 @@ public class ChessView extends View {
     private Paint mBgPaint;
     private Paint mLastChessPointPaint;
     private Paint mNumberPaint;
+    private Paint mTextPaint;
     public Chess[][] mChessArray;
     public List<Point> mEveryPlay;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
+    private String[] textLetter,textNumber;
     private ReadImage readImage = new ReadImage();
     public MainActivity mainActivity;
     private WinDialog winDialog;
@@ -56,6 +58,8 @@ public class ChessView extends View {
     public ChessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mainActivity = (MainActivity) context;
+        textNumber=new String[]{"1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"};
+        textLetter=new String[]{"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"};
         initEveryPlay();
         initChess();
         initBoardPaint();
@@ -63,6 +67,7 @@ public class ChessView extends View {
         initLastChessPointPaint();
         initBgPaint();
         initNumberPaint();
+        initTextPaint();
     }
 
     private void initEveryPlay() {
@@ -105,14 +110,23 @@ public class ChessView extends View {
 
     private void initNumberPaint() {
         mNumberPaint = new Paint();
-        mNumberPaint.setTextSize(35);
+        int x=getMeasuredWidth();
+        mNumberPaint.setTextSize((float) (x*0.03));
         mNumberPaint.setColor(Color.BLACK);
         mNumberPaint.setStrokeWidth(2);
+    }
+    private void initTextPaint(){
+        mTextPaint = new Paint();
+        int x=getMeasuredWidth();
+        mTextPaint.setTextSize((float) (x*0.03));
+        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setStrokeWidth(2);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
+        initTextPaint();
+        initNumberPaint();
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
@@ -130,19 +144,33 @@ public class ChessView extends View {
         avg = (height) / 16;
 
 //        canvas.drawRect(0, 0, width, height, mBgPaint);
-//        for (int i = 1; i < 16; i++) {
-//            // 画竖线
-//            canvas.drawLine(avg * i, avg, avg * i, height - avg, mBoardPaint);
-//            // 画横线
-//            canvas.drawLine(avg, avg * i, width - avg, avg * i, mBoardPaint);
-//        }
+        for (int i = 1; i < 16; i++) {
+            // 画竖线
+            canvas.drawLine(avg * i, avg, avg * i, height - avg-13, mBoardPaint);
+            // 画横线
+            canvas.drawLine(avg, avg * i, width - avg-13, avg * i, mBoardPaint);
+        }
         int hand = 0;
         Point point;
+        int x=15;
+        for (int i = 0; i < 15; i++) {
+            if (i<9){
+                canvas.drawText(textNumber[i], avg-(2*x) , avg*(i+1)+x, mTextPaint);
+            }else {
+                canvas.drawText(textNumber[i], avg-(3*x) , avg*(i+1)+x, mTextPaint);
+            }
+
+            canvas.drawText(textLetter[i], avg*(i+1)-x , avg-x, mTextPaint);
+        }
+
         while (hand < mEveryPlay.size()) {
             point = mEveryPlay.get(hand);
             Rect mSrcRect, mDestRect;
-            mSrcRect = new Rect(0, 0, 500, 500);
-            mDestRect = new Rect(avg * (point.x + 1) - 35, avg * (point.y + 1) - 35, avg * (point.x + 1) + 35, avg * (point.y + 1) + 35);
+            int size=3;
+            mSrcRect = new Rect(0, 0, (int) (avg*size), (int) (avg*size));
+            float size2=0.5f;
+            mDestRect = new Rect((int) (avg * (point.x + 1)+avg*size2), (int) (avg * (point.y + 1)+avg*size2),
+                    (int) (avg * (point.x  +1)-avg*size2), (int) (avg * (point.y  +1)-avg*size2));
             if (hand % 2 == 0) {
                 canvas.drawBitmap(ReadImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
@@ -163,6 +191,7 @@ public class ChessView extends View {
                 point = mEveryPlay.get(mEveryPlay.size() - 1);
                 canvas.drawCircle(avg * (point.x + 1), avg * (point.y + 1), 8, mLastChessPointPaint);
             }
+
         }
 
 
@@ -170,7 +199,9 @@ public class ChessView extends View {
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
+
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
