@@ -2,6 +2,8 @@ package com.emc2.www.gobang.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.emc2.www.gobang.util.FormatDate;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class WinDialog {
     private Context context;
@@ -106,6 +109,18 @@ public class WinDialog {
             textView.setText("恭喜！白方获胜！！！");
             winner="持白";
         }
-        RecordDao.insertRecords(time,blackPlayer,whitePlayer,mainActivity.chessView.mEveryPlay.size(),winner,mainActivity);
+        List<Point> mEveryPlay = mainActivity.chessView.mEveryPlay;
+        int hand=0;
+        Point point;
+        StringBuilder chessMap= new StringBuilder();
+        while (hand< mEveryPlay.size()) {
+            point = mEveryPlay.get(hand);
+            Rect mSrcRect, mDestRect;
+            int x=point.x;
+            int y =point.y;
+            chessMap.append(" ").append(x).append(" ").append(y);
+            hand++;
+        }
+        RecordDao.insertRecords(time,blackPlayer,whitePlayer,mEveryPlay.size(),winner,chessMap.toString(),mainActivity);
     }
 }

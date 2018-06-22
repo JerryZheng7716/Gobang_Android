@@ -10,7 +10,7 @@ import com.emc2.www.gobang.view.ChessView;
 public class SituationAssessment {
     private static final int SCORE成五 = 9999999;
     private static final int SCORE活四 = 200000;
-    private static final int SCORE冲四 = 200;
+    private static final int SCORE冲四 = 300;
     private static final int SCORE跳四 = 120;
     private static final int SCORE活三 = 200;
     private static final int SCORE跳活三 = 70;

@@ -16,15 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE " + DatabaseFiled.Tables.Record + " ("
-                + DatabaseFiled.Record.ID + " INTEGER  PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseFiled.Record.WINNER + " TEXT NOT NULL,"
-                + DatabaseFiled.Record.CHESSCOUNT + " INTEGER NOT NULL,"
-                + DatabaseFiled.Record.TIME + " TEXT NOT NULL,"
-                + DatabaseFiled.Record.WHITEPAYER + " TEXT NOT NULL,"
-                + DatabaseFiled.Record.BLACKPLAYER + " TEXT NOT NULL"
-                + ");";
-        db.execSQL(sql);
+        createTableDiary( db);
     }
 
     @Override
@@ -39,10 +31,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sql = "CREATE TABLE " + DatabaseFiled.Tables.Record + " ("
                 + DatabaseFiled.Record.ID + " INTEGER  PRIMARY KEY AUTOINCREMENT, "
                 + DatabaseFiled.Record.WINNER + " TEXT NOT NULL,"
-                + DatabaseFiled.Record.CHESSCOUNT + " INTEGER NOT NULL,"
+                + DatabaseFiled.Record.CHESS_COUNT + " INTEGER NOT NULL,"
                 + DatabaseFiled.Record.TIME + " TEXT NOT NULL,"
-                + DatabaseFiled.Record.WHITEPAYER + " TEXT NOT NULL,"
-                + DatabaseFiled.Record.BLACKPLAYER + " TEXT NOT NULL"
+                + DatabaseFiled.Record.WHITE_PAYER + " TEXT NOT NULL,"
+                + DatabaseFiled.Record.BLACK_PLAYER + " TEXT NOT NULL,"
+                + DatabaseFiled.Record.CHESS_MAP + " TEXT NOT NULL"
                 + ");";
         db.execSQL(sql);
     }
