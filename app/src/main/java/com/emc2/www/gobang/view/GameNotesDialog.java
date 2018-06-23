@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.activity.MainActivity;
@@ -73,8 +74,8 @@ public class GameNotesDialog {
         CustomDialog.Builder builder = new CustomDialog.Builder(mainActivity);
         dialog = builder
                 .style(R.style.Dialog)
-                .heightDimenRes(1600)
-                .widthDimenRes(1000)
+                .heightDimenRes(83)
+                .widthDimenRes(90)
                 .cancelTouchout(false)
                 .view(R.layout.record)
                 .addViewOnclick(R.id.ok_btn, listener)
@@ -165,6 +166,7 @@ public class GameNotesDialog {
                 }
                 mainActivity.chessView.mEveryPlay=mEveryPlay;
                 mainActivity.chessView.invalidate();
+                Toast.makeText(mainActivity,"成功恢复记录 "+id+" 的对局棋盘",Toast.LENGTH_SHORT).show();
             }
         });
     }

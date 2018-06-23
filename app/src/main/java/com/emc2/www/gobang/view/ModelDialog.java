@@ -242,8 +242,8 @@ public class ModelDialog {
         CustomDialog.Builder builder = new CustomDialog.Builder(mainActivity);
         dialog = builder
                 .style(R.style.Dialog)
-                .heightDimenRes(1100)
-                .widthDimenRes(700)
+                .heightDimenRes(57)
+                .widthDimenRes(70)
                 .cancelTouchout(false)
                 .view(R.layout.model_dialog)
                 .addViewOnclick(R.id.cancel_btn, listener)

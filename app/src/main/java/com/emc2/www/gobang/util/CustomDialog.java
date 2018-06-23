@@ -3,6 +3,7 @@ package com.emc2.www.gobang.util;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,14 +90,22 @@ public class CustomDialog extends Dialog {
 //        }
 
         public Builder heightDimenRes(int dimenRes) {
-//            height = context.getResources().getDimensionPixelOffset(dimenRes);
-            height = dimenRes;
+            DisplayMetrics dm;
+            dm = context.getApplicationContext().getResources().getDisplayMetrics();
+            int screenHeight = dm.heightPixels;
+            System.out.println(screenHeight+" -------------");
+            height = screenHeight*dimenRes/100;
+            System.out.println(height+"++++++++++");
+//            height = dimenRes;
             return this;
         }
 
         public Builder widthDimenRes(int dimenRes) {
-//            width = context.getResources().getDimensionPixelOffset(dimenRes);
-            width = dimenRes;
+            DisplayMetrics dm;
+            dm = context.getApplicationContext().getResources().getDisplayMetrics();
+            int screenWidth = dm.widthPixels;
+            width = screenWidth*dimenRes/100;
+//            width = dimenRes;
             return this;
         }
 

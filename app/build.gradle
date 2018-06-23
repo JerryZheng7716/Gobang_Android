@@ -6,8 +6,8 @@ android {
         applicationId "com.emc2.www.gobang"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 2
-        versionName "beta 1.2 加入对高分屏，全面屏的支持"
+        versionCode 3
+        versionName "beta 2.0 修复高分屏显示错误，加入点击记录提示，修改悔棋逻辑"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

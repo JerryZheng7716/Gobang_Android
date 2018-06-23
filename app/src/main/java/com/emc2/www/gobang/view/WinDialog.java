@@ -53,8 +53,8 @@ public class WinDialog {
         CustomDialog.Builder builder = new CustomDialog.Builder(context);
         dialog = builder
                 .style(R.style.Dialog)
-                .heightDimenRes(600)
-                .widthDimenRes(700)
+                .heightDimenRes(30)
+                .widthDimenRes(70)
                 .cancelTouchout(false)
                 .view(R.layout.win_dialog)
                 .addViewOnclick(R.id.return_and_check, listener)

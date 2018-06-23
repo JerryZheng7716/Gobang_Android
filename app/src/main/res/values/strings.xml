@@ -13,6 +13,7 @@
     <string name="determine">确定</string>
     <string name="return_and_check">返回查看</string>
     <string name="restart">重新开始</string>
+    <string name="record_ps">点击记录可恢复对局棋盘</string>
     <string-array name="game_level">
         <item>入门学童</item>
         <item>小有研究</item>

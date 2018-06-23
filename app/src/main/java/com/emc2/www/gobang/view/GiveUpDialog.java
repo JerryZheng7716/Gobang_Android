@@ -39,8 +39,8 @@ public class GiveUpDialog {
         CustomDialog.Builder builder = new CustomDialog.Builder(mainActivity);
         dialog = builder
                 .style(R.style.Dialog)
-                .heightDimenRes(600)
-                .widthDimenRes(700)
+                .heightDimenRes(30)
+                .widthDimenRes(70)
                 .cancelTouchout(false)
                 .view(R.layout.give_up_dialog)
                 .addViewOnclick(R.id.cancel_btn, listener)

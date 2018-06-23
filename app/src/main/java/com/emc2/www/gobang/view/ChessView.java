@@ -139,7 +139,7 @@ public class ChessView extends View {
     @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
-        int height = getMeasuredHeight() + 48;
+        int height =getMeasuredHeight() + 48;
         int width = getMeasuredWidth() + 48;
         avg = (height) / 16;
 
@@ -335,6 +335,9 @@ public class ChessView extends View {
         Point point = mEveryPlay.get(mEveryPlay.size() - 1);
         mChessArray[point.x][point.y].setColor(Chess.Color.NONE);
         mEveryPlay.remove(mEveryPlay.size() - 1);
+        if(mainActivity.getAiLevel(Chess.WHITE_CHESS)*mainActivity.getAiLevel(Chess.BLACK_CHESS)<0){
+             mEveryPlay.remove(mEveryPlay.size() - 1);//如果是人机博弈，那么悔棋一次悔两步。
+        }
         isLocked = false;
         isBlackPlay = !isBlackPlay;
         invalidate();
