@@ -335,8 +335,10 @@ public class ChessView extends View {
         Point point = mEveryPlay.get(mEveryPlay.size() - 1);
         mChessArray[point.x][point.y].setColor(Chess.Color.NONE);
         mEveryPlay.remove(mEveryPlay.size() - 1);
-        if(mainActivity.getAiLevel(Chess.WHITE_CHESS)*mainActivity.getAiLevel(Chess.BLACK_CHESS)<0){
-             mEveryPlay.remove(mEveryPlay.size() - 1);//如果是人机博弈，那么悔棋一次悔两步。
+        if(mainActivity.getAiLevel(Chess.WHITE_CHESS)*mainActivity.getAiLevel(Chess.BLACK_CHESS)<=0){
+            if(!(mainActivity.getAiLevel(Chess.WHITE_CHESS)==0&&mainActivity.getAiLevel(Chess.BLACK_CHESS)==0))
+                if (mEveryPlay.size()!=0)
+                    mEveryPlay.remove(mEveryPlay.size() - 1);//如果是人机博弈，那么悔棋一次悔两步。
         }
         isLocked = false;
         isBlackPlay = !isBlackPlay;
