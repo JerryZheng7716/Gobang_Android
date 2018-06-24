@@ -1,12 +1,9 @@
 package com.emc2.www.gobang.view;
 
-import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.activity.MainActivity;
-import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.CustomDialog;
 
 public class GiveUpDialog {
@@ -29,7 +26,7 @@ public class GiveUpDialog {
                     case R.id.ok_btn:
                         winDialog = new WinDialog(mainActivity, mainActivity.chessView);
                         winDialog.getWinlDialog(ChessView.isBlackPlay);
-                        ModelDialog.aiFightFlag=false;
+                        ModelDialog.aiFightFlag = false;
                         dialog.dismiss();
                         break;
                 }

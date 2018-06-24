@@ -8,7 +8,7 @@ import java.util.Date;
 
 
 public class FormatDate {
-    public static String changeDate(String time)  {
+    public static String changeDate(String time) {
         //格式化时间
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -18,7 +18,7 @@ public class FormatDate {
 //        String[] strings1 = strings[1].split("\\.");
 //        date = strings[0] + " " + strings1[0];
         Date now;
-        Date date= null;
+        Date date = null;
         try {
             date = sdf.parse(time);
         } catch (ParseException e) {

@@ -29,7 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome_activity);
         imageView = findViewById(R.id.logo);
-        welcom_text=findViewById(R.id.welcome_text);
+        welcom_text = findViewById(R.id.welcome_text);
         imageView.setImageResource(R.drawable.logo);
         AnimationDrawable animationDrawable = (AnimationDrawable) imageView.getDrawable();
         Date dt = new Date();
