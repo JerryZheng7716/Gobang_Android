@@ -10,9 +10,10 @@ public final class DatabaseFiled {
 
     public static final class Record {
         public static final String WINNER = "winner";
-        public static final String CHESSCOUNT = "chessCount";
-        public static final String WHITEPAYER = "whitePlayer";
-        public static final String BLACKPLAYER = "blackPlayer";
+        public static final String CHESS_COUNT = "chessCount";
+        public static final String WHITE_PAYER = "whitePlayer";
+        public static final String BLACK_PLAYER = "blackPlayer";
+        public static final String CHESS_MAP = "chess_map";
         public static final String TIME = "time";
         public static final String ID = "id";
     }

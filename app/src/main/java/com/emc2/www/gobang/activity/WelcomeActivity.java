@@ -35,25 +35,7 @@ public class WelcomeActivity extends AppCompatActivity {
         Date dt = new Date();
         Long time = dt.getTime();
         animationDrawable.start();
-
-        Animation animationWait = AnimationUtils.loadAnimation(this, R.anim.wait);
-        imageView.startAnimation(animationWait);
-        animationWait.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                alpha();
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+        alpha();
     }
 
     public void alpha() {

@@ -38,23 +38,23 @@ public class AiTread implements Runnable {
         if (chessView.mEveryPlay.size() == 0) {
             Point point = new Point(7, 7);
             chessView.setChessState(point);
-            HandlerMessage.sendMessage(handler,HandlerMessage.REPAINT_CHESS);
+            HandlerMessage.sendMessage(handler, HandlerMessage.REPAINT_CHESS);
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
             ChessView.isBlackPlay = !ChessView.isBlackPlay;
         } else if (AI.xChess != -1 && AI.yChess != -1 && chessView.mEveryPlay.size() != 225) {
             Point point = new Point(AI.xChess, AI.yChess);
             chessView.setChessState(point);
-            HandlerMessage.sendMessage(handler,HandlerMessage.REPAINT_CHESS);
+            HandlerMessage.sendMessage(handler, HandlerMessage.REPAINT_CHESS);
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
 //使用Ai算法内的的算法判断是否有人获胜了
             AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, chessView);
             if (alphaBetaCutBranch.isWin()) {
                 if (ChessView.isBlackPlay) {
-                    HandlerMessage.sendMessage(handler,HandlerMessage.SHOW_WIN_DIALOG_BLACK);
+                    HandlerMessage.sendMessage(handler, HandlerMessage.SHOW_WIN_DIALOG_BLACK);
                 } else {
-                    HandlerMessage.sendMessage(handler,HandlerMessage.SHOW_WIN_DIALOG_WHITE);
+                    HandlerMessage.sendMessage(handler, HandlerMessage.SHOW_WIN_DIALOG_WHITE);
                 }
             } else if (chessView.mEveryPlay.size() == 225) {
                 Message message = handler.obtainMessage(300);
@@ -64,7 +64,7 @@ public class AiTread implements Runnable {
             AI.xChess = -1;
             AI.yChess = -1;
             ChessView.isBlackPlay = !ChessView.isBlackPlay;
-            HandlerMessage.sendMessage(handler,HandlerMessage.REPAINT_CHESS);//重新绘制
+            HandlerMessage.sendMessage(handler, HandlerMessage.REPAINT_CHESS);//重新绘制
             PlayAudio playChessSound;
             playChessSound = PlayAudio.getChessAudioInstance(chessView.getContext());
             if (MainActivity.isSoundOpen)

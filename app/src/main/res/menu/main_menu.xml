@@ -13,4 +13,10 @@
         android:orderInCategory="200"
         android:title="@string/game_notes"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/feedback"
+        android:icon="@mipmap/ic_launcher"
+        android:orderInCategory="200"
+        android:title="@string/feedback"
+        app:showAsAction="never" />
 </menu>

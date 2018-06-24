@@ -3,65 +3,110 @@
     android:oneshot="true">
     <item
         android:drawable="@drawable/logo_flash01"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash02"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash03"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash04"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash05"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash06"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash07"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash08"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash09"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash10"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash11"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash12"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash13"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash14"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash15"
-        android:duration="70" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash16"
-        android:duration="100" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash17"
-        android:duration="100" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash18"
-        android:duration="100" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash19"
-        android:duration="100" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash20"
-        android:duration="100" />
+        android:duration="50" />
     <item
         android:drawable="@drawable/logo_flash21"
-        android:duration="1000" />
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash22"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash23"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash24"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash25"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash26"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash27"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash28"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash29"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash30"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash31"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash32"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash33"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash34"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash35"
+        android:duration="50" />
+    <item
+        android:drawable="@drawable/logo_flash36"
+        android:duration="50" />
 </animation-list>

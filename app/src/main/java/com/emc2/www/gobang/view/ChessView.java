@@ -36,10 +36,13 @@ public class ChessView extends View {
     private Paint mChessPaint;
     private Paint mBgPaint;
     private Paint mLastChessPointPaint;
+    private Paint mAidPointPaint;
     private Paint mNumberPaint;
+    private Paint mTextPaint;
     public Chess[][] mChessArray;
     public List<Point> mEveryPlay;
     public int testX1 = 0, testY1 = 0, testX2 = 0, testY2 = 0, testX3 = 0, testY3 = 0, testX4 = 0, testY4 = 0;
+    private String[] textLetter, textNumber;
     private ReadImage readImage = new ReadImage();
     public MainActivity mainActivity;
     private WinDialog winDialog;
@@ -56,6 +59,8 @@ public class ChessView extends View {
     public ChessView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mainActivity = (MainActivity) context;
+        textNumber = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"};
+        textLetter = new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O"};
         initEveryPlay();
         initChess();
         initBoardPaint();
@@ -63,6 +68,8 @@ public class ChessView extends View {
         initLastChessPointPaint();
         initBgPaint();
         initNumberPaint();
+        initTextPaint();
+        initidPointPaint();
     }
 
     private void initEveryPlay() {
@@ -105,14 +112,30 @@ public class ChessView extends View {
 
     private void initNumberPaint() {
         mNumberPaint = new Paint();
-        mNumberPaint.setTextSize(35);
+        int x = getMeasuredWidth();
+        mNumberPaint.setTextSize((float) (x * 0.03));
         mNumberPaint.setColor(Color.BLACK);
         mNumberPaint.setStrokeWidth(2);
     }
 
+    private void initTextPaint() {
+        mTextPaint = new Paint();
+        int x = getMeasuredWidth();
+        mTextPaint.setTextSize((float) (x * 0.03));
+        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setStrokeWidth(2);
+    }
+
+    private void initidPointPaint() {
+        mAidPointPaint = new Paint();
+        mAidPointPaint.setColor(Color.BLACK);
+        mAidPointPaint.setStrokeWidth(2);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
+        initTextPaint();
+        initNumberPaint();
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
@@ -130,19 +153,44 @@ public class ChessView extends View {
         avg = (height) / 16;
 
 //        canvas.drawRect(0, 0, width, height, mBgPaint);
-//        for (int i = 1; i < 16; i++) {
-//            // 画竖线
-//            canvas.drawLine(avg * i, avg, avg * i, height - avg, mBoardPaint);
-//            // 画横线
-//            canvas.drawLine(avg, avg * i, width - avg, avg * i, mBoardPaint);
-//        }
+        for (int i = 1; i < 16; i++) {
+            // 画竖线
+            canvas.drawLine(avg * i, avg, avg * i, height - avg - 13, mBoardPaint);
+            // 画横线
+            canvas.drawLine(avg, avg * i, width - avg - 13, avg * i, mBoardPaint);
+        }
+        canvas.drawCircle(avg * (3 + 1), avg * (3 + 1), 8, mAidPointPaint);
+        canvas.drawCircle(avg * (7 + 1), avg * (3 + 1), 8, mAidPointPaint);
+        canvas.drawCircle(avg * (11 + 1), avg * (3 + 1), 8, mAidPointPaint);
+
+        canvas.drawCircle(avg * (3 + 1), avg * (7 + 1), 8, mAidPointPaint);
+        canvas.drawCircle(avg * (7 + 1), avg * (7 + 1), 8, mAidPointPaint);
+        canvas.drawCircle(avg * (11 + 1), avg * (7 + 1), 8, mAidPointPaint);
+
+        canvas.drawCircle(avg * (3 + 1), avg * (11 + 1), 8, mAidPointPaint);
+        canvas.drawCircle(avg * (7 + 1), avg * (11 + 1), 8, mAidPointPaint);
+        canvas.drawCircle(avg * (11 + 1), avg * (11 + 1), 8, mAidPointPaint);
         int hand = 0;
         Point point;
+        int x = 15;
+        for (int i = 0; i < 15; i++) {
+            if (i < 9) {
+                canvas.drawText(textNumber[i], avg - (2 * x), avg * (i + 1) + x, mTextPaint);
+            } else {
+                canvas.drawText(textNumber[i], avg - (3 * x), avg * (i + 1) + x, mTextPaint);
+            }
+
+            canvas.drawText(textLetter[i], avg * (i + 1) - x, avg - x, mTextPaint);
+        }
+
         while (hand < mEveryPlay.size()) {
             point = mEveryPlay.get(hand);
             Rect mSrcRect, mDestRect;
-            mSrcRect = new Rect(0, 0, 500, 500);
-            mDestRect = new Rect(avg * (point.x + 1) - 35, avg * (point.y + 1) - 35, avg * (point.x + 1) + 35, avg * (point.y + 1) + 35);
+            int size = 3;
+            mSrcRect = new Rect(0, 0, (int) (avg * size), (int) (avg * size));
+            float size2 = 0.5f;
+            mDestRect = new Rect((int) (avg * (point.x + 1) + avg * size2), (int) (avg * (point.y + 1) + avg * size2),
+                    (int) (avg * (point.x + 1) - avg * size2), (int) (avg * (point.y + 1) - avg * size2));
             if (hand % 2 == 0) {
                 canvas.drawBitmap(ReadImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
@@ -164,13 +212,13 @@ public class ChessView extends View {
                 canvas.drawCircle(avg * (point.x + 1), avg * (point.y + 1), 8, mLastChessPointPaint);
             }
         }
-
-
         canvas.drawCircle(avg * (testY1 + 1), avg * (testX1 + 1), 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
 //        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
+
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -196,6 +244,17 @@ public class ChessView extends View {
                     invalidate();
                     // 记录下每步操作，方便悔棋操作
                     mEveryPlay.add(point);
+                    boolean egg = true;
+                    if (mEveryPlay.size() == 9) {
+                        for (int i = 0; i < mEveryPlay.size(); i++) {
+                            point = mEveryPlay.get(i);
+                            egg = inEgg(point.x, point.y);
+                        }
+                        if (egg) {
+                            EggDialog eggDialog = new EggDialog(mainActivity);
+                            eggDialog.getEggDialog();
+                        }
+                    }
                     //播放下棋的声音
                     PlayAudio playChessSound;
                     playChessSound = PlayAudio.getChessAudioInstance(mainActivity);
@@ -304,6 +363,14 @@ public class ChessView extends View {
         Point point = mEveryPlay.get(mEveryPlay.size() - 1);
         mChessArray[point.x][point.y].setColor(Chess.Color.NONE);
         mEveryPlay.remove(mEveryPlay.size() - 1);
+        if (mainActivity.getAiLevel(Chess.WHITE_CHESS) * mainActivity.getAiLevel(Chess.BLACK_CHESS) <= 0) {
+            if (!(mainActivity.getAiLevel(Chess.WHITE_CHESS) == 0 && mainActivity.getAiLevel(Chess.BLACK_CHESS) == 0))
+                if (mEveryPlay.size() != 0) {
+                    point = mEveryPlay.get(mEveryPlay.size() - 1);
+                    mChessArray[point.x][point.y].setColor(Chess.Color.NONE);
+                    mEveryPlay.remove(mEveryPlay.size() - 1);//如果是人机博弈，那么悔棋一次悔两步。
+                }
+        }
         isLocked = false;
         isBlackPlay = !isBlackPlay;
         invalidate();
@@ -326,6 +393,17 @@ public class ChessView extends View {
 
     public int getAiLevel(int who) {
         return mainActivity.getAiLevel(who);
+    }
+
+    private boolean inEgg(int x, int y) {
+        int[][] points = new int[][]{{3, 3}, {3, 7}, {3, 11}, {7, 3}, {7, 7}, {7, 11}, {11, 3}, {11, 7}, {11, 11}};
+        boolean flag = false;
+        for (int i = 0; i < 9; i++) {
+            if (points[i][0] == x || points[i][1] == y) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
 }

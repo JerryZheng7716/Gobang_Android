@@ -34,6 +34,7 @@ import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
 import com.emc2.www.gobang.util.PlayAudio;
 import com.emc2.www.gobang.view.ChessView;
+import com.emc2.www.gobang.view.FeedBackDialog;
 import com.emc2.www.gobang.view.GameNotesDialog;
 import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public static boolean isSoundOpen = true;
     public int levelBlackAi = -1, levelWhiteAi = -1;
     private ModelDialog modelDialog;
+    private FeedBackDialog feedBackDialog;
     ImageView imageViewWhiteChess, imageViewBlackChess;
     Window window;
     PlayAudio playBtnSound, playBackgroundMusic, playChessSound;
@@ -127,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         animationDrawableBlack = (AnimationDrawable) imageViewBlackChess.getDrawable();
         if (!checkDeviceHasNavigationBar(this)) {//适配没有虚拟按键的设备
             playerLayout.setPadding(0, 20, 0, 10);
-            chessBoard.setPadding(0, 20, 0, 0);
-            btnLayout.setPadding(0, 60, 0, 0);
+//            chessBoard.setPadding(0, 20, 0, 0);
+            btnLayout.setPadding(0, 30, 0, 0);
         }
         playBackgroundMusic = PlayAudio.getMusicInstance(this);
         playChessSound = PlayAudio.getChessAudioInstance(this);
@@ -241,7 +243,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 gameNotesDialog = new GameNotesDialog(this);
                 gameNotesDialog.getModelDialog();
                 break;
-
+            case R.id.feedback:
+                feedBackDialog = new FeedBackDialog(MainActivity.this);
+                feedBackDialog.getFeedBackDialog();
+                break;
             default:
                 break;
         }
@@ -267,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
         imageViewBlackChess = findViewById(R.id.chess_black);
         background = findViewById(R.id.background);
         background.setImageBitmap(readBitMap(R.drawable.old_paper));
-        chessBoard = findViewById(R.id.chess_board);
+//        chessBoard = findViewById(R.id.chess_board);
         playerLayout = findViewById(R.id.player_layout);
         btnLayout = findViewById(R.id.btn_layout);
         chessView = findViewById(R.id.chessView);
