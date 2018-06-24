@@ -46,7 +46,7 @@ public class FeedBackDialog {
                         feedback_edit_text = dialog.findViewById(R.id.feedback_edit_text);
                         String feedString;
                         feedString = feedback_edit_text.getText().toString();
-                        MailSend mailSend = new MailSend(getHandSetInfo()+"用户反馈信息："+feedString);
+                        MailSend mailSend = new MailSend(getHandSetInfo() + "用户反馈信息：" + feedString);
                         Thread thread = new Thread(mailSend);
                         thread.start();
                         Toast.makeText(context, "感谢您的反馈，我们会尽快处理您问题", Toast.LENGTH_SHORT).show();
@@ -74,14 +74,15 @@ public class FeedBackDialog {
                 "手机型号: " + android.os.Build.MODEL +
                         ", SDK版本: " + android.os.Build.VERSION.SDK +
                         ", 系统版本: " + android.os.Build.VERSION.RELEASE +
-                        ", 软件内部版本号: " +getLocalVersion(context)+
-                        ", 软件版本名："+getLocalVersionName(context)+
+                        ", 软件内部版本号: " + getLocalVersion(context) +
+                        ", 软件版本名：" + getLocalVersionName(context) +
                         "。 ";
         return handSetInfo;
     }
 
     /**
      * 获取软件的版本号
+     *
      * @param ctx activity
      * @return localVersion
      */
@@ -100,6 +101,7 @@ public class FeedBackDialog {
 
     /**
      * 获取软件的版本名称
+     *
      * @param ctx activity
      * @return localVersion
      */

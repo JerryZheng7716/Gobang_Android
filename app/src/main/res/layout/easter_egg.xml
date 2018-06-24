@@ -26,6 +26,7 @@
         android:text="郑健磊 罗珊 余豪士"
         android:textColor="@color/dialog_text"
         android:textSize="@dimen/dialog_tittle_size" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,6 +34,7 @@
         android:text="温州商学院 15计本1班"
         android:textColor="@color/dialog_text"
         android:textSize="@dimen/dialog_tittle_size" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +42,7 @@
         android:text="2018年6月24日"
         android:textColor="@color/dialog_text"
         android:textSize="@dimen/dialog_tittle_size" />
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

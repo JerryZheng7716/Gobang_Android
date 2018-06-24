@@ -54,14 +54,14 @@ public class AI {
         ArrayList<Node> nodes;
         AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, player, -999993333, 999993333, 1, chessView);
         nodes = alphaBetaCutBranch.getSortNodes();
-        System.out.println("第一层共有 "+nodes.size()+" 个节点");
+        System.out.println("第一层共有 " + nodes.size() + " 个节点");
 //        for (Node n:nodes
 //             ) {
 //            System.out.println(n.getScore()+" : "+n.getX()+" : "+n.getY());
 //        }
         if (alphaBetaCutBranch.sa.getNextChessIsWin()) {
             score = 999990000;
-            if (nodes.size()!=0){
+            if (nodes.size() != 0) {
                 AI.xChess = nodes.get(0).getY() - 4;
                 AI.yChess = nodes.get(0).getX() - 4;
                 alphaBetaCutBranch.sa.setNextChessIsWin(false);
@@ -88,7 +88,7 @@ public class AI {
                 calculationPoint1[i + 1][0] = nodes.get(i).getX();
                 calculationPoint1[i + 1][1] = nodes.get(i).getY();
                 calculationPoint1[0][0]++;
-            } else if (cycle==4) {
+            } else if (cycle == 4) {
                 calculationPoint4[++calculationPoint4[0][0]][0] = nodes.get(i).getX();
                 calculationPoint4[calculationPoint4[0][0]][1] = nodes.get(i).getY();
                 cycle--;
@@ -103,7 +103,7 @@ public class AI {
             } else {
                 calculationPoint1[++calculationPoint1[0][0]][0] = nodes.get(i).getX();
                 calculationPoint1[calculationPoint1[0][0]][1] = nodes.get(i).getY();
-                cycle=4;
+                cycle = 4;
             }
         }
         AlphaBetaCutBranch alphaBetaCutBranch1 = new AlphaBetaCutBranch(0, deep, player, -999991212, 999991212, 1, chessView);

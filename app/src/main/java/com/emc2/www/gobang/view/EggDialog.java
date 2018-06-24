@@ -1,6 +1,8 @@
 package com.emc2.www.gobang.view;
+
 import android.content.Context;
 import android.view.View;
+
 import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.util.CustomDialog;
 

@@ -244,13 +244,13 @@ public class ChessView extends View {
                     invalidate();
                     // 记录下每步操作，方便悔棋操作
                     mEveryPlay.add(point);
-                    boolean egg=true;
-                    if (mEveryPlay.size()==9){
+                    boolean egg = true;
+                    if (mEveryPlay.size() == 9) {
                         for (int i = 0; i < mEveryPlay.size(); i++) {
                             point = mEveryPlay.get(i);
-                            egg=inEgg(point.x,point.y);
+                            egg = inEgg(point.x, point.y);
                         }
-                        if (egg){
+                        if (egg) {
                             EggDialog eggDialog = new EggDialog(mainActivity);
                             eggDialog.getEggDialog();
                         }
@@ -395,12 +395,12 @@ public class ChessView extends View {
         return mainActivity.getAiLevel(who);
     }
 
-    private boolean inEgg(int x,int y){
-        int[][] points=new int[][]{{3,3},{3,7},{3,11},{7,3},{7,7},{7,11},{11,3},{11,7},{11,11}};
-        boolean flag=false;
+    private boolean inEgg(int x, int y) {
+        int[][] points = new int[][]{{3, 3}, {3, 7}, {3, 11}, {7, 3}, {7, 7}, {7, 11}, {11, 3}, {11, 7}, {11, 11}};
+        boolean flag = false;
         for (int i = 0; i < 9; i++) {
-            if (points[i][0]==x||points[i][1]==y){
-                flag=true;
+            if (points[i][0] == x || points[i][1] == y) {
+                flag = true;
             }
         }
         return flag;

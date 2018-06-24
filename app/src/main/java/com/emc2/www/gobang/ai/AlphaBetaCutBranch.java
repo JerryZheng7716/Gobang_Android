@@ -29,7 +29,7 @@ public class AlphaBetaCutBranch implements Runnable {
     public SituationAssessment sa;
     private ArrayList<Node> nodes = new ArrayList<>();
     private int[][] calculationPoint;
-    private boolean isGetNodes=false;
+    private boolean isGetNodes = false;
 
     public static boolean isRunningFlag() {
         return runningFlag;
@@ -136,7 +136,7 @@ public class AlphaBetaCutBranch implements Runnable {
             gameCanvas.testY4 = 0;
         }
         System.out.println("第" + block + "个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
-        HandlerMessage.sendMessage(gameCanvas.mainActivity.handler,HandlerMessage.REPAINT_CHESS);//重新绘制
+        HandlerMessage.sendMessage(gameCanvas.mainActivity.handler, HandlerMessage.REPAINT_CHESS);//重新绘制
 //        gameCanvas.invalidate();//重新绘制
 
 //        if (block == 1) {
@@ -189,20 +189,20 @@ public class AlphaBetaCutBranch implements Runnable {
         int[][] calculationPoint = getCalculationPoint(chessMap);
         int length = calculationPoint[0][0];
         int[] firstRange = {1, length};
-        isGetNodes=true;
+        isGetNodes = true;
         alphaBetaCutBranch(0, 2, player, alpha, beta, calculationPoint, firstRange);
-        isGetNodes=false;
+        isGetNodes = false;
         SortNode.sortNodeByScore(nodes);
         return nodes;
     }
 
     private int alphaBetaCutBranch(int h, int deep, int player, int alpha, int beta, int[][] calculationPoint, int[] range) { //h搜索深度，player=1表示自己,player=0表示对手,range代表范围，用数组表示，分别是i（行）的开始结束，j（列）的开始结束
-        if (!runningFlag){
+        if (!runningFlag) {
             return -123456789;
         }
         int p, p2;
-        p = sa.evaluation(player,true);
-        p2 = sa.evaluation(player ^ 1,false);
+        p = sa.evaluation(player, true);
+        p2 = sa.evaluation(player ^ 1, false);
         if (h == deep || sa.getIs成五Chess())   //若到达深度 或是出现胜负
         {
             if (sa.getIs成五Chess() && h != 0) {        //若是胜负返回-inf 或+inf
@@ -238,7 +238,7 @@ public class AlphaBetaCutBranch implements Runnable {
 //                        System.out.println("ans :"+ans+" : "+calculationPoint[0][0]);
 //                    }
 
-                    if (ans > alpha ) {    //通过向上传递的子节点beta值修正alpha值
+                    if (ans > alpha) {    //通过向上传递的子节点beta值修正alpha值
 //                        if (block==2&&h==0){
 //                            System.out.println("alpha: "+alpha);
 //                        }
@@ -256,25 +256,25 @@ public class AlphaBetaCutBranch implements Runnable {
                                 gameCanvas.testX1 = j - 4;
                                 gameCanvas.testY1 = i - 4;
 //                                gameCanvas.invalidate();//重新绘制
-                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler,HandlerMessage.REPAINT_CHESS);//重新绘制
+                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler, HandlerMessage.REPAINT_CHESS);//重新绘制
                                 break;
                             case 2:
                                 gameCanvas.testX2 = j - 4;
                                 gameCanvas.testY2 = i - 4;
 //                                gameCanvas.invalidate();//重新绘制
-                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler,HandlerMessage.REPAINT_CHESS);//重新绘制
+                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler, HandlerMessage.REPAINT_CHESS);//重新绘制
                                 break;
                             case 3:
                                 gameCanvas.testX3 = j - 4;
                                 gameCanvas.testY3 = i - 4;
 //                                gameCanvas.invalidate();//重新绘制
-                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler,HandlerMessage.REPAINT_CHESS);//重新绘制
+                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler, HandlerMessage.REPAINT_CHESS);//重新绘制
                                 break;
                             case 4:
                                 gameCanvas.testX4 = j - 4;
                                 gameCanvas.testY4 = i - 4;
 //                                gameCanvas.invalidate();//重新绘制
-                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler,HandlerMessage.REPAINT_CHESS);//重新绘制
+                                HandlerMessage.sendMessage(gameCanvas.mainActivity.handler, HandlerMessage.REPAINT_CHESS);//重新绘制
                                 break;
                         }
                     }
