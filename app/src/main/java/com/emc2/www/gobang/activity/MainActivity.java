@@ -34,6 +34,7 @@ import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.HandlerMessage;
 import com.emc2.www.gobang.util.PlayAudio;
 import com.emc2.www.gobang.view.ChessView;
+import com.emc2.www.gobang.view.FeedBackDialog;
 import com.emc2.www.gobang.view.GameNotesDialog;
 import com.emc2.www.gobang.view.GiveUpDialog;
 import com.emc2.www.gobang.view.ModelDialog;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
     public static boolean isSoundOpen = true;
     public int levelBlackAi = -1, levelWhiteAi = -1;
     private ModelDialog modelDialog;
+    private FeedBackDialog feedBackDialog;
     ImageView imageViewWhiteChess, imageViewBlackChess;
     Window window;
     PlayAudio playBtnSound, playBackgroundMusic, playChessSound;
@@ -241,7 +243,10 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 gameNotesDialog = new GameNotesDialog(this);
                 gameNotesDialog.getModelDialog();
                 break;
-
+            case R.id.feedback:
+                feedBackDialog = new FeedBackDialog(MainActivity.this);
+                feedBackDialog.getFeedBackDialog();
+                break;
             default:
                 break;
         }

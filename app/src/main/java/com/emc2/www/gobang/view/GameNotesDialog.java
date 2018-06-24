@@ -16,12 +16,15 @@ import com.emc2.www.gobang.R;
 import com.emc2.www.gobang.activity.MainActivity;
 import com.emc2.www.gobang.db.RecordDao;
 import com.emc2.www.gobang.entity.Record;
+import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.emc2.www.gobang.view.ChessView.isBlackPlay;
 
 public class GameNotesDialog {
     private View view;
@@ -30,13 +33,14 @@ public class GameNotesDialog {
     private MainActivity mainActivity;
     private CustomDialog dialog;
     private SimpleAdapter adapter;
-    private ImageView one_number,two_number,three_number;
+    private ImageView one_number, two_number, three_number;
     private int[] number;
+
     public GameNotesDialog(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         view = LayoutInflater.from(mainActivity).inflate(R.layout.model_dialog, null);
-        number=new int[]{R.drawable.zero,R.drawable.one,R.drawable.two,R.drawable.three,
-                R.drawable.four,R.drawable.five,R.drawable.six,R.drawable.seven,R.drawable.eight,R.drawable.nine};
+        number = new int[]{R.drawable.zero, R.drawable.one, R.drawable.two, R.drawable.three,
+                R.drawable.four, R.drawable.five, R.drawable.six, R.drawable.seven, R.drawable.eight, R.drawable.nine};
     }
 
     public CustomDialog getModelDialog() {
@@ -63,11 +67,11 @@ public class GameNotesDialog {
 
 //        List<Record> recordList = recordDao.searchRecord(black,white);
         List<Record> recordList = new ArrayList<Record>();
-        for(int i=0;i<3;i++){
+        for (int i = 0; i < 3; i++) {
             Record record = new Record();
             record.setWinner("11");
             record.setChessCount(i);
-            record.setTime("时间"+i);
+            record.setTime("时间" + i);
             recordList.add(record);
         }
 
@@ -84,51 +88,51 @@ public class GameNotesDialog {
         findView(dialog);
         setRecord(listView);
     }
-    private void findView(CustomDialog dialog){
-        one_number=dialog.findViewById(R.id.image_id3_1);
-        two_number=dialog.findViewById(R.id.image_id3_2);
-        three_number=dialog.findViewById(R.id.image_id3_3);
-        listView=dialog.findViewById(R.id.list_view);
+
+    private void findView(CustomDialog dialog) {
+        one_number = dialog.findViewById(R.id.image_id3_1);
+        two_number = dialog.findViewById(R.id.image_id3_2);
+        three_number = dialog.findViewById(R.id.image_id3_3);
+        listView = dialog.findViewById(R.id.list_view);
     }
-    private void setRecord(ListView listView){
-        String[] from = { "id","id1","id2","id3" ,"time","winner","chessCount","whitePlayer","blackPlayer"};
-        int[] to={R.id.id,R.id.image_id3_1,R.id.image_id3_2,R.id.image_id3_3,R.id.record_time,R.id.record_winner,R.id.chessCount,
-                R.id.record_white_rank,R.id.record_black_rank};
-         adapter=new SimpleAdapter(this.mainActivity,getDate(),R.layout.record_item,from,to);
+
+    private void setRecord(ListView listView) {
+        String[] from = {"id", "id1", "id2", "id3", "time", "winner", "chessCount", "whitePlayer", "blackPlayer"};
+        int[] to = {R.id.id, R.id.image_id3_1, R.id.image_id3_2, R.id.image_id3_3, R.id.record_time, R.id.record_winner, R.id.chessCount,
+                R.id.record_white_rank, R.id.record_black_rank};
+        adapter = new SimpleAdapter(this.mainActivity, getDate(), R.layout.record_item, from, to);
         listView.setAdapter(adapter);
         setListViewListener();
     }
 
-    public ArrayList<Map<String,Object>> getDate() {
+    public ArrayList<Map<String, Object>> getDate() {
         List<Record> recordList = RecordDao.searchAllRecord();
-        ArrayList<Map<String,Object>> date=new ArrayList<>();
-        if (recordList==null){
+        ArrayList<Map<String, Object>> date = new ArrayList<>();
+        if (recordList == null) {
             return date;
         }
-        for(int i=0;i<recordList.size();i++){
-            Map<String,Object> map=new HashMap<>();
+        for (int i = 0; i < recordList.size(); i++) {
+            Map<String, Object> map = new HashMap<>();
             int id = recordList.get(i).getId();
-            if (id<=9){
-                map.put("id1",number[0]);
-                map.put("id2",number[0]);
-                map.put("id3",number[id]);
+            if (id <= 9) {
+                map.put("id1", number[0]);
+                map.put("id2", number[0]);
+                map.put("id3", number[id]);
+            } else if (id <= 99) {
+                map.put("id1", number[0]);
+                map.put("id2", number[id / 10]);
+                map.put("id3", number[id % 10]);
+            } else {
+                map.put("id1", number[id / 100]);
+                map.put("id2", number[id / 10]);
+                map.put("id3", number[id % 10]);
             }
-            else if (id<=99){
-                map.put("id1",number[0]);
-                map.put("id2",number[id/10]);
-                map.put("id3",number[id%10]);
-            }
-            else{
-                map.put("id1",number[id/100]);
-                map.put("id2",number[id/10]);
-                map.put("id3",number[id%10]);
-            }
-            map.put("id",id);
-            map.put("time",recordList.get(i).getTime());
-            map.put("winner",recordList.get(i).getWinner());
-            map.put("chessCount",recordList.get(i).getChessCount());
-            map.put("whitePlayer",recordList.get(i).getWhitePlayer());
-            map.put("blackPlayer",recordList.get(i).getBlackPlayer());
+            map.put("id", id);
+            map.put("time", recordList.get(i).getTime());
+            map.put("winner", recordList.get(i).getWinner());
+            map.put("chessCount", recordList.get(i).getChessCount());
+            map.put("whitePlayer", recordList.get(i).getWhitePlayer());
+            map.put("blackPlayer", recordList.get(i).getBlackPlayer());
             date.add(map);
         }
 
@@ -138,7 +142,7 @@ public class GameNotesDialog {
     /**
      * 对listView  的 item 设置点击监听，读取对战记录id，恢复对战棋盘
      */
-    private void setListViewListener(){
+    private void setListViewListener() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -154,19 +158,35 @@ public class GameNotesDialog {
                 textView = item.findViewById(R.id.id);
                 String id = textView.getText().toString();
                 String chessMap = RecordDao.getChessMapById(id);
-                String[] strings=chessMap.split(" ");
-                List<Point> mEveryPlay = new ArrayList<>(225);
-                for (int j = 1; j < strings.length; j+=2) {
-                    try {
-                        Point point=new Point(Integer.valueOf(strings[j]),Integer.valueOf(strings[j+1]));
-                        mEveryPlay.add(point);
-                    }catch (Exception e){
-                        Log.d("未知错误", "onItemClick: "+e);
+                String[] strings = chessMap.split(" ");
+                Chess[][] mChessArray = new Chess[15][15];
+                for (int j = 0; j < mChessArray.length; j++) {
+                    for (int k = 0; k < mChessArray[j].length; k++) {
+                        mChessArray[j][k] = new Chess();
                     }
                 }
-                mainActivity.chessView.mEveryPlay=mEveryPlay;
+                List<Point> mEveryPlay = new ArrayList<>(225);
+                boolean isBlackPlay = true;
+                for (int j = 1; j < strings.length; j += 2) {
+                    try {
+                        Point point = new Point(Integer.valueOf(strings[j]), Integer.valueOf(strings[j + 1]));
+                        if (isBlackPlay) {
+                            mChessArray[point.x][point.y].setColor(Chess.Color.BLACK);
+                            isBlackPlay = false;
+                        } else {
+                            mChessArray[point.x][point.y].setColor(Chess.Color.WHITE);
+                            isBlackPlay = true;
+                        }
+                        mEveryPlay.add(point);
+                    } catch (Exception e) {
+                        Log.d("未知错误", "onItemClick: " + e);
+                    }
+                }
+                ChessView.isBlackPlay = isBlackPlay;//设置当前落子方和记录一致
+                mainActivity.chessView.mEveryPlay = mEveryPlay;//恢复棋局落子记录
+                mainActivity.chessView.mChessArray = mChessArray;//恢复棋盘
                 mainActivity.chessView.invalidate();
-                Toast.makeText(mainActivity,"成功恢复记录 "+id+" 的对局棋盘",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, "成功恢复记录 " + id + " 的对局棋盘", Toast.LENGTH_SHORT).show();
             }
         });
     }
