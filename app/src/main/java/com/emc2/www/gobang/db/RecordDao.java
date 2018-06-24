@@ -10,7 +10,6 @@ import android.util.Log;
 import com.emc2.www.gobang.entity.Record;
 import com.emc2.www.gobang.util.FormatDate;
 
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,8 @@ public class RecordDao {
             return false;
         }
     }
-    public static boolean insertRecords(String time,String blackPlayer,String whitePlayer,int chessCount,String winner,Context context){
+
+    public static boolean insertRecords(String time, String blackPlayer, String whitePlayer, int chessCount, String winner, Context context) {
         if (databaseHelper == null) {
             databaseHelper = new DatabaseHelper(context);
         }
@@ -55,10 +55,10 @@ public class RecordDao {
     public static List<Record> searchRecord(String blackPlayer, String whitePlayer) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         List<Record> list = new ArrayList<Record>();
-        Cursor cursor = db.query(DatabaseFiled.Tables.Record, null, "blackPlayer=? and whitePlayer=?", new String[]{blackPlayer,whitePlayer}, null, null, null);
+        Cursor cursor = db.query(DatabaseFiled.Tables.Record, null, "blackPlayer=? and whitePlayer=?", new String[]{blackPlayer, whitePlayer}, null, null, null);
         if (cursor.getCount() == 0) {
             return null;
-        }else{
+        } else {
             while (cursor.moveToNext()) {
 
                 Record record = new Record();
@@ -82,7 +82,7 @@ public class RecordDao {
         Cursor cursor = db.query(DatabaseFiled.Tables.Record, null, null, new String[]{}, null, null, "id DESC");
         if (cursor.getCount() == 0) {
             return null;
-        }else{
+        } else {
             while (cursor.moveToNext()) {
 
                 Record record = new Record();
