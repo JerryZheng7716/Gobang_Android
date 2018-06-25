@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="10sp"
-            android:text="倾情制作：郑健磊 罗珊 余豪士" />
+            android:text="首款手绘风的五子棋博弈程序" />
     </LinearLayout>
 
 
