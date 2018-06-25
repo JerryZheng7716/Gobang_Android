@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dialog_tittle_height"
         android:layout_gravity="center"
-        android:src="@drawable/win_tittle" />
+        android:src="@drawable/feedback" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -23,6 +23,7 @@
         android:id="@+id/feedback_edit_text"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:textSize="@dimen/dialog_button_text"
         android:hint="@string/feedback_hint_text"
         android:textColorHint="@color/button_background" />
 
