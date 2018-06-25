@@ -3,7 +3,6 @@ package com.emc2.www.gobang.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,9 +11,6 @@ import com.emc2.www.gobang.activity.MainActivity;
 import com.emc2.www.gobang.db.RecordDao;
 import com.emc2.www.gobang.util.Chess;
 import com.emc2.www.gobang.util.CustomDialog;
-import com.emc2.www.gobang.util.FormatDate;
-
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -115,7 +111,6 @@ public class WinDialog {
         StringBuilder chessMap = new StringBuilder();
         while (hand < mEveryPlay.size()) {
             point = mEveryPlay.get(hand);
-            Rect mSrcRect, mDestRect;
             int x = point.x;
             int y = point.y;
             chessMap.append(" ").append(x).append(" ").append(y);

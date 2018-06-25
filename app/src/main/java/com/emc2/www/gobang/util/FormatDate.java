@@ -13,7 +13,7 @@ public class FormatDate {
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf2 = new SimpleDateFormat("MM月dd日");
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy年MM月dd日");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf3 = new SimpleDateFormat("yy年MM月dd日");
 //        String[] strings = date.split("T");
 //        String[] strings1 = strings[1].split("\\.");
 //        date = strings[0] + " " + strings1[0];

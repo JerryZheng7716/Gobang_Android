@@ -79,7 +79,7 @@ public class GameNotesDialog {
         dialog = builder
                 .style(R.style.Dialog)
                 .heightDimenRes(83)
-                .widthDimenRes(90)
+                .widthDimenRes(95)
                 .cancelTouchout(false)
                 .view(R.layout.record)
                 .addViewOnclick(R.id.ok_btn, listener)

@@ -373,6 +373,7 @@ public class ChessView extends View {
                     point = mEveryPlay.get(mEveryPlay.size() - 1);
                     mChessArray[point.x][point.y].setColor(Chess.Color.NONE);
                     mEveryPlay.remove(mEveryPlay.size() - 1);//如果是人机博弈，那么悔棋一次悔两步。
+                    isBlackPlay = !isBlackPlay;
                 }
         }
         isLocked = false;
