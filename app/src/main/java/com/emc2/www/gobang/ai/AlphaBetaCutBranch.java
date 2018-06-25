@@ -108,32 +108,32 @@ public class AlphaBetaCutBranch implements Runnable {
             AI.xChess1 = xChess;
             AI.yChess1 = yChess;
 
-            gameCanvas.testX1 = 0;
-            gameCanvas.testY1 = 0;
+            gameCanvas.testX1 = -1;
+            gameCanvas.testY1 = -1;
         }
         if (block == 2) {
             AI.score2 = lastScore;
             AI.xChess2 = xChess;
             AI.yChess2 = yChess;
 
-            gameCanvas.testX2 = 0;
-            gameCanvas.testY2 = 0;
+            gameCanvas.testX2 = -1;
+            gameCanvas.testY2 = -1;
         }
         if (block == 3) {
             AI.score3 = lastScore;
             AI.xChess3 = xChess;
             AI.yChess3 = yChess;
 
-            gameCanvas.testX3 = 0;
-            gameCanvas.testY3 = 0;
+            gameCanvas.testX3 = -1;
+            gameCanvas.testY3 = -1;
         }
         if (block == 4) {
             AI.score4 = lastScore;
             AI.xChess4 = xChess;
             AI.yChess4 = yChess;
 
-            gameCanvas.testX4 = 0;
-            gameCanvas.testY4 = 0;
+            gameCanvas.testX4 = -1;
+            gameCanvas.testY4 = -1;
         }
         System.out.println("第" + block + "个线程得到棋子位置是：" + xChess + ": " + yChess + ",分数：" + lastScore);
         HandlerMessage.sendMessage(gameCanvas.mainActivity.handler, HandlerMessage.REPAINT_CHESS);//重新绘制

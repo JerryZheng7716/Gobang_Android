@@ -69,7 +69,7 @@ public class ChessView extends View {
         initBgPaint();
         initNumberPaint();
         initTextPaint();
-        initidPointPaint();
+        initAidPointPaint();
     }
 
     private void initEveryPlay() {
@@ -126,7 +126,7 @@ public class ChessView extends View {
         mTextPaint.setStrokeWidth(2);
     }
 
-    private void initidPointPaint() {
+    private void initAidPointPaint() {
         mAidPointPaint = new Paint();
         mAidPointPaint.setColor(Color.BLACK);
         mAidPointPaint.setStrokeWidth(2);
@@ -159,6 +159,7 @@ public class ChessView extends View {
             // 画横线
             canvas.drawLine(avg, avg * i, width - avg - 13, avg * i, mBoardPaint);
         }
+        //绘制9个辅助点
         canvas.drawCircle(avg * (3 + 1), avg * (3 + 1), 8, mAidPointPaint);
         canvas.drawCircle(avg * (7 + 1), avg * (3 + 1), 8, mAidPointPaint);
         canvas.drawCircle(avg * (11 + 1), avg * (3 + 1), 8, mAidPointPaint);
@@ -173,6 +174,7 @@ public class ChessView extends View {
         int hand = 0;
         Point point;
         int x = 15;
+        //绘制左边和上边的数字、字母坐标
         for (int i = 0; i < 15; i++) {
             if (i < 9) {
                 canvas.drawText(textNumber[i], avg - (2 * x), avg * (i + 1) + x, mTextPaint);
@@ -183,6 +185,7 @@ public class ChessView extends View {
             canvas.drawText(textLetter[i], avg * (i + 1) - x, avg - x, mTextPaint);
         }
 
+
         while (hand < mEveryPlay.size()) {
             point = mEveryPlay.get(hand);
             Rect mSrcRect, mDestRect;
@@ -191,38 +194,37 @@ public class ChessView extends View {
             float size2 = 0.5f;
             mDestRect = new Rect((int) (avg * (point.x + 1) + avg * size2), (int) (avg * (point.y + 1) + avg * size2),
                     (int) (avg * (point.x + 1) - avg * size2), (int) (avg * (point.y + 1) - avg * size2));
-            if (hand % 2 == 0) {
+            if (hand % 2 == 0) {//绘制白棋
                 canvas.drawBitmap(ReadImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
-            } else {
+            } else {//绘制黑棋
                 canvas.drawBitmap(ReadImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.BLACK);
             }
-            if (hand < 9) {
+            if (hand < 9) {//绘制棋子序号0-9
                 canvas.drawText(String.valueOf(hand), avg * (point.x + 1) - 10, avg * (point.y + 1) + 12, mNumberPaint);
-            } else if (hand < 99) {
+            } else if (hand < 99) {//绘制棋子序号10-99
                 canvas.drawText(String.valueOf(hand), avg * (point.x + 1) - 20, avg * (point.y + 1) + 12, mNumberPaint);
-            } else {
+            } else {//绘制棋子序号>99
                 canvas.drawText(String.valueOf(hand), avg * (point.x + 1) - 30, avg * (point.y + 1) + 12, mNumberPaint);
             }
 
             hand++;
-            if (hand == mEveryPlay.size()) {
+            if (hand == mEveryPlay.size()) {//绘制最后落子的棋子上加一个红点
                 point = mEveryPlay.get(mEveryPlay.size() - 1);
                 canvas.drawCircle(avg * (point.x + 1), avg * (point.y + 1), 8, mLastChessPointPaint);
             }
         }
-        canvas.drawCircle(avg * (testY1 + 1), avg * (testX1 + 1), 5, mChessPaint);
-//        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
-//        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
-//        canvas.drawCircle(avg * testY1, avg * testX1, 5, mChessPaint);
-
+        canvas.drawCircle(avg * (testX1+1), avg * (testY1+1), 5, mChessPaint);//绘制AI搜索的测试点
+        canvas.drawCircle(avg * (testX2+1), avg * (testY2+1), 5, mChessPaint);
+        canvas.drawCircle(avg * (testX3+1), avg * (testY3+1), 5, mChessPaint);
+        canvas.drawCircle(avg * (testX4+1), avg * (testY4+1), 5, mChessPaint);
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isAiRuning) {
+        if (isAiRuning) {//如果ai真正执行，则禁止用户下棋
             return false;
         }
         switch (event.getAction()) {
@@ -239,16 +241,18 @@ public class ChessView extends View {
                 // 获得上述矩形包含的棋盘上的点
                 Point point = getContainPoint(rect);
                 if (point != null && mEveryPlay.size() != 225) {
-                    // 若点不为空，则刷新对应位置棋子的属性
+                    // 若点不为空，且棋盘没有下满，则刷新对应位置棋子的属性
                     setChessState(point);
                     invalidate();
                     // 记录下每步操作，方便悔棋操作
                     mEveryPlay.add(point);
                     boolean egg = true;
-                    if (mEveryPlay.size() == 9) {
+                    if (mEveryPlay.size() == 9) {//侦测是否触发彩蛋
                         for (int i = 0; i < mEveryPlay.size(); i++) {
                             point = mEveryPlay.get(i);
-                            egg = inEgg(point.x, point.y);
+                            boolean b = inEgg(point.x, point.y);
+                            if (!b)
+                                egg = false;
                         }
                         if (egg) {
                             EggDialog eggDialog = new EggDialog(mainActivity);
@@ -265,25 +269,25 @@ public class ChessView extends View {
                     if (alphaBetaCutBranch.isWin()) {
                         winDialog = new WinDialog(getContext(), this);
                         winDialog.getWinlDialog(isBlackPlay);
-                    } else if (mEveryPlay.size() == 225) {
+                    } else if (mEveryPlay.size() == 225) {//棋盘如果满了就显示和棋
                         mainActivity.showDrawDialog();
                     }
                     // 更改游戏玩家
                     isBlackPlay = !isBlackPlay;
-                    if (getAiLevel(Chess.BLACK_CHESS) != -1 && isBlackPlay) {
+                    if (getAiLevel(Chess.BLACK_CHESS) != -1 && isBlackPlay) {//如果当前颜色是AI持有的那么启动AI
                         isAiRuning = true;
                         AiTread aiTread = new AiTread(this, Chess.BLACK_CHESS);//启动黑棋AI
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                     }
 
-                    if (getAiLevel(Chess.WHITE_CHESS) != -1 && !isBlackPlay) {
+                    if (getAiLevel(Chess.WHITE_CHESS) != -1 && !isBlackPlay) {//如果当前颜色是AI持有的那么启动AI
                         isAiRuning = true;
                         AiTread aiTread = new AiTread(this, Chess.WHITE_CHESS);//启动白棋AI
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                     }
-                    if (isBlackPlay)
+                    if (isBlackPlay)//改变人物旁边跳动的棋子的
                         mainActivity.doJumpAnimation(Chess.BLACK_CHESS);
                     else
                         mainActivity.doJumpAnimation(Chess.WHITE_CHESS);
@@ -395,11 +399,11 @@ public class ChessView extends View {
         return mainActivity.getAiLevel(who);
     }
 
-    private boolean inEgg(int x, int y) {
+    private boolean inEgg(int x, int y) {//棋子是否在彩蛋的位置
         int[][] points = new int[][]{{3, 3}, {3, 7}, {3, 11}, {7, 3}, {7, 7}, {7, 11}, {11, 3}, {11, 7}, {11, 11}};
         boolean flag = false;
         for (int i = 0; i < 9; i++) {
-            if (points[i][0] == x || points[i][1] == y) {
+            if (points[i][0] == x && points[i][1] == y) {
                 flag = true;
             }
         }
