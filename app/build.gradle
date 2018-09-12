@@ -7,7 +7,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 28
         versionCode 6
-        versionName "2.2.2 修复彩蛋逻辑bug，修复AI计算点显示错误"
+        versionName "2.2.5 优化AI互啄逻辑"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

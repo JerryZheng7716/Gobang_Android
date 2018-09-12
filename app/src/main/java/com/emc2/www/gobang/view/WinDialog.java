@@ -117,5 +117,9 @@ public class WinDialog {
             hand++;
         }
         RecordDao.insertRecords(time, blackPlayer, whitePlayer, mEveryPlay.size(), winner, chessMap.toString(), mainActivity);
+//        RecordDao.insertRecords("2016-4-21 12:12:12", blackPlayer, whitePlayer, mEveryPlay.size(), winner, chessMap.toString(), mainActivity);
+//        RecordDao.insertRecords("2018-5-5 12:12:12", blackPlayer, whitePlayer, mEveryPlay.size(), winner, chessMap.toString(), mainActivity);
+//        RecordDao.insertRecords("2018-6-21 12:12:12", blackPlayer, whitePlayer, mEveryPlay.size(), winner, chessMap.toString(), mainActivity);
+
     }
 }

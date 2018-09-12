@@ -48,7 +48,7 @@ public class AI {
             aiTimer.breakAi();
         } else {
             deep = 4;
-            AiTimer aiTimer = new AiTimer(3000, getStep());
+            AiTimer aiTimer = new AiTimer(7000, getStep());
             aiTimer.breakAi();
         }
         ArrayList<Node> nodes;

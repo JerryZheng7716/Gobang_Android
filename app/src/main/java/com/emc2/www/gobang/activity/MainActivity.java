@@ -321,6 +321,9 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP://松开事件发生后执行代码的区域
 //                        btnAiHelp.setImageBitmap(readBitMap(R.drawable.btn_aihelp_release));
+                        if (getAiLevel(0)!=-1&&getAiLevel(1)!=-1){
+                            return false;//如果处于ai对战状态则点击无效
+                        }
                         AlphaBetaCutBranch.setRunningFlag(false);
                         AiTread aiTread;
                         if (ChessView.isAiRuning)
@@ -331,10 +334,20 @@ public class MainActivity extends AppCompatActivity implements Toolbar.OnMenuIte
                         oldLevelWhite = levelWhiteAi;
                         levelBlackAi = 2;//将ai等级设为高级
                         levelWhiteAi = 2;
-                        if (ChessView.isBlackPlay)
+                        boolean nextIsAI=false;
+                        if (ChessView.isBlackPlay){
                             aiTread = new AiTread(chessView, Chess.BLACK_CHESS);//启动黑棋AI
-                        else
+                            if (getAiLevel(1)!=-1){
+                                nextIsAI=true;
+                            }
+                        }
+                        else{
                             aiTread = new AiTread(chessView, Chess.WHITE_CHESS);
+                            if (getAiLevel(0)!=-1){
+                                nextIsAI=true;
+                            }
+                        }
+
                         Thread thread = new Thread(aiTread);//启动AI
                         thread.start();
                         try {

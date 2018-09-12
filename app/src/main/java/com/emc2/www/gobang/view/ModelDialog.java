@@ -205,16 +205,16 @@ public class ModelDialog {
                         mainActivity.levelWhiteAi = spinnerWhite.getSelectedItemPosition();
                         Toast.makeText(mainActivity, "当前黑色AI级别:" + mainActivity.getAiLevel(Chess.BLACK_CHESS)
                                 + "，" + "当前白色AI级别:" + mainActivity.getAiLevel(Chess.WHITE_CHESS), Toast.LENGTH_SHORT).show();
-                        if (mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1) {
-                            aiFightFlag = true;
-                            ChessView.isAiRuning = true;
-                            int who;
-                            who = ChessView.isBlackPlay ? Chess.BLACK_CHESS : Chess.WHITE_CHESS;
-                            AiFightThread aiFightThread = new AiFightThread(who);//启动黑棋AI
-                            thread = new Thread(aiFightThread);//启动AI
-                            thread.start();
-                        } else
-                            aiFightFlag = false;
+//                        if (mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1) {//如果棋子都是ai持有则启动ai对战
+//                            aiFightFlag = true;
+//                            ChessView.isAiRuning = true;
+//                            int who;
+//                            who = ChessView.isBlackPlay ? Chess.BLACK_CHESS : Chess.WHITE_CHESS;
+//                            AiFightThread aiFightThread = new AiFightThread(who);//启动黑棋AI
+//                            thread = new Thread(aiFightThread);//启动AI
+//                            thread.start();
+//                        } else
+//                            aiFightFlag = false;
                         if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
                             //如果现在是黑棋回合，且黑棋是机器人持有，且没有ai线程在运行
                             runAi(Chess.BLACK_CHESS);
@@ -286,7 +286,7 @@ public class ModelDialog {
 //    }
 
     /**
-     * 设置A对战
+     * 设置Ai对战
      *
      * @param who 轮到哪个颜色落子
      */

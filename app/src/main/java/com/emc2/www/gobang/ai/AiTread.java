@@ -17,6 +17,8 @@ public class AiTread implements Runnable {
     private ChessView chessView;
     private int player;
     private Handler handler;
+    private AlphaBetaCutBranch alphaBetaCutBranch;
+    private boolean isWin=false;
 
     public AiTread(ChessView chessView, int player) {
         this.chessView = chessView;
@@ -49,8 +51,9 @@ public class AiTread implements Runnable {
             // 记录下每步操作，方便悔棋操作
             chessView.mEveryPlay.add(point);
 //使用Ai算法内的的算法判断是否有人获胜了
-            AlphaBetaCutBranch alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, chessView);
-            if (alphaBetaCutBranch.isWin()) {
+            alphaBetaCutBranch = new AlphaBetaCutBranch(0, 2, 1, -999990000, 999990000, 1, chessView);
+            isWin=alphaBetaCutBranch.isWin();
+            if (isWin) {
                 if (ChessView.isBlackPlay) {
                     HandlerMessage.sendMessage(handler, HandlerMessage.SHOW_WIN_DIALOG_BLACK);
                 } else {
@@ -70,13 +73,21 @@ public class AiTread implements Runnable {
             if (MainActivity.isSoundOpen)
                 playChessSound.play("chess_sound.wav", false);
         }
-        ChessView.isAiRuning = false;
         Message message = handler.obtainMessage(300);
         if (player == Chess.BLACK_CHESS)
             message.arg1 = HandlerMessage.JUMP_WHITE;
         else
             message.arg1 = HandlerMessage.JUMP_BLACK;
         handler.sendMessage(message);
+        if (chessView.mainActivity.getAiLevel(player ^ 1)!=-1&&!isWin){//如果下一手是ai，且无人获胜那么继续ai落子
+//            AiTread aiTread = new AiTread(chessView,player^1);
+//            Thread thread = new Thread(aiTread);
+//            thread.start();
+            player=player^1;
+            run();
+        }
+        ChessView.isAiRuning = false;
+
     }
 
 
