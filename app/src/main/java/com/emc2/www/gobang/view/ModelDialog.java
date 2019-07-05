@@ -215,11 +215,11 @@ public class ModelDialog {
 //                            thread.start();
 //                        } else
 //                            aiFightFlag = false;
-                        if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+                        if (ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.BLACK_CHESS) != -1 && !ChessView.isAiRuning) {
                             //如果现在是黑棋回合，且黑棋是机器人持有，且没有ai线程在运行
                             runAi(Chess.BLACK_CHESS);
                         }
-                        if (!ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1 && !ChessView.isAiRuning && !aiFightFlag) {
+                        if (!ChessView.isBlackPlay && mainActivity.getAiLevel(Chess.WHITE_CHESS) != -1 && !ChessView.isAiRuning) {
                             //如果现在是白棋回合，且白棋是机器人持有，且没有ai线程在运行
                             runAi(Chess.WHITE_CHESS);
                         }

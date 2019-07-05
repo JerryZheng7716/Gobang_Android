@@ -192,12 +192,17 @@ public class ChessView extends View {
             int size = 3;
             mSrcRect = new Rect(0, 0, (int) (avg * size), (int) (avg * size));
             float size2 = 0.5f;
-            mDestRect = new Rect((int) (avg * (point.x + 1) + avg * size2), (int) (avg * (point.y + 1) + avg * size2),
-                    (int) (avg * (point.x + 1) - avg * size2), (int) (avg * (point.y + 1) - avg * size2));
-            if (hand % 2 == 0) {//绘制白棋
+            System.out.println(point.x+"---"+point.y);
+            //棋子的直径，就是网格间距，x0.98是为了稍微留点缝隙
+            int chessSize= (int) (avg*0.98);
+            //下面两个变量标注了棋子的绘制位置，也很好理解，棋子在棋盘的坐标x网格的间距+棋子直径的一半
+            int chessPositionX = (point.x)*avg+chessSize/2;
+            int chessPositionY = (point.y)*avg+chessSize/2;
+            mDestRect = new Rect(chessPositionX,chessPositionY,chessPositionX+chessSize,chessPositionY+chessSize);
+            if (hand % 2 == 0) {//绘制黑棋
                 canvas.drawBitmap(ReadImage.readBitMap(R.drawable.black_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.WHITE);
-            } else {//绘制黑棋
+            } else {//绘制白棋
                 canvas.drawBitmap(ReadImage.readBitMap(R.drawable.white_chess, getContext()), mSrcRect, mDestRect, mChessPaint);
                 mNumberPaint.setColor(Color.BLACK);
             }
